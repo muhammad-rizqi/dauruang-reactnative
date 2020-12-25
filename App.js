@@ -1,26 +1,12 @@
 import React from 'react';
-import LottieView from 'lottie-react-native';
-import QRCode from 'react-native-qrcode-svg';
+import {View, Text} from 'react-native';
+import Logo from './src/assets/img/logo.svg';
+const App = () => {
+  return (
+    <View>
+      <Logo width={120} height={120} />
+    </View>
+  );
+};
 
-export default class BasicExample extends React.Component {
-  render() {
-    return (
-      <>
-        <QRCode
-          size={200}
-          value='
-          {
-    "id": "number",
-    "nama_lengkap": "string",
-    "email": "string <email>",
-    "telepon": "string",
-    "lokasi": "string",
-    "avatar": "string <uri>",
-}
-          '
-        />
-        <LottieView source={require('./animation.json')} autoPlay loop />
-      </>
-    );
-  }
-}
+export default App;
