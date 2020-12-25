@@ -1,6 +1,7 @@
 import React from 'react';
 import LottieView from 'lottie-react-native';
 import QRCode from 'react-native-qrcode-svg';
+import {View} from 'react-native';
 
 export default class BasicExample extends React.Component {
   render() {
@@ -19,7 +20,11 @@ export default class BasicExample extends React.Component {
 }
           '
         />
-        <LottieView source={require('./animation.json')} autoPlay loop />
+        <LottieView
+          source={require('../assets/lottie/loading.json')}
+          autoPlay
+          loop
+        />
       </>
     );
   }
