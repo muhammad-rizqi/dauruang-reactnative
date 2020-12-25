@@ -17,6 +17,8 @@ target 'DaurUang' do
 
   pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'DaurUangTests' do
     inherit! :complete
     # Pods for testing
