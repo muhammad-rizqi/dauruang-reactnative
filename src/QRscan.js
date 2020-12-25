@@ -12,10 +12,17 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
 
 class ScanScreen extends Component {
+  constructor() {
+    super();
+    this.state = {
+      result: '',
+    };
+  }
   onSuccess = (e) => {
     // Linking.openURL(e.data).catch((err) =>
     //   console.error('An error occured', err),
     // );
+    this.setState({result: e});
     console.log(e);
   };
 
@@ -23,17 +30,18 @@ class ScanScreen extends Component {
     return (
       <QRCodeScanner
         onRead={this.onSuccess}
-        flashMode={RNCamera.Constants.FlashMode.torch}
         topContent={
           <Text style={styles.centerText}>
-            Go to
+            Go to flashMode={RNCamera.Constants.FlashMode.torch}
             <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
             your computer and scan the QR code.
           </Text>
         }
         bottomContent={
           <TouchableOpacity style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
+            <Text style={styles.buttonText}>
+              {JSON.stringify(this.state.result)}
+            </Text>
           </TouchableOpacity>
         }
       />

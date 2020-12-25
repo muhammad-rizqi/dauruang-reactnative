@@ -7,14 +7,18 @@ import {
   View,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
-class App extends Component {
+class Maps extends Component {
   constructor() {
     super();
     this.state = {
       location: null,
       permission: false,
+      x: {},
+      region: null,
+      isReady: false,
+      data: {},
     };
   }
 
@@ -38,8 +42,16 @@ class App extends Component {
   getCurrentLocation() {
     Geolocation.getCurrentPosition(
       (position) => {
+        console.log('getposisi');
         console.log(position);
-        this.setState({location: position});
+        this.setState({
+          location: position,
+          region: this.regionFrom(position),
+          x: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          },
+        });
       },
       (error) => {
         // See error code charts below.
@@ -50,10 +62,11 @@ class App extends Component {
     );
   }
 
-  regionFrom() {
-    const {latitude, longitude, accuracy} = this.state.location.coords;
-    const oneDegreeOfLongitudeInMeters = 111.32 * 1000;
-    const circumference = (40075 / 360) * 1000;
+  regionFrom(position) {
+    console.log(position);
+    const {latitude, longitude, accuracy} = position.coords;
+    const oneDegreeOfLongitudeInMeters = 111.32 * 70;
+    const circumference = (40075 / 360) * 70;
 
     const latDelta = accuracy * (1 / (Math.cos(latitude) * circumference));
     const lonDelta = accuracy / oneDegreeOfLongitudeInMeters;
@@ -69,6 +82,10 @@ class App extends Component {
   componentDidMount() {
     this.requestCameraPermission();
   }
+  componentDidUpdate() {
+    console.log('ini kordinat');
+    console.log(this.state.x);
+  }
 
   render() {
     return (
@@ -77,16 +94,37 @@ class App extends Component {
           {this.state.location !== null ? (
             <>
               <MapView
-                provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-                style={styles.map}
-                showsUserLocation={true}
-                showsMyLocationButton={true}
-                initialRegion={this.regionFrom()}
-              />
-              <Text> {JSON.stringify(this.regionFrom())} </Text>
+                provider={PROVIDER_GOOGLE}
+                region={this.state.region}
+                onMapReady={() => this.setState({isReady: true})}
+                showsUserLocation
+                showsMyLocationButton
+                onPress={(e) => this.setState({x: e.nativeEvent.coordinate})}
+                onRegionChangeComplete={(region) =>
+                  this.setState({region: region})
+                }
+                onPoiClick={(e) => {
+                  console.log(e.nativeEvent);
+                  this.setState({
+                    x: e.nativeEvent.coordinate,
+                    data: e.nativeEvent,
+                  });
+                }}
+                style={styles.map}>
+                {this.state.isReady ? (
+                  <Marker
+                    draggable
+                    coordinate={this.state.x}
+                    onDragEnd={(e) =>
+                      this.setState({x: e.nativeEvent.coordinate})
+                    }
+                  />
+                ) : null}
+              </MapView>
             </>
           ) : null}
         </View>
+        <Text> {JSON.stringify(this.state.data)} </Text>
       </View>
     );
   }
@@ -94,10 +132,9 @@ class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
-    justifyContent: 'flex-end',
+    width: 300,
+    height: 300,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   map: {
@@ -105,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Maps;

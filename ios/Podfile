@@ -13,6 +13,10 @@ target 'DaurUang' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
+  pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
+
   target 'DaurUangTests' do
     inherit! :complete
     # Pods for testing
