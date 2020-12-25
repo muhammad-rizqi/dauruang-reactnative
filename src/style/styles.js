@@ -15,22 +15,33 @@ export const styles = StyleSheet.create({
   backgroundLight: {
     backgroundColor: colors.lightBg,
   },
+  backgroundWhite: {
+    backgroundColor: colors.white,
+  },
+  backgroundPrimary: {
+    backgroundColor: colors.primary,
+  },
+  backgroundSecondary: {
+    backgroundColor: colors.secondary,
+  },
   centerCenter: {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  centerItem: {alignItems: 'center'},
   textH1: {
     fontWeight: 'bold',
     fontSize: 36,
     color: colors.primary,
   },
+  textUppercase: {textTransform: 'uppercase'},
   textH2: {
     fontWeight: 'bold',
-    fontSize: 36,
+    fontSize: 24,
     color: colors.primary,
   },
-  backgroundWhite: {
-    backgroundColor: colors.white,
+  textCenter: {
+    textAlign: 'center',
   },
   marginHXL: {
     marginHorizontal: 42,
@@ -41,13 +52,14 @@ export const styles = StyleSheet.create({
   button: {
     borderRadius: 5,
     paddingVertical: 16,
-    backgroundColor: colors.primary,
     alignItems: 'center',
   },
   textMedium: {
     fontWeight: '700',
-    color: colors.white,
     fontSize: 14,
+  },
+  textWhite: {
+    color: colors.white,
   },
   lottieButton: {width: 19, height: 19},
 });
