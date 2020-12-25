@@ -5,13 +5,15 @@ export const colors = {
   secondary: '#37BEB0',
   tertiary: '#A4E5E0',
   lightBg: '#DBF5F0',
-  white: '#fefefe',
+  white: '#f5f5f5',
 };
 
 export const styles = StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  row: {flexDirection: 'row'},
+  container: {padding: 16},
   backgroundLight: {
     backgroundColor: colors.lightBg,
   },
@@ -45,6 +47,12 @@ export const styles = StyleSheet.create({
   },
   marginHXL: {
     marginHorizontal: 42,
+  },
+  marginHM: {
+    marginHorizontal: 16,
+  },
+  marginHS: {
+    marginHorizontal: 8,
   },
   marginVM: {
     marginVertical: 16,
