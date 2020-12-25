@@ -7,7 +7,7 @@ const ButtonView = ({onPress, loading, title, dark, disabled}) => {
   return (
     <TouchableNativeFeedback
       disabled={loading ? true : disabled}
-      onPress={() => onPress(!loading)}>
+      onPress={() => (onPress ? onPress() : null)}>
       <View
         style={[
           styles.button,

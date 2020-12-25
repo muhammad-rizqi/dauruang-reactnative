@@ -34,17 +34,18 @@ export const styles = StyleSheet.create({
   textH1: {
     fontWeight: 'bold',
     fontSize: 36,
-    color: colors.primary,
   },
   textUppercase: {textTransform: 'uppercase'},
   textH2: {
     fontWeight: 'bold',
     fontSize: 24,
-    color: colors.primary,
   },
+  textPrimary: {color: colors.primary},
+  textSecondary: {color: colors.secondary},
   textCenter: {
     textAlign: 'center',
   },
+  textInput: {borderWidth: 1, borderRadius: 5, borderColor: colors.secondary},
   marginHXL: {
     marginHorizontal: 42,
   },
@@ -56,6 +57,9 @@ export const styles = StyleSheet.create({
   },
   marginVM: {
     marginVertical: 16,
+  },
+  marginVS: {
+    marginVertical: 8,
   },
   button: {
     borderRadius: 5,

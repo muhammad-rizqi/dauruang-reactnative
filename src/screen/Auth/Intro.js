@@ -17,7 +17,13 @@ const Intro = () => {
       </View>
       <View>
         <View style={[styles.centerItem]}>
-          <Text style={[styles.textH2, styles.textCenter, styles.marginVM]}>
+          <Text
+            style={[
+              styles.textH2,
+              styles.textCenter,
+              styles.marginVM,
+              styles.textPrimary,
+            ]}>
             Tukar sampah jadi uang
           </Text>
         </View>
