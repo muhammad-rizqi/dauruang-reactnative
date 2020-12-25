@@ -58,6 +58,9 @@ export const styles = StyleSheet.create({
   marginVM: {
     marginVertical: 16,
   },
+  marginVXL: {
+    marginVertical: 32,
+  },
   marginVS: {
     marginVertical: 8,
   },

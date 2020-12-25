@@ -10,6 +10,7 @@ const InputView = ({
   secure,
   value,
   onChangeText,
+  type,
 }) => {
   return (
     <View style={[styles.textInput, styles.backgroundWhite, styles.row]}>
@@ -18,7 +19,8 @@ const InputView = ({
         placeholder={placeholder}
         style={[styles.flex1, styles.marginHM]}
         value={value}
-        onChangeText={() => onChangeText()}
+        onChangeText={() => (onChangeText ? onChangeText() : null)}
+        keyboardType={type}
       />
       {name ? (
         <TouchableOpacity
