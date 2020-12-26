@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
+
+export const widthScreen = Dimensions.get('screen').width;
 
 export const colors = {
   primary: '#0C6170',
@@ -77,4 +79,14 @@ export const styles = StyleSheet.create({
     color: colors.white,
   },
   lottieButton: {width: 19, height: 19},
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  mapContainer: {
+    width: widthScreen - 32,
+    height: widthScreen - 32,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: colors.secondary,
+  },
 });

@@ -111,7 +111,7 @@ class Maps extends Component {
                   });
                 }}
                 style={styles.map}>
-                {this.state.isReady ? (
+                {/* {this.state.isReady ? (
                   <Marker
                     draggable
                     coordinate={this.state.x}
@@ -119,7 +119,7 @@ class Maps extends Component {
                       this.setState({x: e.nativeEvent.coordinate})
                     }
                   />
-                ) : null}
+                ) : null} */}
               </MapView>
             </>
           ) : null}
@@ -134,6 +134,8 @@ const styles = StyleSheet.create({
   container: {
     width: 300,
     height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
