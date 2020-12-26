@@ -28,7 +28,6 @@ export const regionFrom = (position) => {
 export const goToMaps = async (longitude, latitude, idPlace) => {
   const urlPlace = `https://www.google.com/maps/search/?api=1&query=${longitude},${latitude}&query_place_id=${idPlace}`;
   const url = `http://www.google.com/maps/place/${latitude},${longitude}`;
-  console.error('terpanggil');
 
   const supported = await Linking.canOpenURL(idPlace ? urlPlace : url);
 

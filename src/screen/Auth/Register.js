@@ -5,8 +5,6 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   ToastAndroid,
-  Linking,
-  Alert,
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -20,6 +18,7 @@ import {
 import {colors, styles} from '../../style/styles';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import Logo from '../../assets/img/logo.svg';
 
 const Register = () => {
   const [, setEmail] = useState('');
@@ -65,9 +64,13 @@ const Register = () => {
             <Icon name="chevron-left" size={26} color={colors.primary} />
           </TouchableWithoutFeedback>
         </View>
-        <View style={[styles.marginVXL]}>
-          <Text style={[styles.textH2, styles.textPrimary]}>Buat akun</Text>
-          <Text>Jadilah bagian dari kami</Text>
+        <View style={styles.marginVM} />
+        <View style={[styles.row, styles.centerCenter, styles.marginVS]}>
+          <Logo width={52} height={52} />
+          <View style={[styles.flex1, styles.marginHS]}>
+            <Text style={[styles.textH2, styles.textPrimary]}>Buat akun</Text>
+            <Text>Jadilah bagian dari kami</Text>
+          </View>
         </View>
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView placeholder="Nama Lengkap" />
@@ -77,6 +80,14 @@ const Register = () => {
         </View>
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView placeholder="Nomor Telepon" type="number-pad" />
+        </View>
+        <View style={[styles.centerItem, styles.marginVS]}>
+          <InputView
+            placeholder="Kata Sandi"
+            type="number-pad"
+            name="eye-off"
+            secure
+          />
         </View>
         <View style={[styles.marginVS]}>
           <View style={styles.mapContainer}>
@@ -125,27 +136,35 @@ const Register = () => {
                   mapsData.placeId,
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
-          }}>
+          }}
+          style={[styles.row, styles.centerCenter]}>
           <Text
-            style={[styles.textPrimary, styles.textMedium, styles.marginVM]}>
+            style={[
+              styles.textPrimary,
+              styles.textMedium,
+              styles.marginVM,
+              styles.flex1,
+            ]}>
             {mapsData.name
               ? mapsData.name
-              : `latitude: ${mapsData.latitude}\nlongitude: ${mapsData.longitude} `}
+              : `Latitude: ${mapsData.latitude}\nLongitude: ${mapsData.longitude} `}
           </Text>
+          <Icon
+            name="map-marked-alt"
+            size={24}
+            style={styles.marginHS}
+            color={colors.primary}
+          />
         </TouchableOpacity>
 
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView
-            placeholder="Kata Sandi"
-            type="number-pad"
-            name="eye-off"
-            secure
-          />
-        </View>
         <View style={[styles.marginVS]}>
           <ButtonView title="Mendaftar" dark onPress={() => {}} />
         </View>
-        <View style={[styles.centerItem, styles.marginVM]}>
+        <Text style={styles.textCenter}>
+          Dengan mendaftar, Anda menyetujui Persyaratan, Kebijakan Data, dan
+          Kebijakan Layanan kami.
+        </Text>
+        <View style={[styles.centerItem, styles.marginVXL]}>
           <Text style={[styles.textMedium, styles.textCenter]}>
             {'Sudah memiliki akun? \n Masuk'}
           </Text>
