@@ -37,11 +37,15 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 36,
   },
-  textUppercase: {textTransform: 'uppercase'},
   textH2: {
     fontWeight: 'bold',
     fontSize: 24,
   },
+  textH3: {
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
+  textUppercase: {textTransform: 'uppercase'},
   textPrimary: {color: colors.primary},
   textSecondary: {color: colors.secondary},
   textCenter: {
