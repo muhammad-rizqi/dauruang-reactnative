@@ -12,7 +12,7 @@ const ForgotPassword = () => {
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
       <View>
         <TouchableWithoutFeedback>
-          <Icon name="chevron-left" size={26} color={colors.primary} />
+          <Icon name="chevron-left" size={20} color={colors.primary} />
         </TouchableWithoutFeedback>
       </View>
       <View
