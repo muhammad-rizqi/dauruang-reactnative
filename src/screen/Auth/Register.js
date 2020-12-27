@@ -20,7 +20,7 @@ import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Logo from '../../assets/img/logo.svg';
 
-const Register = () => {
+const Register = (props) => {
   const [, setEmail] = useState('');
   const [position, setPosition] = useState({});
   const [mapReady, setMapReady] = useState(false);
@@ -60,7 +60,7 @@ const Register = () => {
     <View style={[styles.backgroundLight, styles.flex1]}>
       <ScrollView style={[styles.container]}>
         <View>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
             <Icon name="chevron-left" size={20} color={colors.primary} />
           </TouchableWithoutFeedback>
         </View>
@@ -165,7 +165,9 @@ const Register = () => {
           Kebijakan Layanan kami.
         </Text>
         <View style={[styles.centerItem, styles.marginVXL]}>
-          <Text style={[styles.textMedium, styles.textCenter]}>
+          <Text
+            style={[styles.textMedium, styles.textCenter]}
+            onPress={() => props.navigation.goBack()}>
             {'Sudah memiliki akun? \n Masuk'}
           </Text>
         </View>

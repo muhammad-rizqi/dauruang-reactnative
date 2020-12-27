@@ -5,7 +5,7 @@ import InputView from '../../components/InputView';
 import {styles} from '../../style/styles';
 import Logo from '../../assets/img/logo.svg';
 
-const Login = () => {
+const Login = (props) => {
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
@@ -35,9 +35,16 @@ const Login = () => {
       <View style={[styles.centerItem, styles.marginVM]}>
         <Text>atau</Text>
       </View>
-      <ButtonView title="Daftar" />
+      <ButtonView
+        title="Daftar"
+        onPress={() => props.navigation.navigate('Register')}
+      />
       <View style={[styles.centerItem, styles.marginVM]}>
-        <Text style={styles.textMedium}>Lupa Kata Sandi?</Text>
+        <Text
+          style={styles.textMedium}
+          onPress={() => props.navigation.navigate('ForgotPassword')}>
+          Lupa Kata Sandi?
+        </Text>
       </View>
     </ScrollView>
   );

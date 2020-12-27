@@ -6,12 +6,12 @@ import {colors, styles} from '../../style/styles';
 import Logo from '../../assets/img/logo.svg';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const ForgotPassword = () => {
+const ForgotPassword = (props) => {
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
       <View>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />
         </TouchableWithoutFeedback>
       </View>
@@ -37,7 +37,11 @@ const ForgotPassword = () => {
       </View>
       <ButtonView title="Kirim Kode Konfirmasi" dark />
       <View style={[styles.centerItem, styles.marginVM]}>
-        <Text style={styles.textMedium}>Login</Text>
+        <Text
+          style={styles.textMedium}
+          onPress={() => props.navigation.goBack()}>
+          Login
+        </Text>
       </View>
     </ScrollView>
   );
