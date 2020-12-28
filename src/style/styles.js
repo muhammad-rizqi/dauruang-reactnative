@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+import {color} from 'react-native-reanimated';
 
 export const widthScreen = Dimensions.get('screen').width;
 
@@ -55,6 +56,9 @@ export const styles = StyleSheet.create({
   marginHXL: {
     marginHorizontal: 42,
   },
+  marginHL: {
+    marginHorizontal: 24,
+  },
   marginHM: {
     marginHorizontal: 16,
   },
@@ -93,4 +97,17 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.secondary,
   },
+  paddingM: {
+    padding: 16,
+  },
+  roundBottom: {
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
+  card: {
+    padding: 16,
+    borderRadius: 20,
+    elevation: 4,
+  },
+  bottomXL: {bottom: 40},
 });
