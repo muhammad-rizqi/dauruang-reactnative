@@ -9,15 +9,17 @@ import {
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {penyetoran} from '../../data/DummyData';
+import {penarikan, penyetoran} from '../../data/DummyData';
 import ListPenyetoran from '../../components/ListPenyetoran';
 
 const DashboardNasabah = (props) => {
   const [content, setContent] = useState(1);
   const [dataPenyetoran, setDataPenyetoran] = useState(null);
+  const [dataPenarikan, setDataPenarikan] = useState(null);
 
   useEffect(() => {
     setDataPenyetoran(penyetoran);
+    setDataPenarikan(penarikan);
   }, []);
 
   return (
@@ -124,7 +126,36 @@ const DashboardNasabah = (props) => {
               <Text>Kosong</Text>
             )
           ) : content === 2 ? (
-            <Text>Content2</Text>
+            dataPenarikan ? (
+              dataPenarikan.data.length > 0 ? (
+                dataPenarikan.data.map((tarik) => (
+                  <View
+                    key={tarik.id}
+                    style={[
+                      styles.card,
+                      styles.backgroundWhite,
+                      styles.marginVS,
+                      styles.row,
+                    ]}>
+                    <View style={styles.flex1}>
+                      <Text style={styles.textNote}>
+                        ID Penarikan: #{tarik.id}
+                      </Text>
+                      <Text style={styles.textNote}>Tanggal Penarikan</Text>
+                      <Text style={styles.textH3}>{tarik.tanggal}</Text>
+                    </View>
+                    <View style={styles.centerCenter}>
+                      <Text style={styles.textNote}>Total Penarikan: </Text>
+                      <Text style={styles.textH3}>Rp. {tarik.kredit},-</Text>
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <Text>Kosong</Text>
+              )
+            ) : (
+              <Text>Kosong</Text>
+            )
           ) : content === 3 ? (
             <Text>Content3</Text>
           ) : null}
