@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,19 @@ import {
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {penyetoran} from '../../data/DummyData';
+import ListPenyetoran from '../../components/ListPenyetoran';
 
 const DashboardNasabah = (props) => {
   const [content, setContent] = useState(1);
+  const [dataPenyetoran, setDataPenyetoran] = useState(null);
+
+  useEffect(() => {
+    setDataPenyetoran(penyetoran);
+  }, []);
+
   return (
-    <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+    <View style={styles.flex1}>
       <View
         style={[
           styles.backgroundPrimary,
@@ -31,81 +39,98 @@ const DashboardNasabah = (props) => {
           <Icon name="comment" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
       </View>
-      <View
-        style={[
-          styles.backgroundPrimary,
-          styles.container,
-          styles.roundBottom,
-        ]}>
-        <Text style={[styles.textH3, styles.textWhite]}>Hello, Kevin</Text>
-        <View style={styles.marginVM}>
-          <Text style={[styles.textWhite]}>Saldo Anda</Text>
-          <Text style={[styles.textH2, styles.textWhite]}>Rp. 50.000,-</Text>
-          <View style={styles.marginVM} />
+      <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+        <View
+          style={[
+            styles.backgroundPrimary,
+            styles.container,
+            styles.roundBottom,
+          ]}>
+          <Text style={[styles.textH3, styles.textWhite]}>Hello, Kevin</Text>
+          <View style={styles.marginVM}>
+            <Text style={[styles.textWhite]}>Saldo Anda</Text>
+            <Text style={[styles.textH2, styles.textWhite]}>Rp. 50.000,-</Text>
+            <View style={styles.marginVM} />
+          </View>
         </View>
-      </View>
-      <View
-        style={[
-          styles.backgroundWhite,
-          styles.card,
-          styles.marginHL,
-          styles.bottomXL,
-          styles.row,
-        ]}>
-        <TouchableOpacity
-          style={[styles.flex1, styles.centerCenter]}
-          onPress={() => setContent(1)}>
-          <MaterialIcon
-            name="cube-send"
-            size={content === 1 ? 40 : 24}
-            color={colors.primary}
-          />
-          <Text
+        <View style={styles.centerCard}>
+          <View
             style={[
-              content === 1 ? styles.textMedium : null,
-              styles.textCenter,
-              styles.textPrimary,
+              styles.backgroundWhite,
+              styles.card,
+              styles.marginHL,
+              styles.row,
+              styles.absoluteBottom,
             ]}>
-            Penyetoran
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setContent(2)}
-          style={[styles.flex1, styles.centerCenter]}>
-          <MaterialIcon
-            name="progress-download"
-            size={content === 2 ? 40 : 24}
-            color={colors.primary}
-          />
-          <Text
-            style={[
-              content === 2 ? styles.textMedium : null,
-              styles.textPrimary,
-              styles.textCenter,
-            ]}>
-            Penarikan
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setContent(3)}
-          style={[styles.flex1, styles.centerCenter]}>
-          <MaterialIcon
-            name="dump-truck"
-            size={content === 3 ? 40 : 24}
-            color={colors.primary}
-          />
-          <Text
-            style={[
-              content === 3 ? styles.textMedium : null,
-              styles.textPrimary,
-              styles.textCenter,
-            ]}>
-            Jemput
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{borderWidth: 1}}></View>
-    </ScrollView>
+            <TouchableOpacity
+              style={[styles.flex1, styles.centerCenter]}
+              onPress={() => setContent(1)}>
+              <MaterialIcon
+                name="cube-send"
+                size={content === 1 ? 40 : 24}
+                color={colors.primary}
+              />
+              <Text
+                style={[
+                  content === 1 ? styles.textMedium : null,
+                  styles.textCenter,
+                  styles.textPrimary,
+                ]}>
+                Penyetoran
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setContent(2)}
+              style={[styles.flex1, styles.centerCenter]}>
+              <MaterialIcon
+                name="progress-download"
+                size={content === 2 ? 40 : 24}
+                color={colors.primary}
+              />
+              <Text
+                style={[
+                  content === 2 ? styles.textMedium : null,
+                  styles.textPrimary,
+                  styles.textCenter,
+                ]}>
+                Penarikan
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setContent(3)}
+              style={[styles.flex1, styles.centerCenter]}>
+              <MaterialIcon
+                name="dump-truck"
+                size={content === 3 ? 40 : 24}
+                color={colors.primary}
+              />
+              <Text
+                style={[
+                  content === 3 ? styles.textMedium : null,
+                  styles.textPrimary,
+                  styles.textCenter,
+                ]}>
+                Jemput
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View style={styles.container}>
+          {content === 1 ? (
+            dataPenyetoran ? (
+              <ListPenyetoran dataPenyetoran={dataPenyetoran} />
+            ) : (
+              <Text>Kosong</Text>
+            )
+          ) : content === 2 ? (
+            <Text>Content2</Text>
+          ) : content === 3 ? (
+            <Text>Content3</Text>
+          ) : null}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 

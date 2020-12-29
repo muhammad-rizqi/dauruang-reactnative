@@ -1,5 +1,4 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {color} from 'react-native-reanimated';
 
 export const widthScreen = Dimensions.get('screen').width;
 
@@ -9,6 +8,7 @@ export const colors = {
   tertiary: '#A4E5E0',
   lightBg: '#DBF5F0',
   white: '#f5f5f5',
+  grey: '#5e5e5e',
 };
 
 export const styles = StyleSheet.create({
@@ -83,6 +83,10 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 14,
   },
+  textNote: {
+    fontSize: 12,
+    color: colors.grey,
+  },
   textWhite: {
     color: colors.white,
   },
@@ -106,8 +110,10 @@ export const styles = StyleSheet.create({
   },
   card: {
     padding: 16,
-    borderRadius: 20,
+    borderRadius: 10,
     elevation: 4,
   },
   bottomXL: {bottom: 40},
+  centerCard: {position: 'relative', height: 42},
+  absoluteBottom: {position: 'absolute', bottom: 0},
 });
