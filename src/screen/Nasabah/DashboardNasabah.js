@@ -9,17 +9,19 @@ import {
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {penarikan, penyetoran} from '../../data/DummyData';
+import {penarikan, penyetoran, penjemputan} from '../../data/DummyData';
 import ListPenyetoran from '../../components/ListPenyetoran';
 
 const DashboardNasabah = (props) => {
   const [content, setContent] = useState(1);
   const [dataPenyetoran, setDataPenyetoran] = useState(null);
   const [dataPenarikan, setDataPenarikan] = useState(null);
+  const [dataPenjemputan, setDataPenjemputan] = useState(null);
 
   useEffect(() => {
     setDataPenyetoran(penyetoran);
     setDataPenarikan(penarikan);
+    setDataPenjemputan(penjemputan);
   }, []);
 
   return (
@@ -157,7 +159,51 @@ const DashboardNasabah = (props) => {
               <Text>Kosong</Text>
             )
           ) : content === 3 ? (
-            <Text>Content3</Text>
+            dataPenjemputan ? (
+              dataPenjemputan.data.length > 0 ? (
+                dataPenjemputan.data.map((jemput) => (
+                  <View
+                    key={jemput.id}
+                    style={[
+                      styles.card,
+                      styles.backgroundWhite,
+                      styles.marginVS,
+                      styles.row,
+                    ]}>
+                    <View style={styles.flex1}>
+                      <Text style={styles.textNote}>
+                        ID Penarikan: #{jemput.id}
+                      </Text>
+                      <Text>{jemput.tanggal}</Text>
+                      <Text style={styles.textH3}>{jemput.nama_pengirim}</Text>
+                      <Text>{jemput.keterangan}</Text>
+                      <Text style={styles.textNote}>{jemput.lokasi}</Text>
+                    </View>
+                    <View>
+                      <MaterialIcon
+                        name={
+                          jemput.status === 0
+                            ? 'progress-clock'
+                            : jemput.status === 1
+                            ? 'account-check'
+                            : jemput.status === 2
+                            ? 'truck-check'
+                            : jemput.status === 3
+                            ? 'close-circle'
+                            : 'progress-clock'
+                        }
+                        size={24}
+                        color={colors.grey}
+                      />
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <Text>Kosong</Text>
+              )
+            ) : (
+              <Text>Kosong</Text>
+            )
           ) : null}
         </View>
       </ScrollView>

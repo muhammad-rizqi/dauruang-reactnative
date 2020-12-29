@@ -133,3 +133,41 @@ export const penarikan = {
     },
   ],
 };
+
+export const penjemputan = {
+  code: 200,
+  data: [
+    {
+      id: 1,
+      id_nasabah: 1,
+      id_pengurus: 1,
+      tanggal: '2020-20-20',
+      nama_pengirim: 'Kevin',
+      telepon: '0801918217272',
+      keterangan: 'Bang jemput kayak biasa',
+      lokasi: 'http://maps.com/aksjdashdjahdahsdsaj',
+      status: 1, // 0 : pending, 1: "dijemput", 2: "selesai", 3: "dibatalkan"
+      relation: {
+        pengurus: {
+          id: 1,
+          nama_lengkap: 'Jono',
+          telepon: '0801918217272',
+          lokasi: 'http://maps.com/aksjdashdjahdahsdsaj',
+          avatar: 'http://avatar.com/ajskdaksdhasdhkas.jpg',
+        },
+      },
+    },
+    {
+      id: 2,
+      id_nasabah: 1,
+      id_pengurus: null,
+      tanggal: '2020-20-20',
+      nama_pengirim: 'Kevin',
+      telepon: '0801918217272',
+      keterangan: 'Bang jemput kayak biasa',
+      lokasi: 'http://maps.com/aksjdashdjahdahsdsaj',
+      status: 0,
+      relation: null,
+    },
+  ],
+};
