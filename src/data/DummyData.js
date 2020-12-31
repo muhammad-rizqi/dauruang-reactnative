@@ -171,3 +171,43 @@ export const penjemputan = {
     },
   ],
 };
+
+export const chatList = {
+  code: 200,
+  data: [
+    {
+      to: 1,
+      from: 2,
+      unread: 10,
+      relation: {
+        to: {
+          id: 1,
+          nama_lengkap: 'Kevin',
+          avatar: 'https://ui-avatars.com/api/?name=Kevin',
+        },
+        from: {
+          id: 2,
+          nama_lengkap: 'Joni',
+          avatar: 'https://ui-avatars.com/api/?name=Joni',
+        },
+      },
+    },
+    {
+      to: 1,
+      from: 2,
+      unread: 10,
+      relation: {
+        to: {
+          id: 1,
+          nama_lengkap: 'Kevin',
+          avatar: 'https://ui-avatars.com/api/?name=Joni',
+        },
+        from: {
+          id: 2,
+          nama_lengkap: 'Joni',
+          avatar: 'https://ui-avatars.com/api/?name=Joni',
+        },
+      },
+    },
+  ],
+};

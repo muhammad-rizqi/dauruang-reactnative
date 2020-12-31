@@ -5,6 +5,8 @@ import Splash from './Auth/Splash';
 import ForgotPassword from './Auth/ForgotPassword';
 import Settings from './User/Settings';
 import UpdateProfile from './User/UpdateProfile';
+import Jemput from './Nasabah/Jemput';
+import DashboardNasabah from './Nasabah/DashboardNasabah';
 
 export {
   Intro,
@@ -14,4 +16,6 @@ export {
   ForgotPassword,
   Settings,
   UpdateProfile,
+  Jemput,
+  DashboardNasabah,
 };

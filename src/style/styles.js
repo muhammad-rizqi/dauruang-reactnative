@@ -8,7 +8,7 @@ export const colors = {
   tertiary: '#A4E5E0',
   lightBg: '#DBF5F0',
   white: '#f5f5f5',
-  grey: '#5e5e5e',
+  grey: '#8e8e8e',
 };
 
 export const styles = StyleSheet.create({
@@ -116,4 +116,11 @@ export const styles = StyleSheet.create({
   bottomXL: {bottom: 40},
   centerCard: {position: 'relative', height: 42},
   absoluteBottom: {position: 'absolute', bottom: 0},
+  avatarM: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: colors.grey,
+  },
 });
