@@ -211,3 +211,73 @@ export const chatList = {
     },
   ],
 };
+
+export const chatItem = {
+  code: 200,
+  data: [
+    {
+      id: 1,
+      from: 1,
+      to: 2,
+      pesan: 'Oke siap bang',
+      is_read: 1,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 2,
+      from: 2,
+      to: 1,
+      pesan: 'Rojer ',
+      is_read: 0,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 3,
+      from: 1,
+      to: 2,
+      pesan: 'Oke siap bang',
+      is_read: 1,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 4,
+      from: 2,
+      to: 1,
+      pesan: 'Rojer ',
+      is_read: 0,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 5,
+      from: 1,
+      to: 2,
+      pesan: 'Oke siap bang',
+      is_read: 1,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 6,
+      from: 2,
+      to: 1,
+      pesan: 'Rojer ',
+      is_read: 0,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 7,
+      from: 1,
+      to: 2,
+      pesan: 'Oke siap bang',
+      is_read: 1,
+      created_at: '2020-20-20 10.00',
+    },
+    {
+      id: 8,
+      from: 2,
+      to: 1,
+      pesan: 'Rojer ',
+      is_read: 0,
+      created_at: '2020-20-20 10.00',
+    },
+  ],
+};

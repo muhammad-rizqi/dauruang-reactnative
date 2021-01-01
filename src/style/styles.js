@@ -8,7 +8,8 @@ export const colors = {
   tertiary: '#A4E5E0',
   lightBg: '#DBF5F0',
   white: '#f5f5f5',
-  grey: '#8e8e8e',
+  grey: '#5e5e5e',
+  black: '#1f1f1f',
 };
 
 export const styles = StyleSheet.create({
@@ -87,8 +88,15 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.grey,
   },
+  textNoteWhite: {
+    fontSize: 12,
+    color: colors.white,
+  },
   textWhite: {
     color: colors.white,
+  },
+  text: {
+    color: colors.black,
   },
   lottieButton: {width: 19, height: 19},
   map: {
@@ -120,7 +128,13 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.grey,
+  },
+  chatTo: {
+    maxWidth: '80%',
+    alignSelf: 'flex-end',
+  },
+  chatFrom: {
+    maxWidth: '80%',
+    alignSelf: 'flex-start',
   },
 });
