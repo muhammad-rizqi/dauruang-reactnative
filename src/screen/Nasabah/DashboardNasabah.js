@@ -1,16 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, ScrollView, TouchableWithoutFeedback} from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {penarikan, penyetoran, penjemputan} from '../../data/DummyData';
 import ListPenyetoran from '../../components/ListPenyetoran';
+import CenterMenu from '../../components/CenterMenu';
 
 const DashboardNasabah = (props) => {
   const [content, setContent] = useState(1);
@@ -66,57 +61,24 @@ const DashboardNasabah = (props) => {
               styles.row,
               styles.absoluteBottom,
             ]}>
-            <TouchableOpacity
-              style={[styles.flex1, styles.centerCenter]}
-              onPress={() => setContent(1)}>
-              <MaterialIcon
-                name="cube-send"
-                size={content === 1 ? 40 : 24}
-                color={colors.primary}
-              />
-              <Text
-                style={[
-                  content === 1 ? styles.textMedium : null,
-                  styles.textCenter,
-                  styles.textPrimary,
-                ]}>
-                Penyetoran
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            <CenterMenu
+              icon="cube-send"
+              active={content === 1}
+              text="Penyetoran"
+              onPress={() => setContent(1)}
+            />
+            <CenterMenu
+              icon="progress-download"
+              active={content === 2}
+              text="Penarikan"
               onPress={() => setContent(2)}
-              style={[styles.flex1, styles.centerCenter]}>
-              <MaterialIcon
-                name="progress-download"
-                size={content === 2 ? 40 : 24}
-                color={colors.primary}
-              />
-              <Text
-                style={[
-                  content === 2 ? styles.textMedium : null,
-                  styles.textPrimary,
-                  styles.textCenter,
-                ]}>
-                Penarikan
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+            />
+            <CenterMenu
+              icon="dump-truck"
+              active={content === 3}
+              text="Jemput"
               onPress={() => setContent(3)}
-              style={[styles.flex1, styles.centerCenter]}>
-              <MaterialIcon
-                name="dump-truck"
-                size={content === 3 ? 40 : 24}
-                color={colors.primary}
-              />
-              <Text
-                style={[
-                  content === 3 ? styles.textMedium : null,
-                  styles.textPrimary,
-                  styles.textCenter,
-                ]}>
-                Jemput
-              </Text>
-            </TouchableOpacity>
+            />
           </View>
         </View>
 
