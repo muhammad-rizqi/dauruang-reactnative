@@ -337,3 +337,69 @@ export const dataSetoran = {
     },
   ],
 };
+
+export const dataPenjualan = {
+  code: 200,
+  data: [
+    {
+      id: 1,
+      tanggal: '2020-21-21',
+      jenis_sampah: 1,
+      harga_satuan: 1001,
+      berat: 200,
+      debit: 2000000,
+      relation: {
+        jenis_sampah: {
+          id: 1,
+          nama_kategori: 'besi',
+          harga: 2000,
+        },
+        pengurus: {
+          id: 3,
+          nama_lengkap: 'Joni',
+          telepon: '0801918217272',
+          avatar: 'http://avatar.com/ajskdaksdhasdhkas.jpg',
+        },
+      },
+    },
+    {
+      id: 2,
+      tanggal: '2020-21-21',
+      jenis_sampah: 1,
+      harga_satuan: 1001,
+      berat: 200,
+      debit: 2000000,
+      relation: {
+        jenis_sampah: {
+          id: 1,
+          nama_kategori: 'besi',
+          harga: 2000,
+        },
+        pengurus: {
+          id: 3,
+          nama_lengkap: 'Joni',
+          telepon: '0801918217272',
+          avatar: 'http://avatar.com/ajskdaksdhasdhkas.jpg',
+        },
+      },
+    },
+  ],
+};
+
+export const dataStock = {
+  code: 200,
+  data: [
+    {
+      id: 1,
+      nama_kategori: 'besi',
+      harga: 1000,
+      stok_gudang: 15000,
+    },
+    {
+      id: 2,
+      nama_kategori: 'plastik',
+      harga: 1000,
+      stok_gudang: 5000,
+    },
+  ],
+};
