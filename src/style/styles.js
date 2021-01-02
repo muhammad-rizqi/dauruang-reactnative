@@ -137,4 +137,7 @@ export const styles = StyleSheet.create({
     maxWidth: '80%',
     alignSelf: 'flex-start',
   },
+  space: {
+    justifyContent: 'space-between',
+  },
 });
