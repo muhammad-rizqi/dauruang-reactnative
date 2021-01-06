@@ -5,6 +5,7 @@ import InputView from '../../components/InputView';
 import {styles} from '../../style/styles';
 import Logo from '../../assets/img/logo.svg';
 import {login} from '../../services/endpoint/authServices';
+import {storeToken} from '../../services/storage/Token';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ const Login = (props) => {
       .then((res) => {
         if (res === 200) {
           console.log(res.data);
+          storeToken(res.data.token);
         } else {
           ToastAndroid.show(res.message, ToastAndroid.LONG);
         }
