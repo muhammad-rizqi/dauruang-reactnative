@@ -7,6 +7,7 @@ export const register = (nama_lengkap, email, password, telepon, lokasi) => {
     password,
     telepon,
     lokasi,
+    password_confirmation: password,
   };
 
   return api('POST', '/register', body);

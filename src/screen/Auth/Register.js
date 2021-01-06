@@ -24,7 +24,13 @@ import {register} from '../../services/endpoint/authServices';
 import {reverseGeo} from '../../services/API/geolocation';
 
 const Register = (props) => {
-  const [, setEmail] = useState('');
+  const [email, setEmail] = useState(null);
+  const [nama, setNama] = useState(null);
+  const [telepon, setTelepon] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [secure, setSecure] = useState(true);
+
   const [position, setPosition] = useState({});
   const [mapReady, setMapReady] = useState(false);
   const [markCoord, setMarkCoord] = useState({});
@@ -50,7 +56,10 @@ const Register = (props) => {
         );
       }
     } catch (error) {
-      console.error(error);
+      ToastAndroid.show(
+        'Aktifkan dan izinkan lokasi untuk mendaftar',
+        ToastAndroid.LONG,
+      );
     }
   };
 
@@ -71,7 +80,17 @@ const Register = (props) => {
   };
 
   const onClickRegister = () => {
-    register('halo', 'halo');
+    if (nama && email && password && telepon && mapsData) {
+      setLoading(true);
+      register(nama, email, password, telepon, JSON.stringify(mapsData))
+        .then((res) =>
+          res.code === 201
+            ? console.log(res)
+            : ToastAndroid.show('Gagal Mendaftar', ToastAndroid.LONG),
+        )
+        .catch((e) => ToastAndroid.show(JSON.stringify(e), ToastAndroid.LONG))
+        .finally(() => setLoading(false));
+    }
   };
 
   useEffect(() => {
@@ -95,20 +114,28 @@ const Register = (props) => {
           </View>
         </View>
         <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView placeholder="Nama Lengkap" />
+          <InputView
+            placeholder="Nama Lengkap"
+            onChangeText={(n) => setNama(n)}
+          />
         </View>
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView placeholder="Email" onChangeText={(e) => setEmail(e)} />
         </View>
         <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView placeholder="Nomor Telepon" type="number-pad" />
+          <InputView
+            placeholder="Nomor Telepon"
+            onChangeText={(t) => setTelepon(t)}
+            type="number-pad"
+          />
         </View>
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView
             placeholder="Kata Sandi"
-            type="number-pad"
-            name="eye-off"
-            secure
+            name={secure ? 'eye-off' : 'eye'}
+            secure={secure}
+            onIconPress={() => setSecure(false)}
+            onChangeText={(p) => setPassword(p)}
           />
         </View>
         <View style={[styles.marginVS]}>
@@ -184,6 +211,8 @@ const Register = (props) => {
           <ButtonView
             title="Mendaftar"
             dark
+            loading={loading}
+            disabled={!mapsData}
             onPress={() => onClickRegister()}
           />
         </View>
@@ -194,7 +223,7 @@ const Register = (props) => {
         <View style={[styles.centerItem, styles.marginVXL]}>
           <Text
             style={[styles.textMedium, styles.textCenter]}
-            onPress={() => props.navigation.goBack()}>
+            onPress={() => props.navigation.navigate('Login')}>
             {'Sudah memiliki akun? \n Masuk'}
           </Text>
         </View>
