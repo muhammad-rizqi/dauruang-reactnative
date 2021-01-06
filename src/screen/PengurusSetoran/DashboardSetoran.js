@@ -33,13 +33,14 @@ const DashboardSetoran = (props) => {
           styles.row,
           styles.centerCenter,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
+        <TouchableWithoutFeedback onPress={() => props.navigation.openDrawer()}>
           <Icon name="bars" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
         <View style={[styles.flex1, styles.marginHM]}>
           <Text style={[styles.textH3, styles.textWhite]}>Daur Uang</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
+        <TouchableWithoutFeedback
+          onPress={() => props.navigation.navigate('ChatList')}>
           <Icon name="comment" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
       </View>

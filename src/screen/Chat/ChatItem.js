@@ -24,7 +24,7 @@ const ChatItem = (props) => {
           styles.marginHM,
           styles.marginVS,
         ]}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
           <Icon name="chevron-left" size={26} color={colors.primary} />
         </TouchableWithoutFeedback>
         <Image

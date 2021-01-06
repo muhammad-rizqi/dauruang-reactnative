@@ -33,7 +33,7 @@ const DashboardPenjualan = (props) => {
           styles.row,
           styles.centerCenter,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
+        <TouchableWithoutFeedback onPress={() => props.navigation.openDrawer()}>
           <Icon name="bars" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
         <View style={[styles.flex1, styles.marginHM]}>

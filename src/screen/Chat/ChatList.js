@@ -15,7 +15,7 @@ const ChatList = (props) => {
   return (
     <ScrollView style={[styles.backgroundLight, styles.flex1]}>
       <View style={[styles.row, styles.centerCenter, styles.container]}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
           <Icon name="chevron-left" size={26} color={colors.primary} />
         </TouchableWithoutFeedback>
         <Text
@@ -30,7 +30,9 @@ const ChatList = (props) => {
       </View>
       <View style={[styles.flex1]}>
         {chatList.data.map((chat, index) => (
-          <TouchableNativeFeedback key={index}>
+          <TouchableNativeFeedback
+            key={index}
+            onPress={() => props.navigation.navigate('ChatItem')}>
             <View style={[styles.row, styles.container]}>
               <Image
                 source={{uri: chat.relation.from.avatar}}
