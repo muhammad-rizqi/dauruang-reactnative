@@ -19,7 +19,7 @@ const InputView = ({
         placeholder={placeholder}
         style={[styles.flex1, styles.marginHM]}
         value={value}
-        onChangeText={() => (onChangeText ? onChangeText() : null)}
+        onChangeText={(i) => (onChangeText ? onChangeText(i) : null)}
         keyboardType={type}
       />
       {name ? (

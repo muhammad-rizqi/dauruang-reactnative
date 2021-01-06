@@ -20,7 +20,7 @@ import {colors, styles} from '../../style/styles';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Logo from '../../assets/img/logo.svg';
-import {register} from '../../services/endpoint/registerServices';
+import {register} from '../../services/endpoint/authServices';
 import {reverseGeo} from '../../services/API/geolocation';
 
 const Register = (props) => {

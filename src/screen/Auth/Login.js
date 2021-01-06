@@ -1,11 +1,31 @@
-import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ScrollView, ToastAndroid} from 'react-native';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
 import {styles} from '../../style/styles';
 import Logo from '../../assets/img/logo.svg';
+import {login} from '../../services/endpoint/authServices';
 
 const Login = (props) => {
+  const [email, setEmail] = useState('');
+  const [pasword, setPassword] = useState('');
+  const [secure, setSecure] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const onClickLogin = () => {
+    setLoading(true);
+    login(email, pasword)
+      .then((res) => {
+        if (res === 200) {
+          console.log(res.data);
+        } else {
+          ToastAndroid.show(res.message, ToastAndroid.LONG);
+        }
+      })
+      .catch((e) => console.error(e))
+      .finally(() => setLoading(false));
+  };
+
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
@@ -26,12 +46,26 @@ const Login = (props) => {
         <Text>Masuk untuk melanjutkan</Text>
       </View>
       <View style={[styles.centerItem]}>
-        <InputView placeholder="Masukkan email" />
+        <InputView
+          placeholder="Masukkan email"
+          onChangeText={(inputEmail) => setEmail(inputEmail)}
+        />
       </View>
       <View style={[styles.centerItem, styles.marginVM]}>
-        <InputView placeholder="Masukan password" secure name="eye-off" />
+        <InputView
+          placeholder="Masukan password"
+          secure={secure}
+          name={secure ? 'eye-off' : 'eye'}
+          onChangeText={(inputPass) => setPassword(inputPass)}
+          onIconPress={() => setSecure(!secure)}
+        />
       </View>
-      <ButtonView title="Masuk" dark />
+      <ButtonView
+        loading={loading}
+        title="Masuk"
+        dark
+        onPress={() => onClickLogin()}
+      />
       <View style={[styles.centerItem, styles.marginVM]}>
         <Text>atau</Text>
       </View>
