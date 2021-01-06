@@ -1,8 +1,6 @@
 import {combineReducers} from 'redux';
 
-const tokenState = '';
-
-const tokenReducer = (state = tokenState, action) => {
+const tokenReducer = (state = '', action) => {
   switch (action.type) {
     case 'CHANGE':
       return action.data;
@@ -13,14 +11,7 @@ const tokenReducer = (state = tokenState, action) => {
   }
 };
 
-const userState = {
-  id: 0,
-  email: '',
-  name: '',
-  role: 0,
-};
-
-const userReducer = (state = userState, action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':
       return action.data;
@@ -36,31 +27,23 @@ const userReducer = (state = userState, action) => {
   }
 };
 
-const shopState = {
-  id: 0,
+const nasabahState = {
+  saldo: {loading: true, data: 0, error: false},
+  penyetoran: {loading: true, data: [], error: null},
+  penarikan: {loading: true, data: [], error: null},
+  penjemputan: {loading: true, data: [], error: null},
 };
 
-const shopReducer = (state = shopState, action) => {
+const nasabahReducer = (state = nasabahState, action) => {
   switch (action.type) {
-    case 'SET_ID':
-      return {id: action.data};
-    default:
-      return state;
-  }
-};
-const cartReducer = (state = {}, action) => {
-  switch (action.type) {
-    case 'SET_CART':
-      return action.data;
-    default:
-      return state;
-  }
-};
-
-const chatBadge = (state = 0, action) => {
-  switch (action.type) {
-    case 'SET_CHAT_BADGE':
-      return action.data;
+    case 'SET_SALDO':
+      return {...state, saldo: action.data};
+    case 'SET_PENJEMPUTAN':
+      return {...state, penjemputan: action.data};
+    case 'SET_PENARIKAN':
+      return {...state, penarikan: action.data};
+    case 'SET_PENYETORAN':
+      return {...state, penyetoran: action.data};
     default:
       return state;
   }
@@ -69,7 +52,5 @@ const chatBadge = (state = 0, action) => {
 export default combineReducers({
   user: userReducer,
   token: tokenReducer,
-  shop: shopReducer,
-  cartReducer: cartReducer,
-  chatBadge: chatBadge,
+  nasabah: nasabahReducer,
 });

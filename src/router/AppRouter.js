@@ -18,6 +18,8 @@ import {
   Splash,
   UpdateProfile,
   DrawerUser,
+  ChatList,
+  ChatItem,
 } from '../screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -118,6 +120,8 @@ const AppRouter = () => {
             </Stack.Screen>
             <Stack.Screen name="Jual" component={Jual} />
             <Stack.Screen name="Settings" component={UpdateProfile} />
+            <Stack.Screen name="ChatList" component={ChatList} />
+            <Stack.Screen name="ChatItem" component={ChatItem} />
           </>
         )}
       </Stack.Navigator>

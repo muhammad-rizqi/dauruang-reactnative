@@ -1,26 +1,36 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
+} from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {penarikan, penyetoran, penjemputan} from '../../data/DummyData';
 import ListPenyetoran from '../../components/ListPenyetoran';
 import CenterMenu from '../../components/CenterMenu';
 import {useSelector} from 'react-redux';
+import {getSaldo} from '../../services/endpoint/tabungan';
+import {
+  penarikanNasabah,
+  penjemputanNasabah,
+  penyetoranNasabah,
+} from '../../services/endpoint/nasabah';
 
 const DashboardNasabah = (props) => {
   const [content, setContent] = useState(1);
-  const [dataPenyetoran, setDataPenyetoran] = useState(null);
-  const [dataPenarikan, setDataPenarikan] = useState(null);
-  const [dataPenjemputan, setDataPenjemputan] = useState(null);
-  const {user} = useSelector((state) => state);
+  const {user, nasabah} = useSelector((state) => state);
 
   useEffect(() => {
-    setDataPenyetoran(penyetoran);
-    setDataPenarikan(penarikan);
-    setDataPenjemputan(penjemputan);
+    getSaldo(user.id);
+    penjemputanNasabah(user.id);
+    penyetoranNasabah(user.id);
+    penarikanNasabah(user.id);
   }, []);
-
+  console.log('ini data', JSON.stringify(nasabah.penyetoran));
   return (
     <View style={styles.flex1}>
       <View
@@ -30,13 +40,14 @@ const DashboardNasabah = (props) => {
           styles.row,
           styles.centerCenter,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
+        <TouchableWithoutFeedback onPress={() => props.navigation.openDrawer()}>
           <Icon name="bars" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
         <View style={[styles.flex1, styles.marginHM]}>
           <Text style={[styles.textH3, styles.textWhite]}>Daur Uang</Text>
         </View>
-        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
+        <TouchableWithoutFeedback
+          onPress={() => props.navigation.navigate('ChatList')}>
           <Icon name="comment" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
       </View>
@@ -51,8 +62,16 @@ const DashboardNasabah = (props) => {
             Hello, {user.nama_lengkap}
           </Text>
           <View style={styles.marginVM}>
-            <Text style={[styles.textWhite]}>Saldo Anda</Text>
-            <Text style={[styles.textH2, styles.textWhite]}>Rp. 50.000,-</Text>
+            {nasabah.saldo.loading ? (
+              <ActivityIndicator size="small" color={colors.white} />
+            ) : (
+              <>
+                <Text style={[styles.textWhite]}>Saldo Anda</Text>
+                <Text style={[styles.textH2, styles.textWhite]}>
+                  Rp. {JSON.stringify(nasabah.saldo.data)},-
+                </Text>
+              </>
+            )}
             <View style={styles.marginVM} />
           </View>
         </View>
@@ -88,15 +107,15 @@ const DashboardNasabah = (props) => {
 
         <View style={styles.container}>
           {content === 1 ? (
-            dataPenyetoran ? (
-              <ListPenyetoran dataPenyetoran={dataPenyetoran} />
+            nasabah.penyetoran ? (
+              <ListPenyetoran dataPenyetoran={nasabah.penyetoran} />
             ) : (
               <Text>Kosong</Text>
             )
           ) : content === 2 ? (
-            dataPenarikan ? (
-              dataPenarikan.data.length > 0 ? (
-                dataPenarikan.data.map((tarik) => (
+            nasabah.penarikan ? (
+              nasabah.penarikan.data.length > 0 ? (
+                nasabah.penarikan.data.map((tarik) => (
                   <View
                     key={tarik.id}
                     style={[
@@ -125,9 +144,9 @@ const DashboardNasabah = (props) => {
               <Text>Kosong</Text>
             )
           ) : content === 3 ? (
-            dataPenjemputan ? (
-              dataPenjemputan.data.length > 0 ? (
-                dataPenjemputan.data.map((jemput) => (
+            nasabah.penjemputan ? (
+              nasabah.penjemputan.data.length > 0 ? (
+                nasabah.penjemputan.data.map((jemput) => (
                   <View
                     key={jemput.id}
                     style={[
@@ -140,9 +159,9 @@ const DashboardNasabah = (props) => {
                       <Text style={styles.textNote}>
                         ID Penarikan: #{jemput.id}
                       </Text>
-                      <Text>{jemput.tanggal}</Text>
+                      <Text style={styles.text}>{jemput.tanggal}</Text>
                       <Text style={styles.textH3}>{jemput.nama_pengirim}</Text>
-                      <Text>{jemput.keterangan}</Text>
+                      <Text style={styles.text}>{jemput.keterangan}</Text>
                       <Text style={styles.textNote}>{jemput.lokasi}</Text>
                     </View>
                     <View>

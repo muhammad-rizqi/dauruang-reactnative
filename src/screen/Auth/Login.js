@@ -6,7 +6,7 @@ import {styles} from '../../style/styles';
 import Logo from '../../assets/img/logo.svg';
 import {login} from '../../services/endpoint/authServices';
 import {useDispatch} from 'react-redux';
-import {changeToken} from '../../redux/action';
+import {changeToken, setUser} from '../../redux/action';
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
@@ -20,6 +20,7 @@ const Login = (props) => {
     login(email, pasword)
       .then((res) => {
         if (res.code === 200) {
+          dispatch(setUser(res.data.user));
           dispatch(changeToken(res.data.token));
         } else {
           ToastAndroid.show(res.message, ToastAndroid.LONG);

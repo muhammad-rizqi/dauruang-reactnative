@@ -13,6 +13,8 @@ import Jual from './Penjualan/Jual';
 import Settings from './User/Settings';
 import UpdateProfile from './User/UpdateProfile';
 import DrawerUser from './User/DrawerUser';
+import ChatItem from './Chat/ChatItem';
+import ChatList from './Chat/ChatList';
 
 export {
   Intro,
@@ -30,4 +32,6 @@ export {
   DashboardPenjualan,
   Jual,
   DrawerUser,
+  ChatItem,
+  ChatList,
 };
