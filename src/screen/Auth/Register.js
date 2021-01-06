@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -19,6 +20,8 @@ import {colors, styles} from '../../style/styles';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Logo from '../../assets/img/logo.svg';
+import {register} from '../../services/endpoint/registerServices';
+import {reverseGeo} from '../../services/API/geolocation';
 
 const Register = (props) => {
   const [, setEmail] = useState('');
@@ -34,10 +37,9 @@ const Register = (props) => {
       if (persmission) {
         Geolocation.getCurrentPosition(
           (result) => {
-            console.log('getposisi');
             setPosition(result.coords);
             setMarkCoord(result.coords);
-            setMapsData(result.coords);
+            reverseLocation(result.coords);
           },
           (error) => {
             // See error code charts below.
@@ -50,6 +52,26 @@ const Register = (props) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const reverseLocation = (coord, place) => {
+    console.log(place);
+    reverseGeo(coord)
+      .then((res) => res.json())
+      .then((response) => {
+        // console.log(response);
+        setMapsData({
+          latitude: response.lat,
+          longitude: response.lon,
+          place_id: place ? place.placeId : response.place_id,
+          name: place ? place.name : response.display_name,
+        });
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const onClickRegister = () => {
+    register('halo', 'halo');
   };
 
   useEffect(() => {
@@ -100,22 +122,23 @@ const Register = (props) => {
                   showsUserLocation
                   showsMyLocationButton
                   onPoiClick={(e) => {
-                    console.log(e.nativeEvent);
                     setMarkCoord(e.nativeEvent.coordinate);
                     setPosition(regionFrom(e.nativeEvent.coordinate));
-                    setMapsData(e.nativeEvent);
+                    reverseLocation(e.nativeEvent.coordinate, e.nativeEvent);
                   }}
                   onPress={(e) => {
                     setMarkCoord(e.nativeEvent.coordinate);
-                    setMapsData(e.nativeEvent.coordinate);
+                    reverseLocation(e.nativeEvent.coordinate);
                   }}
                   style={styles.map}>
-                  {console.log(regionFrom(position))}
                   {mapReady ? (
                     <Marker
                       draggable
                       coordinate={markCoord}
-                      onDragEnd={(e) => setMarkCoord(e.nativeEvent.coordinate)}
+                      onDragEnd={(e) => {
+                        setMarkCoord(e.nativeEvent.coordinate);
+                        reverseLocation(e.nativeEvent.coordinate);
+                      }}
                     />
                   ) : null}
                 </MapView>
@@ -131,9 +154,9 @@ const Register = (props) => {
           onPress={() => {
             mapsData.name
               ? goToMaps(
-                  mapsData.coordinate.longitude,
-                  mapsData.coordinate.latitude,
-                  mapsData.placeId,
+                  mapsData.longitude,
+                  mapsData.latitude,
+                  mapsData.place_id,
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
@@ -158,7 +181,11 @@ const Register = (props) => {
         </TouchableOpacity>
 
         <View style={[styles.marginVS]}>
-          <ButtonView title="Mendaftar" dark onPress={() => {}} />
+          <ButtonView
+            title="Mendaftar"
+            dark
+            onPress={() => onClickRegister()}
+          />
         </View>
         <Text style={styles.textCenter}>
           Dengan mendaftar, Anda menyetujui Persyaratan, Kebijakan Data, dan

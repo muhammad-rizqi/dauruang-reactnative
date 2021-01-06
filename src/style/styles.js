@@ -112,6 +112,9 @@ export const styles = StyleSheet.create({
   paddingM: {
     padding: 16,
   },
+  paddingS: {
+    padding: 8,
+  },
   roundBottom: {
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
@@ -128,6 +131,11 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
+  },
+  avatarL: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
   chatTo: {
     maxWidth: '80%',

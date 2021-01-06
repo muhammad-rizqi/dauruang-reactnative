@@ -1,11 +1,22 @@
 import {NavigationContainer} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {ForgotPassword, Intro, Login, Register} from '../screen';
+import {ForgotPassword, Intro, Login, Register, Splash} from '../screen';
 
 const Stack = createStackNavigator();
 
 const AppRouter = () => {
+  const [splash, setSplash] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSplash(false);
+    }, 1000);
+  }, []);
+
+  if (splash) {
+    return <Splash />;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator
