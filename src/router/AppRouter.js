@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -19,36 +20,54 @@ import {
   DrawerUser,
 } from '../screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch, useSelector} from 'react-redux';
+import {changeToken, setUser} from '../redux/action';
+import {profile} from '../services/endpoint/authServices';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const AppRouter = () => {
   const [splash, setSplash] = useState(true);
-  const [token, setToken] = useState('');
+  const {token} = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const getTokenStorage = () => {
+    AsyncStorage.getItem('token')
+      .then((data) => {
+        dispatch(changeToken(data));
+      })
+      .catch(() => setSplash(false))
+      .finally(() => getProfile());
+  };
+
+  const getProfile = () => {
+    profile()
+      .then((res) => {
+        dispatch(setUser(res.data.user));
+      })
+      .catch((e) => console.log(e))
+      .finally(() => setSplash(false));
+  };
 
   useEffect(() => {
     setTimeout(() => {
-      AsyncStorage.getItem('token', (e, data) => {
-        if (e) {
-          console.error(e);
-        } else {
-          setToken(data);
-        }
-      });
-      setSplash(false);
+      if (token === null || token === '') {
+        getTokenStorage();
+      }
     }, 1000);
   }, []);
 
   if (splash) {
     return <Splash />;
   }
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         headerMode={false}
         screenOptions={{animationEnabled: false}}>
-        {token ? (
+        {token === '' || token === null ? (
           <>
             <Stack.Screen name="Intro" component={Intro} />
             <Stack.Screen name="Login" component={Login} />

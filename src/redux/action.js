@@ -1,4 +1,8 @@
+import {removeToken, storeToken} from '../services/storage/Token';
+
 const changeToken = (data) => {
+  storeToken(data);
+  console.log('storing to redux');
   return {
     type: 'CHANGE',
     data: data,
@@ -6,20 +10,16 @@ const changeToken = (data) => {
 };
 
 const clearToken = () => {
+  removeToken();
   return {
     type: 'CLEAR',
   };
 };
 
-const setUser = (id, email, name, role) => {
+const setUser = (user) => {
   return {
     type: 'SET_USER',
-    data: {
-      id: id,
-      email: email,
-      name: name,
-      role: role,
-    },
+    data: user,
   };
 };
 

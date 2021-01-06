@@ -6,12 +6,14 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {penarikan, penyetoran, penjemputan} from '../../data/DummyData';
 import ListPenyetoran from '../../components/ListPenyetoran';
 import CenterMenu from '../../components/CenterMenu';
+import {useSelector} from 'react-redux';
 
 const DashboardNasabah = (props) => {
   const [content, setContent] = useState(1);
   const [dataPenyetoran, setDataPenyetoran] = useState(null);
   const [dataPenarikan, setDataPenarikan] = useState(null);
   const [dataPenjemputan, setDataPenjemputan] = useState(null);
+  const {user} = useSelector((state) => state);
 
   useEffect(() => {
     setDataPenyetoran(penyetoran);
@@ -45,7 +47,9 @@ const DashboardNasabah = (props) => {
             styles.container,
             styles.roundBottom,
           ]}>
-          <Text style={[styles.textH3, styles.textWhite]}>Hello, Kevin</Text>
+          <Text style={[styles.textH3, styles.textWhite]}>
+            Hello, {user.nama_lengkap}
+          </Text>
           <View style={styles.marginVM}>
             <Text style={[styles.textWhite]}>Saldo Anda</Text>
             <Text style={[styles.textH2, styles.textWhite]}>Rp. 50.000,-</Text>

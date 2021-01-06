@@ -20,3 +20,7 @@ export const login = (email, password) => {
 
   return api('POST', '/login', body);
 };
+
+export const profile = () => {
+  return api('GET', '/profile');
+};
