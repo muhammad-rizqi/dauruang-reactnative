@@ -1,22 +1,16 @@
 import React from 'react';
-import {Button, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
 import AppRouter from './src/router/AppRouter';
-import Drawer from './src/screen/User/Drawer';
 import {colors} from './src/style/styles';
 
 const App = () => {
-  const check = () => {
-    fetch('http://192.168.1.46:3000/', {method: 'GET'})
-      .then((res) => res.json())
-      .then((response) => console.log(response))
-      .catch((err) => console.error(err));
-  };
-
   return (
-    <>
+    <Provider store={store}>
       <StatusBar backgroundColor={colors.primary} />
       <AppRouter />
-    </>
+    </Provider>
   );
 };
 

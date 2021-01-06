@@ -3,10 +3,16 @@ import Intro from './Auth/Intro';
 import Register from './Auth/Register';
 import Splash from './Auth/Splash';
 import ForgotPassword from './Auth/ForgotPassword';
+import DashboardNasabah from './Nasabah/DashboardNasabah';
+import Jemput from './Nasabah/Jemput';
+import DashboardSetoran from './PengurusSetoran/DashboardSetoran';
+import Setoran from './PengurusSetoran/Setoran';
+import PermintaanJemput from './PengurusSetoran/PermintaanJemput';
+import DashboardPenjualan from './Penjualan/DashboardPenjualan';
+import Jual from './Penjualan/Jual';
 import Settings from './User/Settings';
 import UpdateProfile from './User/UpdateProfile';
-import Jemput from './Nasabah/Jemput';
-import DashboardNasabah from './Nasabah/DashboardNasabah';
+import DrawerUser from './User/DrawerUser';
 
 export {
   Intro,
@@ -18,4 +24,10 @@ export {
   UpdateProfile,
   Jemput,
   DashboardNasabah,
+  DashboardSetoran,
+  Setoran,
+  PermintaanJemput,
+  DashboardPenjualan,
+  Jual,
+  DrawerUser,
 };
