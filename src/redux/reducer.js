@@ -49,8 +49,25 @@ const nasabahReducer = (state = nasabahState, action) => {
   }
 };
 
+const penyetorState = {
+  penyetoran: {loading: true, data: [], error: null},
+  penjemputan: {loading: true, data: [], error: null},
+};
+
+const penyetorReducer = (state = penyetorState, action) => {
+  switch (action.type) {
+    case 'SET_DATA_PENJEMPUTAN':
+      return {...state, penjemputan: action.data};
+    case 'SET_DATA_PENYETORAN':
+      return {...state, penyetoran: action.data};
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   user: userReducer,
   token: tokenReducer,
   nasabah: nasabahReducer,
+  penyetor: penyetorReducer,
 });

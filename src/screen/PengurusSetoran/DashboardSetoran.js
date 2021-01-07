@@ -1,28 +1,43 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+  RefreshControl,
+} from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  penarikan,
-  penyetoran,
-  penjemputan,
-  dataSetoran,
-} from '../../data/DummyData';
-import ListPenyetoran from '../../components/ListPenyetoran';
 import CenterMenu from '../../components/CenterMenu';
+import {useSelector} from 'react-redux';
+import {
+  getDataJemputan,
+  getDataSetoran,
+} from '../../services/endpoint/penyetor';
 
-const DashboardSetoran = (props) => {
+const DashboardSetoran = ({navigation}) => {
   const [content, setContent] = useState(1);
-  const [dataPenyetoran, setDataPenyetoran] = useState(null);
-  const [dataPenarikan, setDataPenarikan] = useState(null);
-  const [dataPenjemputan, setDataPenjemputan] = useState(null);
+  const [loading, setLoading] = useState(false);
 
+  const {user, penyetor} = useSelector((state) => state);
+
+  const getData = () => {
+    try {
+      getDataJemputan();
+      getDataSetoran();
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  console.log('ini dari penyetoran', penyetor.penjemputan);
   useEffect(() => {
-    setDataPenyetoran(dataSetoran);
-    setDataPenarikan(penarikan);
-    setDataPenjemputan(penjemputan);
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.flex1}>
@@ -33,18 +48,27 @@ const DashboardSetoran = (props) => {
           styles.row,
           styles.centerCenter,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.openDrawer()}>
+        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
         <View style={[styles.flex1, styles.marginHM]}>
           <Text style={[styles.textH3, styles.textWhite]}>Daur Uang</Text>
         </View>
         <TouchableWithoutFeedback
-          onPress={() => props.navigation.navigate('ChatList')}>
+          onPress={() => navigation.navigate('ChatList')}>
           <Icon name="comment" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
       </View>
-      <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => {
+              getData();
+            }}
+          />
+        }
+        style={[styles.backgroundLight, styles.flex1]}>
         <View
           style={[
             styles.backgroundPrimary,
@@ -52,7 +76,7 @@ const DashboardSetoran = (props) => {
             styles.roundBottom,
           ]}>
           <Text style={[styles.textH3, styles.textWhite]}>
-            Hello, Pengurus Sampah
+            Hello, {user.nama_lengkap}
           </Text>
           <View style={styles.marginVM}>
             <View style={styles.marginVM} />
@@ -84,8 +108,9 @@ const DashboardSetoran = (props) => {
 
         <View style={styles.container}>
           {content === 1 ? (
-            dataSetoran.data !== null && dataSetoran.data.length > 0 ? (
-              dataSetoran.data.map((setoran) => (
+            penyetor.penyetoran.data !== null &&
+            penyetor.penyetoran.data.length > 0 ? (
+              penyetor.penyetoran.data.map((setoran) => (
                 <View
                   key={setoran.id}
                   style={[
@@ -121,9 +146,9 @@ const DashboardSetoran = (props) => {
               <Text>Data Kosong</Text>
             )
           ) : content === 2 ? (
-            dataPenjemputan ? (
-              dataPenjemputan.data.length > 0 ? (
-                dataPenjemputan.data.map((jemput) => (
+            penyetor.penjemputan ? (
+              penyetor.penjemputan.data.length > 0 ? (
+                penyetor.penjemputan.data.map((jemput) => (
                   <View
                     key={jemput.id}
                     style={[
@@ -142,7 +167,9 @@ const DashboardSetoran = (props) => {
                           {jemput.nama_pengirim}
                         </Text>
                         <Text style={styles.text}>{jemput.keterangan}</Text>
-                        <Text style={styles.textNote}>{jemput.lokasi}</Text>
+                        <Text style={styles.textNote}>
+                          {JSON.parse(jemput.lokasi).name}
+                        </Text>
                       </View>
                     </View>
                     <View>

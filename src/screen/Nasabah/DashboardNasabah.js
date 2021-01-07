@@ -34,6 +34,7 @@ const DashboardNasabah = ({navigation}) => {
     penyetoranNasabah(user.id);
     penarikanNasabah(user.id);
   };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getData();
