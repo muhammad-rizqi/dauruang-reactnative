@@ -10,6 +10,7 @@ export const colors = {
   white: '#f5f5f5',
   grey: '#5e5e5e',
   black: '#1f1f1f',
+  opacity: '#1f1f1f99',
 };
 
 export const styles = StyleSheet.create({
@@ -26,6 +27,9 @@ export const styles = StyleSheet.create({
   },
   backgroundPrimary: {
     backgroundColor: colors.primary,
+  },
+  backgroundOpacity: {
+    backgroundColor: colors.opacity,
   },
   backgroundSecondary: {
     backgroundColor: colors.secondary,

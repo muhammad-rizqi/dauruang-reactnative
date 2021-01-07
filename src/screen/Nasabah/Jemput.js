@@ -88,10 +88,10 @@ const Jemput = ({navigation, route}) => {
       .then((res) => {
         if (res.code === 200) {
           setLoading(false);
-          ToastAndroid.show('Berhasil diajukan', ToastAndroid.LONG);
+          ToastAndroid.show('Berhasil dibatalkan', ToastAndroid.LONG);
           navigation.goBack();
         } else {
-          ToastAndroid.show('Gagal diajukan', ToastAndroid.LONG);
+          ToastAndroid.show('Gagal dibatalkan', ToastAndroid.LONG);
         }
       })
       .catch((e) => {
@@ -220,12 +220,28 @@ const Jemput = ({navigation, route}) => {
         </TouchableOpacity>
 
         <View style={[styles.marginVS]}>
-          <ButtonView
-            loading={loading}
-            title={penjemputan ? 'Batalkan' : 'Minta Jemput'}
-            dark={!penjemputan}
-            onPress={() => (penjemputan ? onClickBatalkan() : onClickJemput())}
-          />
+          {penjemputan ? (
+            penjemputan.status === 1 ? (
+              <Text style={styles.textH3}>Sedang Dijemput</Text>
+            ) : penjemputan.status === 2 ? (
+              <Text style={styles.textH3}>Selesai Dijemput</Text>
+            ) : penjemputan.status === 3 ? (
+              <Text>Dibatalkan</Text>
+            ) : (
+              <ButtonView
+                loading={loading}
+                title={'Batalkan'}
+                onPress={() => onClickBatalkan()}
+              />
+            )
+          ) : (
+            <ButtonView
+              loading={loading}
+              title={'Minta Jemput'}
+              dark
+              onPress={() => onClickJemput()}
+            />
+          )}
         </View>
         <View style={styles.marginVM} />
       </ScrollView>

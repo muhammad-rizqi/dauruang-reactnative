@@ -40,3 +40,11 @@ export const getDataJemputan = () => {
       store.dispatch(setDataPenjemputan(data));
     });
 };
+
+export const confirmJemput = (penjemputanId, pengurusId) => {
+  const data = {
+    id_pengurus: pengurusId,
+    status: 1,
+  };
+  return api('PATCH', '/penjemputan/' + penjemputanId, data);
+};

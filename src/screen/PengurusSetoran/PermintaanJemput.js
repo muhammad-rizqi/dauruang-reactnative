@@ -5,20 +5,78 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  ToastAndroid,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonView from '../../components/ButtonView';
 import {regionFrom, goToMaps} from '../../helper/MapsHelper';
 import {colors, styles} from '../../style/styles';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {batalkanJemput} from '../../services/endpoint/nasabah';
+import {useSelector} from 'react-redux';
+import {confirmJemput} from '../../services/endpoint/penyetor';
 
 const PermintaanJemput = ({navigation, route}) => {
   const [mapReady, setMapReady] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const {user} = useSelector((state) => state);
+
   const {penjemputan} = route.params;
   const mapsData = JSON.parse(penjemputan.lokasi);
 
+  const onClickBatalkan = () => {
+    setLoading(true);
+    batalkanJemput(penjemputan.id, user.id)
+      .then((res) => {
+        if (res.code === 200) {
+          setLoading(false);
+          ToastAndroid.show('Berhasil dibatalkan', ToastAndroid.LONG);
+          navigation.goBack();
+        } else {
+          ToastAndroid.show('Gagal dibatalkan', ToastAndroid.LONG);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        ToastAndroid.show('Kesalahan koneksi', ToastAndroid.LONG);
+        setLoading(false);
+      });
+  };
+
+  const onClickConfirm = () => {
+    setLoading(true);
+    confirmJemput(penjemputan.id, user.id)
+      .then((res) => {
+        if (res.code === 200) {
+          setLoading(false);
+          ToastAndroid.show('Berhasil dikonfirmasi', ToastAndroid.LONG);
+          navigation.goBack();
+        } else {
+          ToastAndroid.show('Berhasil dikonfirmasi', ToastAndroid.LONG);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        ToastAndroid.show('Kesalahan koneksi', ToastAndroid.LONG);
+        setLoading(false);
+      });
+  };
+
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
+      <Modal transparent={true} visible={loading} style={[styles.flex1]}>
+        <View
+          style={[styles.flex1, styles.centerCenter, styles.backgroundOpacity]}>
+          <View style={[styles.card, styles.backgroundWhite]}>
+            <ActivityIndicator color={colors.primary} size="large" />
+            <Text style={[styles.marginHL, styles.marginVM]}>
+              Merubah Data ...
+            </Text>
+          </View>
+        </View>
+      </Modal>
       <View style={[styles.row, styles.centerCenter, styles.container]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={26} color={colors.primary} />
@@ -96,12 +154,29 @@ const PermintaanJemput = ({navigation, route}) => {
           />
         </TouchableOpacity>
 
-        <View style={[styles.marginVS]}>
-          <ButtonView title="Konfirmasi Jemput" dark onPress={() => {}} />
-        </View>
-        <View style={[styles.marginVS]}>
-          <ButtonView title="Batalkan Jemput" onPress={() => {}} />
-        </View>
+        {penjemputan.status === 3 ? (
+          <Text style={[styles.textH3, styles.textCenter]}>Dibatalkan</Text>
+        ) : (
+          <>
+            {penjemputan.status === 2 ? (
+              <Text>Selesai Dijemput</Text>
+            ) : (
+              <View style={[styles.marginVS]}>
+                <ButtonView
+                  title="Konfirmasi Jemput"
+                  dark
+                  onPress={() => onClickConfirm()}
+                />
+              </View>
+            )}
+            <View style={[styles.marginVS]}>
+              <ButtonView
+                title="Batalkan Jemput"
+                onPress={() => onClickBatalkan()}
+              />
+            </View>
+          </>
+        )}
         <View style={styles.marginVM} />
       </ScrollView>
     </View>
