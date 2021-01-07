@@ -5,7 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {clearToken} from '../../redux/action';
 
-const Drawer = () => {
+const Drawer = ({navigation}) => {
   const dispatch = useDispatch();
   const {user} = useSelector((state) => state);
 
@@ -21,7 +21,8 @@ const Drawer = () => {
         </View>
       </View>
       <View>
-        <TouchableNativeFeedback>
+        <TouchableNativeFeedback
+          onPress={() => navigation.navigate('QRScreen')}>
           <View style={[styles.row, styles.paddingS, styles.centerItem]}>
             <MaterialIcon name="account" size={36} color={colors.black} />
             <Text style={[styles.textH3, styles.marginHS]}>Profile</Text>

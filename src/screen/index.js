@@ -15,6 +15,7 @@ import UpdateProfile from './User/UpdateProfile';
 import DrawerUser from './User/DrawerUser';
 import ChatItem from './Chat/ChatItem';
 import ChatList from './Chat/ChatList';
+import QRScreen from './User/QRScreen';
 
 export {
   Intro,
@@ -34,4 +35,5 @@ export {
   DrawerUser,
   ChatItem,
   ChatList,
+  QRScreen,
 };

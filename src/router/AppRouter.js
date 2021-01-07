@@ -20,6 +20,7 @@ import {
   DrawerUser,
   ChatList,
   ChatItem,
+  QRScreen,
 } from '../screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -87,62 +88,62 @@ const AppRouter = () => {
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
           </>
         ) : user.role ? (
-          user.role === 1 ? (
-            <>
-              <Stack.Screen name="Nasabah">
-                {() => (
-                  <Drawer.Navigator
-                    drawerContent={(props) => <DrawerUser {...props} />}>
-                    <Drawer.Screen
-                      name="DashboardNasabah"
-                      component={DashboardNasabah}
-                    />
-                  </Drawer.Navigator>
-                )}
-              </Stack.Screen>
-              <Stack.Screen name="Jemput" component={Jemput} />
-            </>
-          ) : user.role === 2 ? (
-            <>
-              <Stack.Screen name="Penyetoran">
-                {() => (
-                  <Drawer.Navigator
-                    drawerContent={(props) => <DrawerUser {...props} />}>
-                    <Drawer.Screen
-                      name="DashboardSetoran"
-                      component={DashboardSetoran}
-                    />
-                  </Drawer.Navigator>
-                )}
-              </Stack.Screen>
-              <Stack.Screen
-                name="PermintaanJemput"
-                component={PermintaanJemput}
-              />
-              <Stack.Screen name="Setoran" component={Setoran} />
-            </>
-          ) : user.role === 3 ? (
-            <>
-              <Stack.Screen name="Penjualan">
-                {() => (
-                  <Drawer.Navigator
-                    drawerContent={(props) => <DrawerUser {...props} />}>
-                    <Drawer.Screen
-                      name="DashboardPenjualan"
-                      component={DashboardPenjualan}
-                    />
-                  </Drawer.Navigator>
-                )}
-              </Stack.Screen>
-              <Stack.Screen name="Jual" component={Jual} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Settings" component={UpdateProfile} />
-              <Stack.Screen name="ChatList" component={ChatList} />
-              <Stack.Screen name="ChatItem" component={ChatItem} />
-            </>
-          )
+          <>
+            {user.role === 1 ? (
+              <>
+                <Stack.Screen name="Nasabah">
+                  {() => (
+                    <Drawer.Navigator
+                      drawerContent={(props) => <DrawerUser {...props} />}>
+                      <Drawer.Screen
+                        name="DashboardNasabah"
+                        component={DashboardNasabah}
+                      />
+                    </Drawer.Navigator>
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="Jemput" component={Jemput} />
+              </>
+            ) : user.role === 2 ? (
+              <>
+                <Stack.Screen name="Penyetoran">
+                  {() => (
+                    <Drawer.Navigator
+                      drawerContent={(props) => <DrawerUser {...props} />}>
+                      <Drawer.Screen
+                        name="DashboardSetoran"
+                        component={DashboardSetoran}
+                      />
+                    </Drawer.Navigator>
+                  )}
+                </Stack.Screen>
+                <Stack.Screen
+                  name="PermintaanJemput"
+                  component={PermintaanJemput}
+                />
+                <Stack.Screen name="Setoran" component={Setoran} />
+              </>
+            ) : user.role === 3 ? (
+              <>
+                <Stack.Screen name="Penjualan">
+                  {() => (
+                    <Drawer.Navigator
+                      drawerContent={(props) => <DrawerUser {...props} />}>
+                      <Drawer.Screen
+                        name="DashboardPenjualan"
+                        component={DashboardPenjualan}
+                      />
+                    </Drawer.Navigator>
+                  )}
+                </Stack.Screen>
+                <Stack.Screen name="Jual" component={Jual} />
+              </>
+            ) : null}
+            <Stack.Screen name="Settings" component={UpdateProfile} />
+            <Stack.Screen name="ChatList" component={ChatList} />
+            <Stack.Screen name="ChatItem" component={ChatItem} />
+            <Stack.Screen name="QRScreen" component={QRScreen} />
+          </>
         ) : null}
       </Stack.Navigator>
     </NavigationContainer>
