@@ -59,3 +59,24 @@ export const penarikanNasabah = (userId) => {
       store.dispatch(setPenarikan(data));
     });
 };
+
+export const ajukanJemput = (
+  userId,
+  nama_pengirim,
+  telepon,
+  lokasi,
+  keterangan,
+) => {
+  const data = {
+    id_nasabah: userId,
+    nama_pengirim,
+    telepon,
+    lokasi: JSON.stringify({
+      ...lokasi,
+      latitude: parseFloat(lokasi.latitude),
+      longitude: parseFloat(lokasi.longitude),
+    }),
+    keterangan,
+  };
+  return api('POST', '/penjemputan', data);
+};

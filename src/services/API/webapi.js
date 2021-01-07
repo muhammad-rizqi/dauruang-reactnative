@@ -11,7 +11,7 @@ export const api = (method, path, body = null, file = null) => {
   const data = fetch(host + path, {
     method: method,
     headers: headers,
-    body: method === 'GET' ? null : JSON.stringify(body),
+    body: method === 'GET' ? null : file ? body : JSON.stringify(body),
   })
     .then((response) => response.json())
     .then((resJson) => {

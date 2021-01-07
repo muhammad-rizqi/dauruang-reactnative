@@ -1,7 +1,7 @@
 import {removeToken, storeToken} from '../services/storage/Token';
 
 const changeToken = (data) => {
-  storeToken(data);
+  data ? storeToken(data) : null;
   console.log('storing to redux');
   return {
     type: 'CHANGE',

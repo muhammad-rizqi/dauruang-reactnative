@@ -72,7 +72,7 @@ const Register = (props) => {
         setMapsData({
           latitude: response.lat,
           longitude: response.lon,
-          place_id: place ? place.placeId : response.place_id,
+          place_id: place ? place.placeId : null,
           name: place ? place.name : response.display_name,
         });
       })
@@ -82,7 +82,7 @@ const Register = (props) => {
   const onClickRegister = () => {
     if (nama && email && password && telepon && mapsData) {
       setLoading(true);
-      register(nama, email, password, telepon, JSON.stringify(mapsData))
+      register(nama, email, password, telepon, mapsData)
         .then((res) =>
           res.code === 201
             ? console.log(res)
@@ -179,7 +179,7 @@ const Register = (props) => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            mapsData.name
+            mapsData.place_id
               ? goToMaps(
                   mapsData.longitude,
                   mapsData.latitude,
@@ -195,9 +195,7 @@ const Register = (props) => {
               styles.marginVM,
               styles.flex1,
             ]}>
-            {mapsData.name
-              ? mapsData.name
-              : `Latitude: ${mapsData.latitude}\nLongitude: ${mapsData.longitude} `}
+            {mapsData.name}
           </Text>
           <Icon
             name="map-marked-alt"

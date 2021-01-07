@@ -31,25 +31,32 @@ const Drawer = createDrawerNavigator();
 
 const AppRouter = () => {
   const [splash, setSplash] = useState(true);
-  const {token} = useSelector((state) => state);
+  const {token, user} = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const getTokenStorage = () => {
     AsyncStorage.getItem('token')
       .then((data) => {
-        dispatch(changeToken(data));
+        if (data !== null) {
+          dispatch(changeToken(data));
+          getProfile();
+        }
       })
-      .catch(() => setSplash(false))
-      .finally(() => getProfile());
+      .catch(() => setSplash(false));
   };
 
   const getProfile = () => {
     profile()
       .then((res) => {
-        dispatch(setUser(res.data.user));
+        if (res.code === 200) {
+          dispatch(setUser(res.data.user));
+          setSplash(false);
+        }
       })
-      .catch((e) => console.log(e))
-      .finally(() => setSplash(false));
+      .catch((e) => {
+        console.log(e);
+        setSplash(false);
+      });
   };
 
   useEffect(() => {
@@ -76,54 +83,64 @@ const AppRouter = () => {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
           </>
-        ) : (
-          <>
-            <Stack.Screen name="Nasabah">
-              {() => (
-                <Drawer.Navigator
-                  drawerContent={(props) => <DrawerUser {...props} />}>
-                  <Drawer.Screen
-                    name="DashboardNasabah"
-                    component={DashboardNasabah}
-                  />
-                </Drawer.Navigator>
-              )}
-            </Stack.Screen>
-
-            <Stack.Screen name="Jemput" component={Jemput} />
-            <Stack.Screen name="Penyetoran">
-              {() => (
-                <Drawer.Navigator
-                  drawerContent={(props) => <DrawerUser {...props} />}>
-                  <Drawer.Screen
-                    name="DashboardSetoran"
-                    component={DashboardSetoran}
-                  />
-                </Drawer.Navigator>
-              )}
-            </Stack.Screen>
-            <Stack.Screen
-              name="PermintaanJemput"
-              component={PermintaanJemput}
-            />
-            <Stack.Screen name="Setoran" component={Setoran} />
-            <Stack.Screen name="Penjualan">
-              {() => (
-                <Drawer.Navigator
-                  drawerContent={(props) => <DrawerUser {...props} />}>
-                  <Drawer.Screen
-                    name="DashboardPenjualan"
-                    component={DashboardPenjualan}
-                  />
-                </Drawer.Navigator>
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Jual" component={Jual} />
-            <Stack.Screen name="Settings" component={UpdateProfile} />
-            <Stack.Screen name="ChatList" component={ChatList} />
-            <Stack.Screen name="ChatItem" component={ChatItem} />
-          </>
-        )}
+        ) : user.role ? (
+          user.role === 1 ? (
+            <>
+              <Stack.Screen name="Nasabah">
+                {() => (
+                  <Drawer.Navigator
+                    drawerContent={(props) => <DrawerUser {...props} />}>
+                    <Drawer.Screen
+                      name="DashboardNasabah"
+                      component={DashboardNasabah}
+                    />
+                  </Drawer.Navigator>
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Jemput" component={Jemput} />
+            </>
+          ) : user.role === 2 ? (
+            <>
+              <Stack.Screen name="Penyetoran">
+                {() => (
+                  <Drawer.Navigator
+                    drawerContent={(props) => <DrawerUser {...props} />}>
+                    <Drawer.Screen
+                      name="DashboardSetoran"
+                      component={DashboardSetoran}
+                    />
+                  </Drawer.Navigator>
+                )}
+              </Stack.Screen>
+              <Stack.Screen
+                name="PermintaanJemput"
+                component={PermintaanJemput}
+              />
+              <Stack.Screen name="Setoran" component={Setoran} />
+            </>
+          ) : user.role === 3 ? (
+            <>
+              <Stack.Screen name="Penjualan">
+                {() => (
+                  <Drawer.Navigator
+                    drawerContent={(props) => <DrawerUser {...props} />}>
+                    <Drawer.Screen
+                      name="DashboardPenjualan"
+                      component={DashboardPenjualan}
+                    />
+                  </Drawer.Navigator>
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Jual" component={Jual} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Settings" component={UpdateProfile} />
+              <Stack.Screen name="ChatList" component={ChatList} />
+              <Stack.Screen name="ChatItem" component={ChatItem} />
+            </>
+          )
+        ) : null}
       </Stack.Navigator>
     </NavigationContainer>
   );

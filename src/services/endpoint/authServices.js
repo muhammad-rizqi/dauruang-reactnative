@@ -6,7 +6,11 @@ export const register = (nama_lengkap, email, password, telepon, lokasi) => {
     email,
     password,
     telepon,
-    lokasi,
+    lokasi: JSON.stringify({
+      ...lokasi,
+      latitude: parseFloat(lokasi.latitude),
+      longitude: parseFloat(lokasi.longitude),
+    }),
     password_confirmation: password,
   };
 

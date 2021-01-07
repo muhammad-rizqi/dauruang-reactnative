@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,60 +12,72 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
-import {
-  regionFrom,
-  requestLocationPermission,
-  goToMaps,
-} from '../../helper/MapsHelper';
+import {regionFrom, goToMaps} from '../../helper/MapsHelper';
 import {colors, styles} from '../../style/styles';
-import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import {reverseGeo} from '../../services/API/geolocation';
+import {useSelector} from 'react-redux';
+import {
+  ajukanJemput,
+  penjemputanNasabah,
+} from '../../services/endpoint/nasabah';
 
-const Jemput = () => {
-  const [position, setPosition] = useState({});
+const Jemput = ({navigation}) => {
+  const {user} = useSelector((state) => state);
+
   const [mapReady, setMapReady] = useState(false);
-  const [markCoord, setMarkCoord] = useState({});
-  const [mapsData, setMapsData] = useState({});
+  const [markCoord, setMarkCoord] = useState(JSON.parse(user.lokasi));
+  const [mapsData, setMapsData] = useState(JSON.parse(user.lokasi));
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [location, setLocation] = useState('');
+  const [name, setName] = useState(user.nama_lengkap);
+  const [phone, setPhone] = useState(user.telepon);
+  const [keterangan, setKeterangan] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const requestPermission = async () => {
-    try {
-      const persmission = await requestLocationPermission();
-      console.log(persmission);
-      if (persmission) {
-        Geolocation.getCurrentPosition(
-          (result) => {
-            console.log('getposisi');
-            setPosition(result.coords);
-            setMarkCoord(result.coords);
-            setMapsData(result.coords);
-          },
-          (error) => {
-            // See error code charts below.
-            console.log(error.code, error.message);
-            ToastAndroid.show(error.message, ToastAndroid.LONG);
-          },
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const reverseLocation = (coord, place) => {
+    reverseGeo(coord)
+      .then((res) => res.json())
+      .then((response) => {
+        setMapsData({
+          latitude: response.lat,
+          longitude: response.lon,
+          place_id: place ? place.placeId : null,
+          name: place ? place.name : response.display_name,
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+        ToastAndroid.show(e.message, ToastAndroid.LONG);
+      });
   };
 
-  useEffect(() => {
-    requestPermission();
-  }, []);
-
+  const onClickJemput = () => {
+    if ((name, phone, keterangan, mapsData)) {
+      setLoading(true);
+      ajukanJemput(user.id, name, phone, mapsData, keterangan)
+        .then((res) => {
+          if (res.code === 200) {
+            setLoading(false);
+            ToastAndroid.show('Berhasil diajukan', ToastAndroid.LONG);
+            navigation.goBack();
+          } else {
+            ToastAndroid.show('Gagal diajukan', ToastAndroid.LONG);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          ToastAndroid.show('Kesalahan koneksi', ToastAndroid.LONG);
+          setLoading(false);
+        });
+    } else {
+      ToastAndroid.show('Harap isi dengan benar', ToastAndroid.LONG);
+    }
+  };
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
       <ScrollView style={[styles.container]}>
         <View style={[styles.row, styles.centerCenter]}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={26} color={colors.primary} />
           </TouchableWithoutFeedback>
           <Text
@@ -99,35 +112,36 @@ const Jemput = () => {
             style={[styles.marginHM, {maxHeight: 100}]}
             placeholder="Deskripsikan apa yang ingin dikirim"
             multiline={true}
+            onChangeText={(ket) => setKeterangan(ket)}
           />
         </View>
         <View style={[styles.marginVS]}>
           <View style={styles.mapContainer}>
-            {position.latitude !== undefined ? (
+            {mapsData.latitude !== undefined ? (
               <>
                 <MapView
                   provider={PROVIDER_GOOGLE}
-                  initialRegion={regionFrom(position)}
+                  initialRegion={regionFrom(mapsData)}
                   onMapReady={() => setMapReady(true)}
                   showsUserLocation
                   showsMyLocationButton
                   onPoiClick={(e) => {
-                    console.log(e.nativeEvent);
                     setMarkCoord(e.nativeEvent.coordinate);
-                    setPosition(regionFrom(e.nativeEvent.coordinate));
-                    setMapsData(e.nativeEvent);
+                    reverseLocation(e.nativeEvent.coordinate, e.nativeEvent);
                   }}
                   onPress={(e) => {
                     setMarkCoord(e.nativeEvent.coordinate);
-                    setMapsData(e.nativeEvent.coordinate);
+                    reverseLocation(e.nativeEvent.coordinate);
                   }}
                   style={styles.map}>
-                  {console.log(regionFrom(position))}
                   {mapReady ? (
                     <Marker
                       draggable
                       coordinate={markCoord}
-                      onDragEnd={(e) => setMarkCoord(e.nativeEvent.coordinate)}
+                      onDragEnd={(e) => {
+                        setMarkCoord(e.nativeEvent.coordinate);
+                        reverseLocation(e.nativeEvent.coordinate);
+                      }}
                     />
                   ) : null}
                 </MapView>
@@ -135,17 +149,17 @@ const Jemput = () => {
             ) : null}
             <Text
               style={[styles.textMedium, styles.marginHS, styles.textPrimary]}>
-              Alamat Penjemputan
+              Alamat
             </Text>
           </View>
         </View>
         <TouchableOpacity
           onPress={() => {
-            mapsData.name
+            mapsData.place_id
               ? goToMaps(
-                  mapsData.coordinate.longitude,
-                  mapsData.coordinate.latitude,
-                  mapsData.placeId,
+                  mapsData.longitude,
+                  mapsData.latitude,
+                  mapsData.place_id,
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
@@ -157,9 +171,7 @@ const Jemput = () => {
               styles.marginVM,
               styles.flex1,
             ]}>
-            {mapsData.name
-              ? mapsData.name
-              : `Latitude: ${mapsData.latitude}\nLongitude: ${mapsData.longitude} `}
+            {mapsData.name}
           </Text>
           <Icon
             name="map-marked-alt"
@@ -170,7 +182,12 @@ const Jemput = () => {
         </TouchableOpacity>
 
         <View style={[styles.marginVS]}>
-          <ButtonView title="Minta Jemput" dark onPress={() => {}} />
+          <ButtonView
+            loading={loading}
+            title="Minta Jemput"
+            dark
+            onPress={() => onClickJemput()}
+          />
         </View>
         <View style={styles.marginVM} />
       </ScrollView>

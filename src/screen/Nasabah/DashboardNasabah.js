@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,17 +20,30 @@ import {
   penjemputanNasabah,
   penyetoranNasabah,
 } from '../../services/endpoint/nasabah';
+import ButtonView from '../../components/ButtonView';
 
-const DashboardNasabah = (props) => {
+const DashboardNasabah = ({navigation}) => {
   const [content, setContent] = useState(1);
   const {user, nasabah} = useSelector((state) => state);
+  const [loading, setLoading] = useState(setLoading);
 
-  useEffect(() => {
+  const getData = () => {
     getSaldo(user.id);
     penjemputanNasabah(user.id);
     penyetoranNasabah(user.id);
     penarikanNasabah(user.id);
-  }, []);
+  };
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    nasabah.saldo.loading ? setLoading(true) : setLoading(false);
+  }, [nasabah]);
+
   console.log('ini data', JSON.stringify(nasabah.penyetoran));
   return (
     <View style={styles.flex1}>
@@ -40,18 +54,27 @@ const DashboardNasabah = (props) => {
           styles.row,
           styles.centerCenter,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.openDrawer()}>
+        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
         <View style={[styles.flex1, styles.marginHM]}>
           <Text style={[styles.textH3, styles.textWhite]}>Daur Uang</Text>
         </View>
         <TouchableWithoutFeedback
-          onPress={() => props.navigation.navigate('ChatList')}>
+          onPress={() => navigation.navigate('ChatList')}>
           <Icon name="comment" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
       </View>
-      <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={loading}
+            onRefresh={() => {
+              getData();
+            }}
+          />
+        }
+        style={[styles.backgroundLight, styles.flex1]}>
         <View
           style={[
             styles.backgroundPrimary,
@@ -144,51 +167,62 @@ const DashboardNasabah = (props) => {
               <Text>Kosong</Text>
             )
           ) : content === 3 ? (
-            nasabah.penjemputan ? (
-              nasabah.penjemputan.data.length > 0 ? (
-                nasabah.penjemputan.data.map((jemput) => (
-                  <View
-                    key={jemput.id}
-                    style={[
-                      styles.card,
-                      styles.backgroundWhite,
-                      styles.marginVS,
-                      styles.row,
-                    ]}>
-                    <View style={styles.flex1}>
-                      <Text style={styles.textNote}>
-                        ID Penarikan: #{jemput.id}
-                      </Text>
-                      <Text style={styles.text}>{jemput.tanggal}</Text>
-                      <Text style={styles.textH3}>{jemput.nama_pengirim}</Text>
-                      <Text style={styles.text}>{jemput.keterangan}</Text>
-                      <Text style={styles.textNote}>{jemput.lokasi}</Text>
+            <>
+              <ButtonView
+                title="Ajukan Penjemputan"
+                dark
+                onPress={() => navigation.navigate('Jemput')}
+              />
+              {nasabah.penjemputan ? (
+                nasabah.penjemputan.data.length > 0 ? (
+                  nasabah.penjemputan.data.map((jemput) => (
+                    <View
+                      key={jemput.id}
+                      style={[
+                        styles.card,
+                        styles.backgroundWhite,
+                        styles.marginVS,
+                        styles.row,
+                      ]}>
+                      <View style={styles.flex1}>
+                        <Text style={styles.textNote}>
+                          ID Penarikan: #{jemput.id}
+                        </Text>
+                        <Text style={styles.text}>{jemput.tanggal}</Text>
+                        <Text style={styles.textH3}>
+                          {jemput.nama_pengirim}
+                        </Text>
+                        <Text style={styles.text}>{jemput.keterangan}</Text>
+                        <Text style={styles.textNote}>
+                          {JSON.parse(jemput.lokasi).name}
+                        </Text>
+                      </View>
+                      <View>
+                        <MaterialIcon
+                          name={
+                            jemput.status === 0
+                              ? 'progress-clock'
+                              : jemput.status === 1
+                              ? 'account-check'
+                              : jemput.status === 2
+                              ? 'truck-check'
+                              : jemput.status === 3
+                              ? 'close-circle'
+                              : 'progress-clock'
+                          }
+                          size={24}
+                          color={colors.grey}
+                        />
+                      </View>
                     </View>
-                    <View>
-                      <MaterialIcon
-                        name={
-                          jemput.status === 0
-                            ? 'progress-clock'
-                            : jemput.status === 1
-                            ? 'account-check'
-                            : jemput.status === 2
-                            ? 'truck-check'
-                            : jemput.status === 3
-                            ? 'close-circle'
-                            : 'progress-clock'
-                        }
-                        size={24}
-                        color={colors.grey}
-                      />
-                    </View>
-                  </View>
-                ))
+                  ))
+                ) : (
+                  <Text>Kosong</Text>
+                )
               ) : (
                 <Text>Kosong</Text>
-              )
-            ) : (
-              <Text>Kosong</Text>
-            )
+              )}
+            </>
           ) : null}
         </View>
       </ScrollView>
