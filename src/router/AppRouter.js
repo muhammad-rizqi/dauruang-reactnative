@@ -35,11 +35,14 @@ const AppRouter = () => {
   const dispatch = useDispatch();
 
   const getTokenStorage = () => {
+    console.log('getting token');
     AsyncStorage.getItem('token')
       .then((data) => {
         if (data !== null) {
           dispatch(changeToken(data));
           getProfile();
+        } else {
+          setSplash(false);
         }
       })
       .catch(() => setSplash(false));

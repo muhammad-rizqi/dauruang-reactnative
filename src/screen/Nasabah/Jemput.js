@@ -17,21 +17,29 @@ import {colors, styles} from '../../style/styles';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {reverseGeo} from '../../services/API/geolocation';
 import {useSelector} from 'react-redux';
-import {
-  ajukanJemput,
-  penjemputanNasabah,
-} from '../../services/endpoint/nasabah';
+import {ajukanJemput, batalkanJemput} from '../../services/endpoint/nasabah';
 
-const Jemput = ({navigation}) => {
+const Jemput = ({navigation, route}) => {
   const {user} = useSelector((state) => state);
+  const penjemputan = route.params ? route.params.penjemputan : null;
 
   const [mapReady, setMapReady] = useState(false);
-  const [markCoord, setMarkCoord] = useState(JSON.parse(user.lokasi));
-  const [mapsData, setMapsData] = useState(JSON.parse(user.lokasi));
+  const [markCoord, setMarkCoord] = useState(
+    penjemputan ? JSON.parse(penjemputan.lokasi) : JSON.parse(user.lokasi),
+  );
+  const [mapsData, setMapsData] = useState(
+    penjemputan ? JSON.parse(penjemputan.lokasi) : JSON.parse(user.lokasi),
+  );
 
-  const [name, setName] = useState(user.nama_lengkap);
-  const [phone, setPhone] = useState(user.telepon);
-  const [keterangan, setKeterangan] = useState('');
+  const [name, setName] = useState(
+    penjemputan ? penjemputan.nama_pengirim : user.nama_lengkap,
+  );
+  const [phone, setPhone] = useState(
+    penjemputan ? penjemputan.telepon : user.telepon,
+  );
+  const [keterangan, setKeterangan] = useState(
+    penjemputan ? penjemputan.keterangan : '',
+  );
   const [loading, setLoading] = useState(false);
 
   const reverseLocation = (coord, place) => {
@@ -73,6 +81,26 @@ const Jemput = ({navigation}) => {
       ToastAndroid.show('Harap isi dengan benar', ToastAndroid.LONG);
     }
   };
+
+  const onClickBatalkan = () => {
+    setLoading(true);
+    batalkanJemput(penjemputan.id, user.id)
+      .then((res) => {
+        if (res.code === 200) {
+          setLoading(false);
+          ToastAndroid.show('Berhasil diajukan', ToastAndroid.LONG);
+          navigation.goBack();
+        } else {
+          ToastAndroid.show('Gagal diajukan', ToastAndroid.LONG);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+        ToastAndroid.show('Kesalahan koneksi', ToastAndroid.LONG);
+        setLoading(false);
+      });
+  };
+
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
       <ScrollView style={[styles.container]}>
@@ -87,7 +115,7 @@ const Jemput = ({navigation}) => {
               styles.flex1,
               styles.marginHM,
             ]}>
-            Ajukan Jemput Sampah
+            {penjemputan ? 'Permintaan Jemput' : 'Ajukan Jemput Sampah'}
           </Text>
         </View>
         <View style={styles.marginVM} />
@@ -95,6 +123,7 @@ const Jemput = ({navigation}) => {
           <InputView
             placeholder="Nama Pengirim"
             value={name}
+            editable={!penjemputan}
             onChangeText={(inputName) => setName(inputName)}
           />
         </View>
@@ -104,14 +133,17 @@ const Jemput = ({navigation}) => {
             type="number-pad"
             value={phone}
             onChangeText={(inputPhone) => setPhone(inputPhone)}
+            editable={!penjemputan}
           />
         </View>
         <View
           style={[styles.textInput, styles.backgroundWhite, styles.marginVS]}>
           <TextInput
+            editable={!penjemputan}
             style={[styles.marginHM, {maxHeight: 100}]}
             placeholder="Deskripsikan apa yang ingin dikirim"
             multiline={true}
+            value={keterangan}
             onChangeText={(ket) => setKeterangan(ket)}
           />
         </View>
@@ -126,12 +158,16 @@ const Jemput = ({navigation}) => {
                   showsUserLocation
                   showsMyLocationButton
                   onPoiClick={(e) => {
-                    setMarkCoord(e.nativeEvent.coordinate);
-                    reverseLocation(e.nativeEvent.coordinate, e.nativeEvent);
+                    if (!penjemputan) {
+                      setMarkCoord(e.nativeEvent.coordinate);
+                      reverseLocation(e.nativeEvent.coordinate, e.nativeEvent);
+                    }
                   }}
                   onPress={(e) => {
-                    setMarkCoord(e.nativeEvent.coordinate);
-                    reverseLocation(e.nativeEvent.coordinate);
+                    if (!penjemputan) {
+                      setMarkCoord(e.nativeEvent.coordinate);
+                      reverseLocation(e.nativeEvent.coordinate);
+                    }
                   }}
                   style={styles.map}>
                   {mapReady ? (
@@ -139,8 +175,10 @@ const Jemput = ({navigation}) => {
                       draggable
                       coordinate={markCoord}
                       onDragEnd={(e) => {
-                        setMarkCoord(e.nativeEvent.coordinate);
-                        reverseLocation(e.nativeEvent.coordinate);
+                        if (!penjemputan) {
+                          setMarkCoord(e.nativeEvent.coordinate);
+                          reverseLocation(e.nativeEvent.coordinate);
+                        }
                       }}
                     />
                   ) : null}
@@ -184,9 +222,9 @@ const Jemput = ({navigation}) => {
         <View style={[styles.marginVS]}>
           <ButtonView
             loading={loading}
-            title="Minta Jemput"
-            dark
-            onPress={() => onClickJemput()}
+            title={penjemputan ? 'Batalkan' : 'Minta Jemput'}
+            dark={!penjemputan}
+            onPress={() => (penjemputan ? onClickBatalkan() : onClickJemput())}
           />
         </View>
         <View style={styles.marginVM} />

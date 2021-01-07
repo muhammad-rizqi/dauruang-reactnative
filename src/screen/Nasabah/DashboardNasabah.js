@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -176,14 +177,17 @@ const DashboardNasabah = ({navigation}) => {
               {nasabah.penjemputan ? (
                 nasabah.penjemputan.data.length > 0 ? (
                   nasabah.penjemputan.data.map((jemput) => (
-                    <View
+                    <TouchableOpacity
                       key={jemput.id}
                       style={[
                         styles.card,
                         styles.backgroundWhite,
                         styles.marginVS,
                         styles.row,
-                      ]}>
+                      ]}
+                      onPress={() =>
+                        navigation.navigate('Jemput', {penjemputan: jemput})
+                      }>
                       <View style={styles.flex1}>
                         <Text style={styles.textNote}>
                           ID Penarikan: #{jemput.id}
@@ -214,7 +218,7 @@ const DashboardNasabah = ({navigation}) => {
                           color={colors.grey}
                         />
                       </View>
-                    </View>
+                    </TouchableOpacity>
                   ))
                 ) : (
                   <Text>Kosong</Text>

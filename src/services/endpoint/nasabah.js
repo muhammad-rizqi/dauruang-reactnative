@@ -80,3 +80,11 @@ export const ajukanJemput = (
   };
   return api('POST', '/penjemputan', data);
 };
+
+export const batalkanJemput = (penjemputanId, userId) => {
+  const data = {
+    id_nasabah: userId,
+    status: 3,
+  };
+  return api('PATCH', '/penjemputan/' + penjemputanId, data);
+};

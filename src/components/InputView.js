@@ -11,10 +11,12 @@ const InputView = ({
   value,
   onChangeText,
   type,
+  editable,
 }) => {
   return (
     <View style={[styles.textInput, styles.backgroundWhite, styles.row]}>
       <TextInput
+        editable={editable}
         secureTextEntry={secure}
         placeholder={placeholder}
         style={[styles.flex1, styles.marginHM]}
