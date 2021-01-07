@@ -1,69 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableWithoutFeedback,
-  ToastAndroid,
   TouchableOpacity,
-  TextInput,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonView from '../../components/ButtonView';
-import InputView from '../../components/InputView';
-import {
-  regionFrom,
-  requestLocationPermission,
-  goToMaps,
-} from '../../helper/MapsHelper';
+import {regionFrom, goToMaps} from '../../helper/MapsHelper';
 import {colors, styles} from '../../style/styles';
-import Geolocation from 'react-native-geolocation-service';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 
-const PermintaanJemput = () => {
-  const [position, setPosition] = useState({});
+const PermintaanJemput = ({navigation, route}) => {
   const [mapReady, setMapReady] = useState(false);
-  const [markCoord, setMarkCoord] = useState({});
-  const [mapsData, setMapsData] = useState({});
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [location, setLocation] = useState('');
-
-  const requestPermission = async () => {
-    try {
-      const persmission = await requestLocationPermission();
-      console.log(persmission);
-      if (persmission) {
-        Geolocation.getCurrentPosition(
-          (result) => {
-            console.log('getposisi');
-            setPosition(result.coords);
-            setMarkCoord(result.coords);
-            setMapsData(result.coords);
-          },
-          (error) => {
-            // See error code charts below.
-            console.log(error.code, error.message);
-            ToastAndroid.show(error.message, ToastAndroid.LONG);
-          },
-          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    requestPermission();
-  }, []);
+  const {penjemputan} = route.params;
+  const mapsData = JSON.parse(penjemputan.lokasi);
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
       <View style={[styles.row, styles.centerCenter, styles.container]}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={26} color={colors.primary} />
         </TouchableWithoutFeedback>
         <Text
@@ -79,48 +36,29 @@ const PermintaanJemput = () => {
       <ScrollView style={[styles.container]}>
         <View style={styles.marginVS}>
           <Text style={styles.textMedium}>Nama Pengirim</Text>
-          <Text style={styles.textH3}>Kevin</Text>
+          <Text style={styles.textH3}>{penjemputan.nama_pengirim}</Text>
         </View>
         <View style={styles.marginVS}>
           <Text style={styles.textMedium}>No Telepon</Text>
-          <Text>0852112621727</Text>
+          <Text>{penjemputan.telepon}</Text>
         </View>
         <View style={styles.marginVS}>
           <Text style={styles.textMedium}>Keterangan</Text>
-          <Text>
-            Bang saya punya kulkas bekas mau dijual. Tolong angkut pake mobil ya
-            mas...
-          </Text>
+          <Text>{penjemputan.keterangan}</Text>
         </View>
         <View style={[styles.marginVS]}>
           <View style={styles.mapContainer}>
-            {position.latitude !== undefined ? (
+            {mapsData.latitude !== undefined ? (
               <>
                 <MapView
                   provider={PROVIDER_GOOGLE}
-                  initialRegion={regionFrom(position)}
+                  initialRegion={regionFrom(mapsData)}
                   onMapReady={() => setMapReady(true)}
                   showsUserLocation
                   showsMyLocationButton
-                  onPoiClick={(e) => {
-                    console.log(e.nativeEvent);
-                    setMarkCoord(e.nativeEvent.coordinate);
-                    setPosition(regionFrom(e.nativeEvent.coordinate));
-                    setMapsData(e.nativeEvent);
-                  }}
-                  onPress={(e) => {
-                    setMarkCoord(e.nativeEvent.coordinate);
-                    setMapsData(e.nativeEvent.coordinate);
-                  }}
                   style={styles.map}>
-                  {console.log(regionFrom(position))}
-                  {mapReady ? (
-                    <Marker
-                      draggable
-                      coordinate={markCoord}
-                      onDragEnd={(e) => setMarkCoord(e.nativeEvent.coordinate)}
-                    />
-                  ) : null}
+                  {console.log(regionFrom(mapsData))}
+                  {mapReady ? <Marker draggable coordinate={mapsData} /> : null}
                 </MapView>
               </>
             ) : null}
@@ -132,11 +70,11 @@ const PermintaanJemput = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            mapsData.name
+            mapsData.place_id
               ? goToMaps(
-                  mapsData.coordinate.longitude,
-                  mapsData.coordinate.latitude,
-                  mapsData.placeId,
+                  mapsData.longitude,
+                  mapsData.latitude,
+                  mapsData.place_id,
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
@@ -148,9 +86,7 @@ const PermintaanJemput = () => {
               styles.marginVM,
               styles.flex1,
             ]}>
-            {mapsData.name
-              ? mapsData.name
-              : `Latitude: ${mapsData.latitude}\nLongitude: ${mapsData.longitude} `}
+            {mapsData.name}
           </Text>
           <Icon
             name="map-marked-alt"
@@ -161,7 +97,7 @@ const PermintaanJemput = () => {
         </TouchableOpacity>
 
         <View style={[styles.marginVS]}>
-          <ButtonView title="Minta Jemput" dark onPress={() => {}} />
+          <ButtonView title="Konfirmasi Jemput" dark onPress={() => {}} />
         </View>
         <View style={[styles.marginVS]}>
           <ButtonView title="Batalkan Jemput" onPress={() => {}} />

@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -149,8 +150,13 @@ const DashboardSetoran = ({navigation}) => {
             penyetor.penjemputan ? (
               penyetor.penjemputan.data.length > 0 ? (
                 penyetor.penjemputan.data.map((jemput) => (
-                  <View
+                  <TouchableOpacity
                     key={jemput.id}
+                    onPress={() =>
+                      navigation.navigate('PermintaanJemput', {
+                        penjemputan: jemput,
+                      })
+                    }
                     style={[
                       styles.card,
                       styles.backgroundWhite,
@@ -189,7 +195,7 @@ const DashboardSetoran = ({navigation}) => {
                         color={colors.grey}
                       />
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ))
               ) : (
                 <Text>Kosong</Text>
