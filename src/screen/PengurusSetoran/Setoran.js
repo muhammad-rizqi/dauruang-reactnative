@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,27 @@ import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {getSampahCategory} from '../../services/endpoint/sampah';
+import {Picker} from '@react-native-picker/picker';
 
 const Setoran = ({navigation, route}) => {
   const [isEnabled, setisEnabled] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [selected, setSelected] = useState([]);
   const nasabah = route.params.data;
+
   console.log(nasabah);
+
+  const getCategory = () => {
+    getSampahCategory()
+      .then((cat) => setCategory(cat.data))
+      .catch((e) => console.log(e));
+  };
+
+  useEffect(() => {
+    getCategory();
+  }, []);
+
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
@@ -42,8 +58,19 @@ const Setoran = ({navigation, route}) => {
           </Text>
         </View>
 
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView placeholder="Jenis Sampah" />
+        <View style={[styles.textInput, styles.backgroundWhite]}>
+          <Picker
+            mode="dropdown"
+            selectedValue={selected}
+            onValueChange={(itemValue) => setSelected(itemValue)}>
+            {category.map((sampah) => (
+              <Picker.Item
+                key={sampah.id}
+                label={sampah.nama_kategori + ' - Rp. ' + sampah.harga}
+                value={sampah.id}
+              />
+            ))}
+          </Picker>
         </View>
         <View style={styles.row}>
           <View style={[styles.centerItem, styles.marginVS, styles.flex1]}>
