@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {changeToken, setUser} from '../redux/action';
 import {profile} from '../services/endpoint/authServices';
+import LottieView from 'lottie-react-native';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -81,7 +82,7 @@ const AppRouter = () => {
       <Stack.Navigator
         headerMode={false}
         screenOptions={{animationEnabled: false}}>
-        {token === '' || token === null || user.role === null ? (
+        {token === '' || token === null ? (
           <>
             <Stack.Screen name="Intro" component={Intro} />
             <Stack.Screen name="Login" component={Login} />
@@ -146,7 +147,17 @@ const AppRouter = () => {
             <Stack.Screen name="ChatItem" component={ChatItem} />
             <Stack.Screen name="QRScreen" component={QRScreen} />
           </>
-        ) : null}
+        ) : (
+          <Stack.Screen name="Penjualan">
+            {() => (
+              <LottieView
+                source={require('../assets/lottie/offline.json')}
+                autoPlay
+                loop
+              />
+            )}
+          </Stack.Screen>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
