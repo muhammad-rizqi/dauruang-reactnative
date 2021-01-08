@@ -16,6 +16,7 @@ import DrawerUser from './User/DrawerUser';
 import ChatItem from './Chat/ChatItem';
 import ChatList from './Chat/ChatList';
 import QRScreen from './User/QRScreen';
+import ScanQR from './PengurusSetoran/ScanQR';
 
 export {
   Intro,
@@ -36,4 +37,5 @@ export {
   ChatItem,
   ChatList,
   QRScreen,
+  ScanQR,
 };

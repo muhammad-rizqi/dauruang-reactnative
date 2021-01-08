@@ -21,6 +21,7 @@ import {
   ChatList,
   ChatItem,
   QRScreen,
+  ScanQR,
 } from '../screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -80,7 +81,7 @@ const AppRouter = () => {
       <Stack.Navigator
         headerMode={false}
         screenOptions={{animationEnabled: false}}>
-        {token === '' || token === null ? (
+        {token === '' || token === null || user.role === null ? (
           <>
             <Stack.Screen name="Intro" component={Intro} />
             <Stack.Screen name="Login" component={Login} />
@@ -122,6 +123,7 @@ const AppRouter = () => {
                   component={PermintaanJemput}
                 />
                 <Stack.Screen name="Setoran" component={Setoran} />
+                <Stack.Screen name="ScanQR" component={ScanQR} />
               </>
             ) : user.role === 3 ? (
               <>

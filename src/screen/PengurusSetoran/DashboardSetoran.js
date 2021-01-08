@@ -16,6 +16,7 @@ import {
   getDataJemputan,
   getDataSetoran,
 } from '../../services/endpoint/penyetor';
+import ButtonView from '../../components/ButtonView';
 
 const DashboardSetoran = ({navigation}) => {
   const [content, setContent] = useState(1);
@@ -109,43 +110,50 @@ const DashboardSetoran = ({navigation}) => {
 
         <View style={styles.container}>
           {content === 1 ? (
-            penyetor.penyetoran.data !== null &&
-            penyetor.penyetoran.data.length > 0 ? (
-              penyetor.penyetoran.data.map((setoran) => (
-                <View
-                  key={setoran.id}
-                  style={[
-                    styles.card,
-                    styles.row,
-                    styles.backgroundWhite,
-                    styles.marginVS,
-                  ]}>
-                  <View style={styles.flex1}>
-                    <Text style={styles.textNote}>
-                      ID Penyetoran : #{setoran.id}
-                    </Text>
-                    <View style={styles.marginVS}>
-                      <Text style={[styles.textH3, styles.text]}>
-                        {setoran.relation.nasabah.nama_lengkap}
+            <>
+              <ButtonView
+                title="Setor Sampah"
+                dark
+                onPress={() => navigation.navigate('ScanQR')}
+              />
+              {penyetor.penyetoran.data !== null &&
+              penyetor.penyetoran.data.length > 0 ? (
+                penyetor.penyetoran.data.map((setoran) => (
+                  <View
+                    key={setoran.id}
+                    style={[
+                      styles.card,
+                      styles.row,
+                      styles.backgroundWhite,
+                      styles.marginVS,
+                    ]}>
+                    <View style={styles.flex1}>
+                      <Text style={styles.textNote}>
+                        ID Penyetoran : #{setoran.id}
                       </Text>
-                      <Text style={[styles.text]}>
-                        {setoran.relation.jenis_sampah.nama_kategori}{' '}
-                        {setoran.berat}Kg
+                      <View style={styles.marginVS}>
+                        <Text style={[styles.textH3, styles.text]}>
+                          {setoran.relation.nasabah.nama_lengkap}
+                        </Text>
+                        <Text style={[styles.text]}>
+                          {setoran.relation.jenis_sampah.nama_kategori}{' '}
+                          {setoran.berat}Kg
+                        </Text>
+                        <Text style={styles.textNote}>{setoran.tanggal}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.centerCenter}>
+                      <Text style={[styles.textCenter, styles.textNote]}>
+                        Total Pemasukan
                       </Text>
-                      <Text style={styles.textNote}>{setoran.tanggal}</Text>
+                      <Text style={styles.textH3}>Rp. {setoran.debit},-</Text>
                     </View>
                   </View>
-                  <View style={styles.centerCenter}>
-                    <Text style={[styles.textCenter, styles.textNote]}>
-                      Total Pemasukan
-                    </Text>
-                    <Text style={styles.textH3}>Rp. {setoran.debit},-</Text>
-                  </View>
-                </View>
-              ))
-            ) : (
-              <Text>Data Kosong</Text>
-            )
+                ))
+              ) : (
+                <Text>Data Kosong</Text>
+              )}
+            </>
           ) : content === 2 ? (
             penyetor.penjemputan ? (
               penyetor.penjemputan.data.length > 0 ? (

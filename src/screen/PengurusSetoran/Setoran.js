@@ -11,13 +11,14 @@ import InputView from '../../components/InputView';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const Setoran = () => {
+const Setoran = ({navigation}) => {
   const [isEnabled, setisEnabled] = useState(false);
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
       <View style={[styles.row, styles.centerCenter]}>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('DashboardSetoran')}>
           <Icon name="chevron-left" size={20} color={colors.primary} />
         </TouchableWithoutFeedback>
         <Text

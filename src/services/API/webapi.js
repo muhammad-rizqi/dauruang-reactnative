@@ -1,5 +1,7 @@
 export const host = 'http://192.168.1.46:3000/api';
+import {clearToken} from '../../redux/action';
 import store from '../../redux/store';
+import {removeToken} from '../storage/Token';
 
 export const api = (method, path, body = null, file = null) => {
   const {token} = store.getState();
@@ -15,6 +17,12 @@ export const api = (method, path, body = null, file = null) => {
   })
     .then((response) => response.json())
     .then((resJson) => {
+      if (resJson.message) {
+        if (resJson.message.split(' ')[0] === 'Token') {
+          removeToken();
+          store.dispatch(clearToken());
+        }
+      }
       console.log(resJson);
       return resJson;
     });
