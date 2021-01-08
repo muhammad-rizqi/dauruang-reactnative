@@ -18,8 +18,10 @@ const ScanQR = ({navigation}) => {
         <View style={styles.marginVM} />
         <QRCodeScanner
           showMarker
-          vibrate
-          onRead={(e) => navigation.navigate('Setoran', {data: e})}
+          vibrate={true}
+          onRead={(e) =>
+            navigation.navigate('Setoran', {data: JSON.parse(e.data)})
+          }
         />
       </View>
     </View>

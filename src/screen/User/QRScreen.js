@@ -18,7 +18,6 @@ const QRScreen = ({navigation}) => {
     nama_lengkap: user.nama_lengkap,
     avatar: user.avatar,
     role: user.role,
-    lokasi: user.lokasi,
   };
 
   return (

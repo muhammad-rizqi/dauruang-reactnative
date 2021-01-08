@@ -5,14 +5,17 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   Switch,
+  Image,
 } from 'react-native';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const Setoran = ({navigation}) => {
+const Setoran = ({navigation, route}) => {
   const [isEnabled, setisEnabled] = useState(false);
+  const nasabah = route.params.data;
+  console.log(nasabah);
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
@@ -32,9 +35,13 @@ const Setoran = ({navigation}) => {
         </Text>
       </View>
       <View style={styles.marginVM}>
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView placeholder="ID Nasabah" name="qrcode" />
+        <View style={[styles.row, styles.centerCard, styles.marginVM]}>
+          <Image source={{uri: nasabah.avatar}} style={styles.avatarM} />
+          <Text style={[styles.marginHM, styles.textH2, styles.textPrimary]}>
+            {nasabah.nama_lengkap}
+          </Text>
         </View>
+
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView placeholder="Jenis Sampah" />
         </View>
