@@ -65,9 +65,29 @@ const penyetorReducer = (state = penyetorState, action) => {
   }
 };
 
+const penjualState = {
+  saldo: {loading: true, data: 0, error: false},
+  penjualan: {loading: true, data: [], error: null},
+  stok: {loading: true, data: [], error: null},
+};
+
+const penjualReducer = (state = penjualState, action) => {
+  switch (action.type) {
+    case 'SET_PENJUAL_SALDO':
+      return {...state, saldo: action.data};
+    case 'SET_PENJUALAN':
+      return {...state, penjualan: action.data};
+    case 'SET_STOK':
+      return {...state, stok: action.data};
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   user: userReducer,
   token: tokenReducer,
   nasabah: nasabahReducer,
   penyetor: penyetorReducer,
+  penjual: penjualReducer,
 });

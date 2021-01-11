@@ -1,27 +1,34 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+  RefreshControl,
+} from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  penarikan,
-  penjemputan,
-  dataSetoran,
-  dataPenjualan,
-  dataStock,
-} from '../../data/DummyData';
 import CenterMenu from '../../components/CenterMenu';
+import {useSelector} from 'react-redux';
+import {
+  getDataPenjualan,
+  getSaldoPenjualan,
+  getStok,
+} from '../../services/endpoint/penjual';
 
 const DashboardPenjualan = (props) => {
   const [content, setContent] = useState(1);
-  const [dataPenyetoran, setDataPenyetoran] = useState(null);
-  const [dataPenarikan, setDataPenarikan] = useState(null);
-  const [dataPenjemputan, setDataPenjemputan] = useState(null);
+  const {user, penjual} = useSelector((state) => state);
+  console.log(penjual.penjualan);
 
+  const getData = () => {
+    getSaldoPenjualan();
+    getStok();
+    getDataPenjualan();
+  };
   useEffect(() => {
-    setDataPenyetoran(dataSetoran);
-    setDataPenarikan(penarikan);
-    setDataPenjemputan(penjemputan);
+    getData();
   }, []);
 
   return (
@@ -40,7 +47,16 @@ const DashboardPenjualan = (props) => {
           <Text style={[styles.textH3, styles.textWhite]}>Daur Uang</Text>
         </View>
       </View>
-      <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={penjual.saldo.loading}
+            onRefresh={() => {
+              getData();
+            }}
+          />
+        }
+        style={[styles.backgroundLight, styles.flex1]}>
         <View
           style={[
             styles.backgroundPrimary,
@@ -48,12 +64,12 @@ const DashboardPenjualan = (props) => {
             styles.roundBottom,
           ]}>
           <Text style={[styles.textH3, styles.textWhite]}>
-            Hello, Pengurus Penjualan
+            Hello, {user.nama_lengkap}
           </Text>
           <View style={styles.marginVM}>
             <Text style={[styles.textWhite]}>Saldo Keuangan Kita</Text>
             <Text style={[styles.textH2, styles.textWhite]}>
-              Rp. 5.000.000,-
+              Rp. {JSON.stringify(penjual.saldo.data)},-
             </Text>
             <View style={styles.marginVM} />
           </View>
@@ -84,8 +100,9 @@ const DashboardPenjualan = (props) => {
 
         <View style={styles.container}>
           {content === 1 ? (
-            dataPenjualan.data !== null && dataPenjualan.data.length > 0 ? (
-              dataPenjualan.data.map((jual) => (
+            penjual.penjualan.data !== null &&
+            penjual.penjualan.data.length > 0 ? (
+              penjual.penjualan.data.map((jual) => (
                 <View
                   key={jual.id}
                   style={[
@@ -118,9 +135,9 @@ const DashboardPenjualan = (props) => {
               <Text>Data Kosong</Text>
             )
           ) : content === 2 ? (
-            dataStock ? (
-              dataStock.data.length > 0 ? (
-                dataStock.data.map((stock) => (
+            penjual.stok ? (
+              penjual.stok.data.length > 0 ? (
+                penjual.stok.data.map((stock) => (
                   <View
                     key={stock.id}
                     style={[
