@@ -28,6 +28,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {changeToken, setUser} from '../redux/action';
 import {profile} from '../services/endpoint/authServices';
 import LottieView from 'lottie-react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
+import {styles} from '../style/styles';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -150,11 +152,21 @@ const AppRouter = () => {
         ) : (
           <Stack.Screen name="Penjualan">
             {() => (
-              <LottieView
-                source={require('../assets/lottie/offline.json')}
-                autoPlay
-                loop
-              />
+              <>
+                <View style={styles.flex1}>
+                  <LottieView
+                    source={require('../assets/lottie/offline.json')}
+                    autoPlay
+                    loop
+                  />
+                </View>
+                <TouchableOpacity
+                  style={[styles.centerCenter, styles.container]}
+                  onPress={getProfile}>
+                  <Text style={styles.marginVS}>Kesalahan Jaringan</Text>
+                  <Text style={styles.textH3}>Coba Lagi?</Text>
+                </TouchableOpacity>
+              </>
             )}
           </Stack.Screen>
         )}
