@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Switch,
   Image,
+  ToastAndroid,
 } from 'react-native';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
@@ -13,19 +14,41 @@ import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {getSampahCategory} from '../../services/endpoint/sampah';
 import {Picker} from '@react-native-picker/picker';
+import {addSetor} from '../../services/endpoint/penyetor';
 
 const Setoran = ({navigation, route}) => {
   const [isEnabled, setisEnabled] = useState(false);
   const [category, setCategory] = useState([]);
-  const [selected, setSelected] = useState([]);
+  const [berat, setBerat] = useState(1);
+  const [selected, setSelected] = useState(0);
   const nasabah = route.params.data;
+  const [loading, setLoading] = useState(false);
 
   console.log(nasabah);
 
   const getCategory = () => {
     getSampahCategory()
       .then((cat) => setCategory(cat.data))
-      .catch((e) => console.log(e));
+      .catch((e) => setCategory([]));
+  };
+
+  const onClickSetor = () => {
+    setLoading(true);
+    addSetor(nasabah.id, category[selected].id, berat, isEnabled)
+      .then((res) => {
+        if (res.code === 200) {
+          ToastAndroid.show('Berhasil setor', ToastAndroid.LONG);
+          navigation.navigate('DashboardSetoran');
+        } else {
+          ToastAndroid.show('Gagal setor', ToastAndroid.LONG);
+          setLoading(false);
+        }
+      })
+      .catch((e) => {
+        ToastAndroid.show('Gagal melakukan permintaan', ToastAndroid.LONG);
+        console.log(e);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -57,12 +80,11 @@ const Setoran = ({navigation, route}) => {
             {nasabah.nama_lengkap}
           </Text>
         </View>
-
         <View style={[styles.textInput, styles.backgroundWhite]}>
           <Picker
             mode="dropdown"
-            selectedValue={selected}
-            onValueChange={(itemValue) => setSelected(itemValue)}>
+            selectedValue={category.length > 0 ? category[selected].id : 0}
+            onValueChange={(item, index) => setSelected(index)}>
             {category.map((sampah) => (
               <Picker.Item
                 key={sampah.id}
@@ -74,7 +96,12 @@ const Setoran = ({navigation, route}) => {
         </View>
         <View style={styles.row}>
           <View style={[styles.centerItem, styles.marginVS, styles.flex1]}>
-            <InputView placeholder="Berat Sampah" type="numeric" />
+            <InputView
+              value={`${berat}`}
+              placeholder="Berat Sampah"
+              type="numeric"
+              onChangeText={(i) => setBerat(i)}
+            />
           </View>
           <View style={[styles.row, styles.centerCenter]}>
             <Text style={styles.marginHM}>Dijemput</Text>
@@ -87,21 +114,50 @@ const Setoran = ({navigation, route}) => {
           </View>
         </View>
         <View style={[styles.marginVM]}>
-          <View style={[styles.row, styles.space]}>
-            <Text>Total Harga Sampah</Text>
-            <Text>Rp. 100.0000</Text>
-          </View>
-          <View style={[styles.row, styles.space]}>
-            <Text>{'Potongan Jemput (20%)'}</Text>
-            <Text>Rp. 20.0000</Text>
-          </View>
-          <View style={[styles.row, styles.space]}>
-            <Text style={styles.textH3}>Total TopUp</Text>
-            <Text style={styles.textH3}>Rp. 20.0000</Text>
-          </View>
+          {berat !== '' ||
+          berat > 0 ||
+          category !== null ||
+          category.length > 0 ? (
+            <>
+              {isEnabled ? (
+                <>
+                  <View style={[styles.row, styles.space]}>
+                    <Text>Total Harga Sampah</Text>
+                    <Text>
+                      Rp. {Number.parseFloat(berat) * category[selected].harga}
+                    </Text>
+                  </View>
+                  <View style={[styles.row, styles.space]}>
+                    <Text>{'Potongan Jemput (20%)'}</Text>
+                    <Text>
+                      Rp.{' '}
+                      {Number.parseFloat(berat) *
+                        category[selected].harga *
+                        0.2}
+                    </Text>
+                  </View>
+                </>
+              ) : null}
+              <View style={[styles.row, styles.space]}>
+                <Text style={styles.textH3}>Total TopUp</Text>
+                <Text style={styles.textH3}>
+                  Rp.{' '}
+                  {!isEnabled
+                    ? Number.parseFloat(berat) * category[selected].harga
+                    : Number.parseFloat(berat) * category[selected].harga -
+                      Number.parseFloat(berat) * category[selected].harga * 0.2}
+                </Text>
+              </View>
+            </>
+          ) : null}
         </View>
 
-        <ButtonView title="Setor" dark />
+        <ButtonView
+          title="Setor"
+          dark
+          loading={loading}
+          onPress={() => onClickSetor()}
+        />
         <View style={[styles.centerItem, styles.marginVS]} />
       </View>
     </ScrollView>

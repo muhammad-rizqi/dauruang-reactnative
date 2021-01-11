@@ -56,8 +56,8 @@ const AppRouter = () => {
       .then((res) => {
         if (res.code === 200) {
           dispatch(setUser(res.data.user));
-          setSplash(false);
         }
+        setSplash(false);
       })
       .catch((e) => {
         console.log(e);

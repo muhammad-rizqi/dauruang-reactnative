@@ -48,3 +48,13 @@ export const confirmJemput = (penjemputanId, pengurusId) => {
   };
   return api('PATCH', '/penjemputan/' + penjemputanId, data);
 };
+
+export const addSetor = (nasabahId, jenis_sampah, berat, dijemput) => {
+  const data = {
+    id_nasabah: nasabahId,
+    jenis_sampah,
+    berat,
+    dijemput,
+  };
+  return api('POST', '/penyetoran', data);
+};

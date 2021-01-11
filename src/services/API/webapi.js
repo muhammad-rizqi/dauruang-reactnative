@@ -20,7 +20,6 @@ export const api = (method, path, body = null, file = null) => {
     .then((resJson) => {
       if (resJson.message) {
         if (resJson.message.split(' ')[0] === 'Token') {
-          removeToken();
           store.dispatch(clearToken());
         }
       }
