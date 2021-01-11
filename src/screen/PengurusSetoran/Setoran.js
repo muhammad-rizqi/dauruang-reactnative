@@ -114,10 +114,7 @@ const Setoran = ({navigation, route}) => {
           </View>
         </View>
         <View style={[styles.marginVM]}>
-          {berat !== '' ||
-          berat > 0 ||
-          category !== null ||
-          category.length > 0 ? (
+          {berat !== '' || berat > 0 || category.length > 0 ? (
             <>
               {isEnabled ? (
                 <>
@@ -142,10 +139,14 @@ const Setoran = ({navigation, route}) => {
                 <Text style={styles.textH3}>Total TopUp</Text>
                 <Text style={styles.textH3}>
                   Rp.{' '}
-                  {!isEnabled
-                    ? Number.parseFloat(berat) * category[selected].harga
-                    : Number.parseFloat(berat) * category[selected].harga -
-                      Number.parseFloat(berat) * category[selected].harga * 0.2}
+                  {category[selected]
+                    ? !isEnabled
+                      ? Number.parseFloat(berat) * category[selected].harga
+                      : Number.parseFloat(berat) * category[selected].harga -
+                        Number.parseFloat(berat) *
+                          category[selected].harga *
+                          0.2
+                    : null}
                 </Text>
               </View>
             </>
