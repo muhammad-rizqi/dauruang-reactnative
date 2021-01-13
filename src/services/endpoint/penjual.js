@@ -59,3 +59,14 @@ export const getSaldoPenjualan = () => {
       store.dispatch(setSaldoPenjual(data));
     });
 };
+
+export const jualSampah = (pengurusId, jenis_sampah, client, harga, berat) => {
+  const data = {
+    id_pengurus: pengurusId,
+    jenis_sampah,
+    client,
+    harga,
+    berat,
+  };
+  return api('POST', '/penjualan', data);
+};

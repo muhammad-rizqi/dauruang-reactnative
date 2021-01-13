@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CenterMenu from '../../components/CenterMenu';
 import {useSelector} from 'react-redux';
 import {
@@ -16,8 +15,9 @@ import {
   getSaldoPenjualan,
   getStok,
 } from '../../services/endpoint/penjual';
+import ButtonView from '../../components/ButtonView';
 
-const DashboardPenjualan = (props) => {
+const DashboardPenjualan = ({navigation}) => {
   const [content, setContent] = useState(1);
   const {user, penjual} = useSelector((state) => state);
   console.log(penjual.penjualan);
@@ -27,9 +27,13 @@ const DashboardPenjualan = (props) => {
     getStok();
     getDataPenjualan();
   };
+
   useEffect(() => {
-    getData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   return (
     <View style={styles.flex1}>
@@ -40,7 +44,7 @@ const DashboardPenjualan = (props) => {
           styles.row,
           styles.centerCenter,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.openDrawer()}>
+        <TouchableWithoutFeedback onPress={() => navigation.openDrawer()}>
           <Icon name="bars" size={20} color={colors.white} />
         </TouchableWithoutFeedback>
         <View style={[styles.flex1, styles.marginHM]}>
@@ -99,6 +103,11 @@ const DashboardPenjualan = (props) => {
         </View>
 
         <View style={styles.container}>
+          <ButtonView
+            title="Setor Sampah"
+            dark
+            onPress={() => navigation.navigate('Jual')}
+          />
           {content === 1 ? (
             penjual.penjualan.data !== null &&
             penjual.penjualan.data.length > 0 ? (

@@ -33,7 +33,6 @@ const DashboardSetoran = ({navigation}) => {
     }
   };
 
-  console.log('ini dari penyetoran', penyetor.penjemputan);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       getData();

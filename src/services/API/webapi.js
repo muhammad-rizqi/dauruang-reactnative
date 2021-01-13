@@ -1,4 +1,4 @@
-export const host = 'http://192.168.1.46:3000/api';
+export const host = 'http://192.168.7.13:3000/api';
 import {ToastAndroid} from 'react-native';
 import {clearToken} from '../../redux/action';
 import store from '../../redux/store';
