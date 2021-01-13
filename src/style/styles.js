@@ -113,6 +113,9 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.secondary,
   },
+  widthScreenBox: {
+    height: widthScreen,
+  },
   paddingM: {
     padding: 16,
   },

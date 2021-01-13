@@ -1,4 +1,4 @@
-export const host = 'http://192.168.7.20:3000/api';
+export const host = 'http://192.168.1.40:3000/api';
 import {ToastAndroid} from 'react-native';
 import {clearToken} from '../../redux/action';
 import store from '../../redux/store';
@@ -25,7 +25,10 @@ export const api = (method, path, body = null, file = null) => {
       console.log(resJson);
       return resJson;
     })
-    .catch(() => ToastAndroid.show('Gagal menyambung', ToastAndroid.LONG));
+    .catch((e) => {
+      console.log(e);
+      ToastAndroid.show('Gagal menyambung', ToastAndroid.LONG);
+    });
 
   return data;
 };

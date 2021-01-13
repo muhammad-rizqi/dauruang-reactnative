@@ -22,6 +22,7 @@ import {
   ChatItem,
   QRScreen,
   ScanQR,
+  Settings,
 } from '../screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -145,6 +146,7 @@ const AppRouter = () => {
               </>
             ) : null}
             <Stack.Screen name="Profile" component={UpdateProfile} />
+            <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="ChatList" component={ChatList} />
             <Stack.Screen name="ChatItem" component={ChatItem} />
             <Stack.Screen name="QRScreen" component={QRScreen} />

@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback,
   ToastAndroid,
   TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonView from '../../components/ButtonView';
@@ -15,9 +17,10 @@ import {colors, styles} from '../../style/styles';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {useDispatch, useSelector} from 'react-redux';
 import {reverseGeo} from '../../services/API/geolocation';
-import {updateProfile} from '../../services/endpoint/user';
+import {changeAvatar, updateProfile} from '../../services/endpoint/user';
 import {profile} from '../../services/endpoint/authServices';
 import {setUser} from '../../redux/action';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const UpdateProfile = ({navigation}) => {
   const {user} = useSelector((state) => state);
@@ -29,8 +32,9 @@ const UpdateProfile = ({navigation}) => {
   const [phone, setPhone] = useState(user.telepon);
   const [email, setEmail] = useState(user.email);
   const [loading, setLoading] = useState(false);
-
+  const [photo, setPhoto] = useState({uri: user.avatar});
   const dispatch = useDispatch();
+  const [imageLoading, setImageLoading] = useState(false);
 
   const reverseLocation = (coord, place) => {
     reverseGeo(coord)
@@ -49,6 +53,38 @@ const UpdateProfile = ({navigation}) => {
       });
   };
 
+  const updateData = async () => {
+    const res = await profile();
+    res.code === 200 ? dispatch(setUser(res.data.user)) : null;
+  };
+  const handleChoosePhoto = () => {
+    const options = {
+      noData: true,
+    };
+    launchImageLibrary(options, (response) => {
+      if (response.uri) {
+        console.log(response);
+        setPhoto(response);
+        setImageLoading(true);
+        changeAvatar(user.id, response)
+          .then((result) => {
+            console.log(result);
+            if (result.code === 200) {
+              updateData();
+              ToastAndroid.show('Berhasil diupdate', ToastAndroid.LONG);
+            } else {
+              setPhoto({uri: user.avatar});
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            setPhoto({uri: user.avatar});
+          })
+          .finally(() => setImageLoading(false));
+      }
+    });
+  };
+
   const onClickUpdate = async () => {
     if ((name, email, phone, mapsData)) {
       setLoading(true);
@@ -62,8 +98,7 @@ const UpdateProfile = ({navigation}) => {
         );
         if (resUpdate.code === 200) {
           setLoading(false);
-          const res = await profile();
-          res.code === 200 ? dispatch(setUser(res.data.user)) : null;
+          updateData();
           ToastAndroid.show('Berhasil diupdate', ToastAndroid.LONG);
           navigation.goBack();
         } else {
@@ -97,6 +132,17 @@ const UpdateProfile = ({navigation}) => {
           </Text>
         </View>
         <View style={styles.marginVM} />
+        <TouchableOpacity
+          onPress={handleChoosePhoto}
+          style={styles.widthScreenBox}>
+          <ImageBackground
+            source={photo}
+            style={[styles.flex1, styles.centerCenter]}>
+            {imageLoading ? (
+              <ActivityIndicator color={colors.tertiary} size="large" />
+            ) : null}
+          </ImageBackground>
+        </TouchableOpacity>
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView
             placeholder="Nama Lengkap"

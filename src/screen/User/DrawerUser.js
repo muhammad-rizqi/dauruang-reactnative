@@ -27,7 +27,8 @@ const Drawer = ({navigation}) => {
             <Text style={[styles.textH3, styles.marginHS]}>Profile</Text>
           </View>
         </TouchableNativeFeedback>
-        <TouchableNativeFeedback>
+        <TouchableNativeFeedback
+          onPress={() => navigation.navigate('Settings')}>
           <View style={[styles.row, styles.paddingS, styles.centerItem]}>
             <MaterialIcon name="cog" size={36} color={colors.black} />
             <Text style={[styles.textH3, styles.marginHS]}>Pengaturan</Text>
