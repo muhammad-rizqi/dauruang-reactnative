@@ -21,8 +21,7 @@ const Drawer = ({navigation}) => {
         </View>
       </View>
       <View>
-        <TouchableNativeFeedback
-          onPress={() => navigation.navigate('QRScreen')}>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('Profile')}>
           <View style={[styles.row, styles.paddingS, styles.centerItem]}>
             <MaterialIcon name="account" size={36} color={colors.black} />
             <Text style={[styles.textH3, styles.marginHS]}>Profile</Text>

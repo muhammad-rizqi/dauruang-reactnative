@@ -144,7 +144,7 @@ const AppRouter = () => {
                 <Stack.Screen name="Jual" component={Jual} />
               </>
             ) : null}
-            <Stack.Screen name="Settings" component={UpdateProfile} />
+            <Stack.Screen name="Profile" component={UpdateProfile} />
             <Stack.Screen name="ChatList" component={ChatList} />
             <Stack.Screen name="ChatItem" component={ChatItem} />
             <Stack.Screen name="QRScreen" component={QRScreen} />
