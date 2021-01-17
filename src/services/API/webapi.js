@@ -1,4 +1,4 @@
-export const host = 'http://192.168.1.40:3000/api';
+export const host = 'https://dauruang.serverdakwah.online/api';
 import {ToastAndroid} from 'react-native';
 import {clearToken} from '../../redux/action';
 import store from '../../redux/store';

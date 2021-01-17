@@ -44,6 +44,25 @@ const Settings = ({navigation}) => {
       });
   };
 
+  const onClickRemove = () => {
+    setLoading(true);
+    deleteAcount(user.id, oldPassword)
+      .then((res) => {
+        if (res.code === 200) {
+          ToastAndroid.show('Berhasil menghapus akun', ToastAndroid.LONG);
+          dispatch(clearToken());
+        } else {
+          ToastAndroid.show('Periksa password kembali', ToastAndroid.LONG);
+          setLoading(false);
+        }
+      })
+      .catch((e) => {
+        setLoading(false);
+        ToastAndroid.show('Gagal menyambung ke server', ToastAndroid.LONG);
+        console.log(e);
+      });
+  };
+
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
@@ -96,7 +115,19 @@ const Settings = ({navigation}) => {
         <Text style={[styles.textH3, styles.textPrimary, styles.marginVM]}>
           Hapus Akun
         </Text>
-        <ButtonView title="Hapus Akun" />
+        <Text>Masukkan password untuk hapus akun</Text>
+        <View style={[styles.centerItem, styles.marginVS]}>
+          <InputView
+            placeholder="Masukkan Pasword"
+            secure
+            onChangeText={(o) => setOldPassword(o)}
+          />
+        </View>
+        <ButtonView
+          title="Hapus Akun"
+          onPress={onClickRemove}
+          loading={loading}
+        />
       </View>
     </ScrollView>
   );

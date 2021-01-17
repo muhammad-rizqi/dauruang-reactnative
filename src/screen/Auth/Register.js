@@ -85,7 +85,7 @@ const Register = (props) => {
       register(nama, email, password, telepon, mapsData)
         .then((res) =>
           res.code === 201
-            ? console.log(res)
+            ? props.navigation.goBack()
             : ToastAndroid.show('Gagal Mendaftar', ToastAndroid.LONG),
         )
         .catch((e) => ToastAndroid.show(JSON.stringify(e), ToastAndroid.LONG))
