@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -7,14 +8,54 @@ import {
   Image,
   TouchableNativeFeedback,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import InputView from '../../components/InputView';
-import {chatItem} from '../../data/DummyData';
 import {colors, styles} from '../../style/styles';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSelector} from 'react-redux';
+import {sendMessage, getMessage} from '../../services/endpoint/chat';
 
-const ChatItem = (props) => {
+const ChatItem = ({navigation, route}) => {
+  const {to} = route.params;
+  const {user} = useSelector((state) => state);
+  const [message, setMessage] = useState('');
+  const [chatItem, setChatItem] = useState([]);
+  const scrollViewRef = useRef();
+
+  const onClickSend = async () => {
+    try {
+      const response = await sendMessage(user.id, to.id, message);
+      if (response.code !== 200) {
+        ToastAndroid.show('Gagal mengirim', ToastAndroid.LONG);
+      }
+    } catch (error) {
+      ToastAndroid.show('Gagal mengirim', ToastAndroid.LONG);
+      console.log(error);
+    } finally {
+      setMessage(null);
+      getMessages();
+    }
+  };
+
+  const getMessages = () => {
+    getMessage(user.id, to.id)
+      .then((res) => {
+        if (res.code === 200) {
+          setChatItem(res.data);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      getMessages();
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
       <View
@@ -24,26 +65,30 @@ const ChatItem = (props) => {
           styles.marginHM,
           styles.marginVS,
         ]}>
-        <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={26} color={colors.primary} />
         </TouchableWithoutFeedback>
         <Image
-          source={{uri: 'https://ui-avatars.com/api/?name=Joni'}}
+          source={{uri: to.avatar}}
           style={[styles.avatarM, styles.marginHS]}
         />
         <Text style={[styles.textH3, styles.textPrimary, styles.flex1]}>
-          Joni
+          {to.nama_lengkap}
         </Text>
       </View>
-      <ScrollView>
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() =>
+          scrollViewRef.current.scrollToEnd({animated: false})
+        }>
         <View style={[styles.flex1, styles.marginHM]}>
-          {chatItem.data.map((chat) => (
+          {chatItem.map((chat) => (
             <TouchableNativeFeedback key={chat.id}>
               <View
                 style={[
                   styles.marginVS,
                   styles.card,
-                  chat.from === 1 //TODO change this to id
+                  chat.from !== user.id //TODO change this to id
                     ? [styles.backgroundSecondary, styles.chatFrom]
                     : [styles.backgroundPrimary, styles.chatTo],
                 ]}>
@@ -62,9 +107,15 @@ const ChatItem = (props) => {
       </ScrollView>
       <View style={[styles.marginVS, styles.marginHS, styles.row]}>
         <View style={styles.flex1}>
-          <InputView placeholder="Tulis Pesan ..." />
+          <InputView
+            placeholder="Tulis Pesan ..."
+            value={message}
+            onChangeText={(m) => setMessage(m)}
+          />
         </View>
-        <TouchableOpacity style={[styles.centerCenter, styles.marginHS]}>
+        <TouchableOpacity
+          style={[styles.centerCenter, styles.marginHS]}
+          onPress={onClickSend}>
           <MaterialIcon name="send-circle" size={40} color={colors.primary} />
         </TouchableOpacity>
       </View>
