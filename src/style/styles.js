@@ -3,12 +3,13 @@ import {StyleSheet, Dimensions} from 'react-native';
 export const widthScreen = Dimensions.get('screen').width;
 
 export const colors = {
-  primary: '#0C6170',
-  secondary: '#37BEB0',
-  tertiary: '#A4E5E0',
-  lightBg: '#DBF5F0',
-  white: '#f5f5f5',
-  grey: '#5e5e5e',
+  primary: '#116530',
+  secondary: '#18a558',
+  tertiary: '#a3ebb1',
+  lightBg: '#fff',
+  white: '#fefefe',
+  lightGrey: '#fafafa',
+  grey: '#5F5F5F',
   black: '#1f1f1f',
   opacity: '#1f1f1f99',
 };
@@ -57,7 +58,11 @@ export const styles = StyleSheet.create({
   textCenter: {
     textAlign: 'center',
   },
-  textInput: {borderWidth: 1, borderRadius: 5, borderColor: colors.secondary},
+  textInput: {
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: colors.lightGrey,
+  },
   marginHXL: {
     marginHorizontal: 42,
   },
@@ -80,12 +85,13 @@ export const styles = StyleSheet.create({
     marginVertical: 8,
   },
   button: {
-    borderRadius: 5,
+    borderRadius: 10,
     paddingVertical: 16,
     alignItems: 'center',
+    elevation: 5,
   },
   textMedium: {
-    fontWeight: '700',
+    fontWeight: '600',
     fontSize: 14,
   },
   textNote: {
@@ -107,11 +113,9 @@ export const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   mapContainer: {
+    elevation: 3,
     width: widthScreen - 32,
     height: widthScreen - 32,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: colors.secondary,
   },
   widthScreenBox: {
     height: widthScreen,

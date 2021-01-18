@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -49,6 +50,7 @@ const DashboardNasabah = ({navigation}) => {
   console.log('ini data', JSON.stringify(nasabah.penyetoran));
   return (
     <View style={styles.flex1}>
+      <StatusBar backgroundColor={colors.primary} />
       <View
         style={[
           styles.backgroundPrimary,

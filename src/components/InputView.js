@@ -14,7 +14,7 @@ const InputView = ({
   editable,
 }) => {
   return (
-    <View style={[styles.textInput, styles.backgroundWhite, styles.row]}>
+    <View style={[styles.textInput, styles.row]}>
       <TextInput
         editable={editable}
         secureTextEntry={secure}

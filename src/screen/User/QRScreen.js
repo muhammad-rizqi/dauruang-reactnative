@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   TouchableWithoutFeedback,
+  StatusBar,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import {useSelector} from 'react-redux';
@@ -22,6 +23,7 @@ const QRScreen = ({navigation}) => {
 
   return (
     <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <View style={[styles.container]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />

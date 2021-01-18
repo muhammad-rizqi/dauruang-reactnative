@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, ScrollView, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableWithoutFeedback,
+  StatusBar,
+} from 'react-native';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
 import {colors, styles} from '../../style/styles';
@@ -10,6 +16,7 @@ const ForgotPassword = (props) => {
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <View>
         <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />

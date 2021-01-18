@@ -1,12 +1,13 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {styles} from '../../style/styles';
+import {View, Text, StatusBar} from 'react-native';
+import {colors, styles} from '../../style/styles';
 import ButtonView from '../../components/ButtonView';
 import LottieView from 'lottie-react-native';
 
 const Intro = (props) => {
   return (
     <View style={[styles.flex1, styles.backgroundLight]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <View style={[styles.flex1]}>
         <LottieView
           source={require('../../assets/lottie/38217-money-growth.json')}

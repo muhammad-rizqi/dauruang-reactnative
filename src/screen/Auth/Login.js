@@ -31,8 +31,7 @@ const Login = (props) => {
   };
 
   return (
-    <ScrollView
-      style={[styles.backgroundLight, styles.flex1, styles.container]}>
+    <ScrollView style={[styles.backgroundLight, styles.flex1]}>
       <View
         style={[
           styles.flex1,
@@ -45,17 +44,17 @@ const Login = (props) => {
           aur Uang
         </Text>
       </View>
-      <View style={[styles.marginVM]}>
+      <View style={[styles.marginVM, styles.marginHM]}>
         <Text style={[styles.textH2, styles.textPrimary]}>Selamat Datang</Text>
         <Text>Masuk untuk melanjutkan</Text>
       </View>
-      <View style={[styles.centerItem]}>
+      <View style={[styles.centerItem, styles.marginHM]}>
         <InputView
           placeholder="Masukkan email"
           onChangeText={(inputEmail) => setEmail(inputEmail)}
         />
       </View>
-      <View style={[styles.centerItem, styles.marginVM]}>
+      <View style={[styles.centerItem, styles.marginVM, styles.marginHM]}>
         <InputView
           placeholder="Masukan password"
           secure={secure}
@@ -64,19 +63,23 @@ const Login = (props) => {
           onIconPress={() => setSecure(!secure)}
         />
       </View>
-      <ButtonView
-        loading={loading}
-        title="Masuk"
-        dark
-        onPress={() => onClickLogin()}
-      />
+      <View style={[styles.marginVM, styles.marginHM]}>
+        <ButtonView
+          loading={loading}
+          title="Masuk"
+          dark
+          onPress={() => onClickLogin()}
+        />
+      </View>
       <View style={[styles.centerItem, styles.marginVM]}>
         <Text>atau</Text>
       </View>
-      <ButtonView
-        title="Daftar"
-        onPress={() => props.navigation.navigate('Register')}
-      />
+      <View style={[styles.marginVM, styles.marginHM]}>
+        <ButtonView
+          title="Daftar"
+          onPress={() => props.navigation.navigate('Register')}
+        />
+      </View>
       <View style={[styles.centerItem, styles.marginVM]}>
         <Text
           style={styles.textMedium}

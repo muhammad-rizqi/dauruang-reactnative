@@ -8,7 +8,6 @@ import {colors} from './src/style/styles';
 const App = () => {
   return (
     <Provider store={store}>
-      <StatusBar backgroundColor={colors.primary} />
       <AppRouter />
     </Provider>
   );

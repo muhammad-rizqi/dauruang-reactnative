@@ -1,6 +1,12 @@
 import React from 'react';
 
-import {Text, ToastAndroid, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  StatusBar,
+  Text,
+  ToastAndroid,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -26,6 +32,7 @@ const ScanQR = ({navigation}) => {
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <View style={[styles.container]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />

@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   ToastAndroid,
+  StatusBar,
 } from 'react-native';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
@@ -67,6 +68,7 @@ const Jual = ({navigation}) => {
   return (
     <ScrollView
       style={[styles.backgroundLight, styles.flex1, styles.container]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <View style={[styles.row, styles.centerCenter]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />

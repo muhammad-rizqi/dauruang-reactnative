@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   ToastAndroid,
+  StatusBar,
 } from 'react-native';
 import ButtonView from '../../components/ButtonView';
 import InputView from '../../components/InputView';
@@ -64,9 +65,9 @@ const Settings = ({navigation}) => {
   };
 
   return (
-    <ScrollView
-      style={[styles.backgroundLight, styles.flex1, styles.container]}>
-      <View style={[styles.row, styles.centerCenter]}>
+    <ScrollView style={[styles.backgroundLight, styles.flex1]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
+      <View style={[styles.row, styles.centerCenter, styles.container]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />
         </TouchableWithoutFeedback>
@@ -80,7 +81,7 @@ const Settings = ({navigation}) => {
           Pengaturan
         </Text>
       </View>
-      <View style={styles.marginVXL}>
+      <View style={styles.marginHM}>
         <Text style={[styles.textH3, styles.textPrimary]}>Ubah Kata Sandi</Text>
         <View style={[styles.centerItem, styles.marginVS]}>
           <InputView
@@ -111,7 +112,7 @@ const Settings = ({navigation}) => {
         />
         <View style={[styles.centerItem, styles.marginVS]} />
       </View>
-      <View>
+      <View style={styles.marginHM}>
         <Text style={[styles.textH3, styles.textPrimary, styles.marginVM]}>
           Hapus Akun
         </Text>

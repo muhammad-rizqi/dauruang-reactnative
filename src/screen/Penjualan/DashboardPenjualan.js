@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableWithoutFeedback,
   RefreshControl,
+  StatusBar,
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -37,6 +38,7 @@ const DashboardPenjualan = ({navigation}) => {
 
   return (
     <View style={styles.flex1}>
+      <StatusBar backgroundColor={colors.primary} translucent />
       <View
         style={[
           styles.backgroundPrimary,

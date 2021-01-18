@@ -99,37 +99,45 @@ const Register = (props) => {
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
-      <ScrollView style={[styles.container]}>
-        <View>
+      <ScrollView>
+        <View style={styles.container}>
           <TouchableWithoutFeedback onPress={() => props.navigation.goBack()}>
             <Icon name="chevron-left" size={20} color={colors.primary} />
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.marginVM} />
-        <View style={[styles.row, styles.centerCenter, styles.marginVS]}>
+        <View
+          style={[
+            styles.row,
+            styles.centerCenter,
+            styles.marginVS,
+            styles.marginHM,
+          ]}>
           <Logo width={52} height={52} />
           <View style={[styles.flex1, styles.marginHS]}>
-            <Text style={[styles.textH2, styles.textPrimary]}>Buat akun</Text>
+            <Text style={[styles.textH2, styles.textPrimary]}>
+              Buat Akun Daur Uang
+            </Text>
             <Text>Jadilah bagian dari kami</Text>
           </View>
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
           <InputView
             placeholder="Nama Lengkap"
             onChangeText={(n) => setNama(n)}
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
           <InputView placeholder="Email" onChangeText={(e) => setEmail(e)} />
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
           <InputView
             placeholder="Nomor Telepon"
             onChangeText={(t) => setTelepon(t)}
             type="number-pad"
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
           <InputView
             placeholder="Kata Sandi"
             name={secure ? 'eye-off' : 'eye'}
@@ -138,7 +146,7 @@ const Register = (props) => {
             onChangeText={(p) => setPassword(p)}
           />
         </View>
-        <View style={[styles.marginVS]}>
+        <View style={[styles.marginVS, styles.marginHM]}>
           <View style={styles.mapContainer}>
             {position.latitude !== undefined ? (
               <>
@@ -187,7 +195,7 @@ const Register = (props) => {
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
-          style={[styles.row, styles.centerCenter]}>
+          style={[styles.row, styles.centerCenter, styles.marginHM]}>
           <Text
             style={[
               styles.textPrimary,
@@ -205,7 +213,7 @@ const Register = (props) => {
           />
         </TouchableOpacity>
 
-        <View style={[styles.marginVS]}>
+        <View style={[styles.marginVS, styles.marginHM]}>
           <ButtonView
             title="Mendaftar"
             dark
@@ -214,7 +222,7 @@ const Register = (props) => {
             onPress={() => onClickRegister()}
           />
         </View>
-        <Text style={styles.textCenter}>
+        <Text style={[styles.textCenter, styles.marginHM]}>
           Dengan mendaftar, Anda menyetujui Persyaratan, Kebijakan Data, dan
           Kebijakan Layanan kami.
         </Text>

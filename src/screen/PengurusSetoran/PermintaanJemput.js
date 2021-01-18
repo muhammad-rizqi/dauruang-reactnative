@@ -8,6 +8,7 @@ import {
   ToastAndroid,
   Modal,
   ActivityIndicator,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonView from '../../components/ButtonView';
@@ -66,6 +67,7 @@ const PermintaanJemput = ({navigation, route}) => {
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
+      <StatusBar backgroundColor={colors.primary} translucent />
       <Modal transparent={true} visible={loading} style={[styles.flex1]}>
         <View
           style={[styles.flex1, styles.centerCenter, styles.backgroundOpacity]}>

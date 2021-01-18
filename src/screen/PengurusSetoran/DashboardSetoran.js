@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   RefreshControl,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -42,6 +43,7 @@ const DashboardSetoran = ({navigation}) => {
 
   return (
     <View style={styles.flex1}>
+      <StatusBar backgroundColor={colors.primary} />
       <View
         style={[
           styles.backgroundPrimary,

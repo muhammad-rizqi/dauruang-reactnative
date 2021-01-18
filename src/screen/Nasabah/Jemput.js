@@ -8,6 +8,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
   TextInput,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonView from '../../components/ButtonView';
@@ -103,6 +104,7 @@ const Jemput = ({navigation, route}) => {
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <ScrollView style={[styles.container]}>
         <View style={[styles.row, styles.centerCenter]}>
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>

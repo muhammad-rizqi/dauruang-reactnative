@@ -9,6 +9,7 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   ToastAndroid,
+  StatusBar,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import InputView from '../../components/InputView';
@@ -58,6 +59,7 @@ const ChatItem = ({navigation, route}) => {
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <View
         style={[
           styles.row,
