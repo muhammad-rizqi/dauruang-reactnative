@@ -159,4 +159,11 @@ export const styles = StyleSheet.create({
   space: {
     justifyContent: 'space-between',
   },
+  topBorderCurve: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  elevation: {
+    elevation: 5,
+  },
 });

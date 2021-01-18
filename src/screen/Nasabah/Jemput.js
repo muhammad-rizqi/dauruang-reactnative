@@ -23,7 +23,7 @@ import {ajukanJemput, batalkanJemput} from '../../services/endpoint/nasabah';
 const Jemput = ({navigation, route}) => {
   const {user} = useSelector((state) => state);
   const penjemputan = route.params ? route.params.penjemputan : null;
-
+  const [show, setShow] = useState(false);
   const [mapReady, setMapReady] = useState(false);
   const [markCoord, setMarkCoord] = useState(
     penjemputan ? JSON.parse(penjemputan.lokasi) : JSON.parse(user.lokasi),
@@ -66,12 +66,12 @@ const Jemput = ({navigation, route}) => {
       ajukanJemput(user.id, name, phone, mapsData, keterangan)
         .then((res) => {
           if (res.code === 200) {
-            setLoading(false);
             ToastAndroid.show('Berhasil diajukan', ToastAndroid.LONG);
             navigation.goBack();
           } else {
             ToastAndroid.show('Gagal diajukan', ToastAndroid.LONG);
           }
+          setLoading(false);
         })
         .catch((e) => {
           console.log(e);
@@ -105,94 +105,107 @@ const Jemput = ({navigation, route}) => {
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
       <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
-      <ScrollView style={[styles.container]}>
-        <View style={[styles.row, styles.centerCenter]}>
-          <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
-            <Icon name="chevron-left" size={26} color={colors.primary} />
-          </TouchableWithoutFeedback>
-          <Text
-            style={[
-              styles.textH3,
-              styles.textPrimary,
-              styles.flex1,
-              styles.marginHM,
-            ]}>
-            {penjemputan ? 'Permintaan Jemput' : 'Ajukan Jemput Sampah'}
-          </Text>
-        </View>
-        <View style={styles.marginVM} />
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView
-            placeholder="Nama Pengirim"
-            value={name}
-            editable={!penjemputan}
-            onChangeText={(inputName) => setName(inputName)}
-          />
-        </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView
-            placeholder="Nomor Telepon"
-            type="number-pad"
-            value={phone}
-            onChangeText={(inputPhone) => setPhone(inputPhone)}
-            editable={!penjemputan}
-          />
-        </View>
-        <View
-          style={[styles.textInput, styles.backgroundWhite, styles.marginVS]}>
-          <TextInput
-            editable={!penjemputan}
-            style={[styles.marginHM, {maxHeight: 100}]}
-            placeholder="Deskripsikan apa yang ingin dikirim"
-            multiline={true}
-            value={keterangan}
-            onChangeText={(ket) => setKeterangan(ket)}
-          />
-        </View>
-        <View style={[styles.marginVS]}>
-          <View style={styles.mapContainer}>
-            {mapsData.latitude !== undefined ? (
-              <>
-                <MapView
-                  provider={PROVIDER_GOOGLE}
-                  initialRegion={regionFrom(mapsData)}
-                  onMapReady={() => setMapReady(true)}
-                  showsUserLocation
-                  showsMyLocationButton
-                  onPoiClick={(e) => {
-                    if (!penjemputan) {
-                      setMarkCoord(e.nativeEvent.coordinate);
-                      reverseLocation(e.nativeEvent.coordinate, e.nativeEvent);
-                    }
-                  }}
-                  onPress={(e) => {
-                    if (!penjemputan) {
-                      setMarkCoord(e.nativeEvent.coordinate);
-                      reverseLocation(e.nativeEvent.coordinate);
-                    }
-                  }}
-                  style={styles.map}>
-                  {mapReady ? (
-                    <Marker
-                      draggable
-                      coordinate={markCoord}
-                      onDragEnd={(e) => {
-                        if (!penjemputan) {
-                          setMarkCoord(e.nativeEvent.coordinate);
-                          reverseLocation(e.nativeEvent.coordinate);
-                        }
-                      }}
-                    />
-                  ) : null}
-                </MapView>
-              </>
+      {mapsData.latitude !== undefined ? (
+        <>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            initialRegion={regionFrom(mapsData)}
+            onMapReady={() => setMapReady(true)}
+            showsUserLocation
+            showsMyLocationButton
+            onPoiClick={(e) => {
+              if (!penjemputan) {
+                setMarkCoord(e.nativeEvent.coordinate);
+                reverseLocation(e.nativeEvent.coordinate, e.nativeEvent);
+              }
+            }}
+            onPress={(e) => {
+              if (!penjemputan) {
+                setMarkCoord(e.nativeEvent.coordinate);
+                reverseLocation(e.nativeEvent.coordinate);
+              }
+            }}
+            style={styles.map}>
+            {mapReady ? (
+              <Marker
+                draggable
+                coordinate={markCoord}
+                onDragEnd={(e) => {
+                  if (!penjemputan) {
+                    setMarkCoord(e.nativeEvent.coordinate);
+                    reverseLocation(e.nativeEvent.coordinate);
+                  }
+                }}
+              />
             ) : null}
-            <Text
-              style={[styles.textMedium, styles.marginHS, styles.textPrimary]}>
-              Alamat
-            </Text>
-          </View>
-        </View>
+          </MapView>
+        </>
+      ) : null}
+      <View style={[styles.row, styles.container]}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <Icon name="chevron-left" size={26} color={colors.primary} />
+        </TouchableWithoutFeedback>
+      </View>
+      <View style={styles.flex1} />
+      <TouchableOpacity
+        onPress={() => setShow(!show)}
+        style={styles.centerCenter}>
+        <Icon
+          name={show ? 'chevron-down' : 'chevron-up'}
+          size={26}
+          color={colors.primary}
+        />
+      </TouchableOpacity>
+      <View
+        style={[
+          styles.container,
+          styles.backgroundLight,
+          styles.topBorderCurve,
+          styles.elevation,
+        ]}>
+        <Text style={[styles.textH3, styles.textPrimary]}>
+          Ajukan Penjemputan
+        </Text>
+        {show ? (
+          <>
+            <View style={[styles.marginVS]}>
+              <Text>Nama Pengirim</Text>
+              <InputView
+                placeholder="Masukkan Nama Pengirim"
+                value={name}
+                editable={!penjemputan}
+                onChangeText={(inputName) => setName(inputName)}
+              />
+            </View>
+            <View style={[styles.marginVS]}>
+              <Text>Nomor Telepon</Text>
+              <InputView
+                placeholder="+62812345678"
+                type="number-pad"
+                value={phone}
+                onChangeText={(inputPhone) => setPhone(inputPhone)}
+                editable={!penjemputan}
+              />
+            </View>
+            <Text>Deskripsi</Text>
+            <View
+              style={[
+                styles.textInput,
+                styles.backgroundWhite,
+                styles.marginVS,
+              ]}>
+              <TextInput
+                editable={!penjemputan}
+                style={[styles.marginHM, {maxHeight: 100}]}
+                placeholder="Apa yang ingin Anda dikirim?"
+                multiline={true}
+                value={keterangan}
+                onChangeText={(ket) => setKeterangan(ket)}
+              />
+            </View>
+          </>
+        ) : null}
+
         <TouchableOpacity
           onPress={() => {
             mapsData.place_id
@@ -203,24 +216,19 @@ const Jemput = ({navigation, route}) => {
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
-          style={[styles.row, styles.centerCenter]}>
+          style={[styles.row, styles.centerCenter, styles.marginVM]}>
+          <Icon name="map-marker-alt" size={24} color={colors.primary} />
           <Text
             style={[
+              styles.textH3,
               styles.textPrimary,
-              styles.textMedium,
-              styles.marginVM,
               styles.flex1,
-            ]}>
+              styles.marginHM,
+            ]}
+            numberOfLines={1}>
             {mapsData.name}
           </Text>
-          <Icon
-            name="map-marked-alt"
-            size={24}
-            style={styles.marginHS}
-            color={colors.primary}
-          />
         </TouchableOpacity>
-
         <View style={[styles.marginVS]}>
           {penjemputan ? (
             penjemputan.status === 1 ? (
@@ -245,8 +253,7 @@ const Jemput = ({navigation, route}) => {
             />
           )}
         </View>
-        <View style={styles.marginVM} />
-      </ScrollView>
+      </View>
     </View>
   );
 };
