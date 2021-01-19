@@ -173,18 +173,14 @@ const DashboardSetoran = ({navigation}) => {
                       styles.row,
                     ]}>
                     <View style={styles.flex1}>
-                      <Text style={styles.textNote}>
-                        ID Penjemputan: #{jemput.id}
-                      </Text>
-                      <Text style={styles.text}>{jemput.tanggal}</Text>
                       <View style={styles.marginVS}>
                         <Text style={[styles.textH3, styles.text]}>
                           {jemput.nama_pengirim}
                         </Text>
-                        <Text style={styles.text}>{jemput.keterangan}</Text>
-                        <Text style={styles.textNote}>
+                        <Text style={styles.text} numberOfLines={3}>
                           {JSON.parse(jemput.lokasi).name}
                         </Text>
+                        <Text style={styles.text}>{jemput.tanggal}</Text>
                       </View>
                     </View>
                     <View>

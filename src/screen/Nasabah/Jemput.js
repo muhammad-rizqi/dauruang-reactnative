@@ -31,9 +31,6 @@ const Jemput = ({navigation, route}) => {
   const [mapsData, setMapsData] = useState(
     penjemputan ? JSON.parse(penjemputan.lokasi) : JSON.parse(user.lokasi),
   );
-  console.log('====================================');
-  console.log(penjemputan);
-  console.log('====================================');
   const [name, setName] = useState(
     penjemputan ? penjemputan.nama_pengirim : user.nama_lengkap,
   );

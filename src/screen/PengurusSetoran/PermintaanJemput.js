@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   View,
@@ -17,6 +18,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {batalkanJemput} from '../../services/endpoint/nasabah';
 import {useSelector} from 'react-redux';
 import {confirmJemput} from '../../services/endpoint/penyetor';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const PermintaanJemput = ({navigation, route}) => {
   const [mapReady, setMapReady] = useState(false);
@@ -137,7 +139,9 @@ const PermintaanJemput = ({navigation, route}) => {
             </View>
             <View style={styles.marginVS}>
               <Text style={styles.textMedium}>Keterangan</Text>
-              <Text>{penjemputan.keterangan}</Text>
+              <ScrollView style={{maxHeight: 100}}>
+                <Text>{penjemputan.keterangan}</Text>
+              </ScrollView>
             </View>
           </>
         ) : null}
@@ -190,7 +194,7 @@ const PermintaanJemput = ({navigation, route}) => {
                     onPress={() => onClickBatalkan()}
                   />
                 </View>
-                <View style={[styles.marginVS, styles.flex1]}>
+                <View style={[styles.marginVS, styles.flex1, styles.marginHS]}>
                   <ButtonView
                     title="Jemput Sekarang"
                     dark
