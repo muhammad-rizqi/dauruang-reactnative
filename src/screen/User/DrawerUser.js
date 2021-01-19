@@ -12,15 +12,23 @@ const Drawer = ({navigation}) => {
   return (
     <View>
       <View style={[styles.container, styles.backgroundPrimary]}>
-        <Image
-          source={{uri: user.avatar}}
-          style={[styles.avatarL, styles.marginVS]}
-        />
-        <View>
-          <Text style={[styles.textH3, styles.textWhite]}>
-            {user.nama_lengkap}
-          </Text>
-          <Text style={[styles.textWhite]}>{user.telepon}</Text>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('Profile')}>
+          <Image
+            source={{uri: user.avatar}}
+            style={[styles.avatarL, styles.marginVS]}
+          />
+        </TouchableNativeFeedback>
+        <View style={[styles.row, styles.centerCenter]}>
+          <View style={styles.flex1}>
+            <Text style={[styles.textH3, styles.textWhite]}>
+              {user.nama_lengkap}
+            </Text>
+            <Text style={[styles.textWhite]}>{user.telepon}</Text>
+          </View>
+          <TouchableNativeFeedback
+            onPress={() => navigation.navigate('QRScreen')}>
+            <MaterialIcon name="qrcode-scan" size={28} color={colors.white} />
+          </TouchableNativeFeedback>
         </View>
       </View>
       <View>

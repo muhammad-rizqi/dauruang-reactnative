@@ -129,9 +129,6 @@ const DashboardSetoran = ({navigation}) => {
                       styles.marginVS,
                     ]}>
                     <View style={styles.flex1}>
-                      <Text style={styles.textNote}>
-                        ID Penyetoran : #{setoran.id}
-                      </Text>
                       <View style={styles.marginVS}>
                         <Text style={[styles.textH3, styles.text]}>
                           {setoran.relation.nasabah.nama_lengkap}

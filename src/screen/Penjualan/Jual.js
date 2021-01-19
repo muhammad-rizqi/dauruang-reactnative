@@ -66,10 +66,9 @@ const Jual = ({navigation}) => {
   }, []);
 
   return (
-    <ScrollView
-      style={[styles.backgroundLight, styles.flex1, styles.container]}>
+    <ScrollView style={[styles.backgroundLight, styles.flex1]}>
       <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
-      <View style={[styles.row, styles.centerCenter]}>
+      <View style={[styles.row, styles.centerCenter, styles.container]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={20} color={colors.primary} />
         </TouchableWithoutFeedback>
@@ -83,13 +82,15 @@ const Jual = ({navigation}) => {
           Penjualan Sampah
         </Text>
       </View>
-      <View style={styles.marginVM}>
-        <View style={[styles.centerItem, styles.marginVS]}>
+      <View style={[styles.marginVM, styles.marginHM]}>
+        <View style={[styles.marginVS]}>
+          <Text>Pengepul</Text>
           <InputView
-            placeholder="Client"
+            placeholder="Masukkan Nama Client"
             onChangeText={(inputClient) => setClient(inputClient)}
           />
         </View>
+        <Text>Jenis Sampah</Text>
         <View style={[styles.textInput, styles.backgroundWhite]}>
           <Picker
             mode="dropdown"
@@ -104,15 +105,17 @@ const Jual = ({navigation}) => {
             ))}
           </Picker>
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.marginVS]}>
+          <Text>Harga Satuan</Text>
           <InputView
             placeholder="Harga Satuan"
             onChangeText={(price) => setHarga(price)}
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.marginVS]}>
+          <Text>Berat Sampah</Text>
           <InputView
-            placeholder="Berat Sampah"
+            placeholder="Masukkan Berat Sampah"
             onChangeText={(weight) => setBerat(weight)}
           />
         </View>

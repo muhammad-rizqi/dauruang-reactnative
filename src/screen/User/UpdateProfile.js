@@ -145,23 +145,26 @@ const UpdateProfile = ({navigation}) => {
           </ImageBackground>
         </TouchableOpacity>
         <View style={styles.container}>
-          <View style={[styles.centerItem, styles.marginVS]}>
+          <View style={[styles.marginVS]}>
+            <Text>Nama Lengkap</Text>
             <InputView
-              placeholder="Nama Lengkap"
+              placeholder="Masukkan Nama Lengkap"
               value={name}
               onChangeText={(inputName) => setName(inputName)}
             />
           </View>
-          <View style={[styles.centerItem, styles.marginVS]}>
+          <View style={[styles.marginVS]}>
+            <Text>Email</Text>
             <InputView
-              placeholder="Email"
+              placeholder="Masukkan Email"
               value={email}
               onChangeText={(inputEmail) => setEmail(inputEmail)}
             />
           </View>
-          <View style={[styles.centerItem, styles.marginVS]}>
+          <View style={[styles.marginVS]}>
+            <Text>Nomor Telepon</Text>
             <InputView
-              placeholder="Nomor Telepon"
+              placeholder="Masukkan Nomor Telepon"
               type="number-pad"
               value={phone}
               onChangeText={(inputPhone) => setPhone(inputPhone)}

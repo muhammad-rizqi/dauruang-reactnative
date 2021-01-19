@@ -121,25 +121,32 @@ const Register = (props) => {
             <Text>Jadilah bagian dari kami</Text>
           </View>
         </View>
-        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
+        <View style={[styles.marginVS, styles.marginHM]}>
+          <Text>Nama Lengkap</Text>
           <InputView
-            placeholder="Nama Lengkap"
+            placeholder="Masukkan Nama Lengkap"
             onChangeText={(n) => setNama(n)}
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
-          <InputView placeholder="Email" onChangeText={(e) => setEmail(e)} />
-        </View>
-        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
+        <View style={[styles.marginVS, styles.marginHM]}>
+          <Text>Email</Text>
           <InputView
-            placeholder="Nomor Telepon"
+            placeholder="Masukkan Email"
+            onChangeText={(e) => setEmail(e)}
+          />
+        </View>
+        <View style={[styles.marginVS, styles.marginHM]}>
+          <Text>Nomor Telepon</Text>
+          <InputView
+            placeholder="MasukkanNomor Telepon"
             onChangeText={(t) => setTelepon(t)}
             type="number-pad"
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS, styles.marginHM]}>
+        <View style={[styles.marginVS, styles.marginHM]}>
+          <Text>Kata Sandi</Text>
           <InputView
-            placeholder="Kata Sandi"
+            placeholder="Masukkan Kata Sandi"
             name={secure ? 'eye-off' : 'eye'}
             secure={secure}
             onIconPress={() => setSecure(false)}

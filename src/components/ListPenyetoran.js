@@ -14,8 +14,7 @@ const ListPenyetoran = ({dataPenyetoran}) => {
           styles.marginVS,
         ]}>
         <View style={styles.flex1}>
-          <Text style={styles.textNote}>ID Penyetoran : #{setoran.id}</Text>
-          <Text style={[styles.textH3]}>
+          <Text style={[styles.textH3, styles.text]}>
             {setoran.relation.jenis_sampah.nama_kategori} {setoran.berat}Kg
           </Text>
           <Text style={styles.textNote}>{setoran.tanggal}</Text>

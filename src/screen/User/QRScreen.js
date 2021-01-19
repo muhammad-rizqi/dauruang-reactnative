@@ -32,13 +32,21 @@ const QRScreen = ({navigation}) => {
       <View style={[styles.flex1, styles.centerCenter]}>
         <Text style={[styles.textH2, styles.textPrimary]}>Pindai QR Code</Text>
         <View style={[styles.card, styles.backgroundWhite, styles.marginVM]}>
-          <View style={[styles.row, styles.centerCard, styles.marginVM]}>
+          <View style={[styles.row, styles.centerCenter]}>
             <Image source={{uri: user.avatar}} style={styles.avatarM} />
-            <Text style={[styles.marginHM, styles.textH2, styles.textPrimary]}>
+            <Text
+              style={[
+                styles.marginHM,
+                styles.textH3,
+                styles.flex1,
+                styles.textPrimary,
+              ]}>
               {user.nama_lengkap}
             </Text>
           </View>
-          <QRCode size={200} value={JSON.stringify(dataQR)} />
+          <View style={styles.marginVM}>
+            <QRCode size={200} value={JSON.stringify(dataQR)} />
+          </View>
         </View>
         <Text>Tunjukkan QR ini ke petugas untuk dipindai</Text>
       </View>

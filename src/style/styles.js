@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   textMedium: {
-    fontWeight: '600',
+    fontWeight: '700',
     fontSize: 14,
   },
   textNote: {

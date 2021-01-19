@@ -38,7 +38,7 @@ const DashboardPenjualan = ({navigation}) => {
 
   return (
     <View style={styles.flex1}>
-      <StatusBar backgroundColor={colors.primary} translucent />
+      <StatusBar backgroundColor={colors.primary} />
       <View
         style={[
           styles.backgroundPrimary,
@@ -123,9 +123,6 @@ const DashboardPenjualan = ({navigation}) => {
                     styles.marginVS,
                   ]}>
                   <View style={styles.flex1}>
-                    <Text style={styles.textNote}>
-                      ID Penjualan : #{jual.id}
-                    </Text>
                     <View style={styles.marginVS}>
                       <Text style={[styles.text, styles.textH3]}>
                         {jual.relation.jenis_sampah.nama_kategori} {jual.berat}
@@ -158,10 +155,10 @@ const DashboardPenjualan = ({navigation}) => {
                       styles.row,
                     ]}>
                     <View style={styles.flex1}>
-                      <Text style={styles.textNote}>
-                        ID Kategori: #{stock.id}
+                      <Text style={styles.textNote}>Kategori</Text>
+                      <Text style={[styles.textH3, styles.text]}>
+                        {stock.nama_kategori}
                       </Text>
-                      <Text style={styles.textH3}>{stock.nama_kategori}</Text>
                     </View>
                     <View style={styles.centerCenter}>
                       <Text style={styles.textNote}>Stock</Text>

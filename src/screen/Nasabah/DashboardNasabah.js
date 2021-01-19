@@ -152,15 +152,11 @@ const DashboardNasabah = ({navigation}) => {
                       styles.row,
                     ]}>
                     <View style={styles.flex1}>
-                      <Text style={styles.textNote}>
-                        ID Penarikan: #{tarik.id}
+                      <Text style={styles.textNote}>Penarikan: </Text>
+                      <Text style={[styles.textH3, styles.text]}>
+                        Rp. {tarik.kredit},-
                       </Text>
-                      <Text style={styles.textNote}>Tanggal Penarikan</Text>
-                      <Text style={styles.textH3}>{tarik.tanggal}</Text>
-                    </View>
-                    <View style={styles.centerCenter}>
-                      <Text style={styles.textNote}>Total Penarikan: </Text>
-                      <Text style={styles.textH3}>Rp. {tarik.kredit},-</Text>
+                      <Text style={styles.text}>{tarik.tanggal}</Text>
                     </View>
                   </View>
                 ))

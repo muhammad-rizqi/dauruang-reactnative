@@ -57,10 +57,9 @@ const Setoran = ({navigation, route}) => {
   }, []);
 
   return (
-    <ScrollView
-      style={[styles.backgroundLight, styles.flex1, styles.container]}>
+    <ScrollView style={[styles.backgroundLight, styles.flex1]}>
       <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
-      <View style={[styles.row, styles.centerCenter]}>
+      <View style={[styles.row, styles.centerCenter, styles.container]}>
         <TouchableWithoutFeedback
           onPress={() => navigation.navigate('DashboardSetoran')}>
           <Icon name="chevron-left" size={20} color={colors.primary} />
@@ -72,16 +71,23 @@ const Setoran = ({navigation, route}) => {
             styles.flex1,
             styles.marginHM,
           ]}>
-          Setor Sampah
+          Setor Sampah Nasabah
         </Text>
       </View>
-      <View style={styles.marginVM}>
-        <View style={[styles.row, styles.centerCard, styles.marginVM]}>
+      <View style={styles.marginHM}>
+        <View style={[styles.row, styles.centerCenter, styles.marginVS]}>
           <Image source={{uri: nasabah.avatar}} style={styles.avatarM} />
-          <Text style={[styles.marginHM, styles.textH2, styles.textPrimary]}>
+          <Text
+            style={[
+              styles.marginHS,
+              styles.textH3,
+              styles.textPrimary,
+              styles.flex1,
+            ]}>
             {nasabah.nama_lengkap}
           </Text>
         </View>
+        <Text>Jenis Sampah</Text>
         <View style={[styles.textInput, styles.backgroundWhite]}>
           <Picker
             mode="dropdown"
@@ -90,17 +96,18 @@ const Setoran = ({navigation, route}) => {
             {category.map((sampah) => (
               <Picker.Item
                 key={sampah.id}
-                label={sampah.nama_kategori + ' - Rp. ' + sampah.harga}
+                label={sampah.nama_kategori + ' (Rp. ' + sampah.harga + ')'}
                 value={sampah.id}
               />
             ))}
           </Picker>
         </View>
-        <View style={styles.row}>
-          <View style={[styles.centerItem, styles.marginVS, styles.flex1]}>
+        <View style={[styles.row]}>
+          <View style={[styles.marginVS, styles.flex1]}>
+            <Text>Berat Sampah {'(Kg)'}</Text>
             <InputView
               value={`${berat}`}
-              placeholder="Berat Sampah"
+              placeholder="Berat Sampah "
               type="numeric"
               onChangeText={(i) => setBerat(i)}
             />
@@ -141,14 +148,14 @@ const Setoran = ({navigation, route}) => {
                 <Text style={styles.textH3}>Total TopUp</Text>
                 <Text style={styles.textH3}>
                   Rp.{' '}
-                  {category[selected]
+                  {category[selected] && berat !== ''
                     ? !isEnabled
                       ? Number.parseFloat(berat) * category[selected].harga
                       : Number.parseFloat(berat) * category[selected].harga -
                         Number.parseFloat(berat) *
                           category[selected].harga *
                           0.2
-                    : null}
+                    : 0}
                 </Text>
               </View>
             </>
