@@ -41,10 +41,10 @@ export const getDataJemputan = () => {
     });
 };
 
-export const confirmJemput = (penjemputanId, pengurusId) => {
+export const confirmJemput = (penjemputanId, pengurusId, status) => {
   const data = {
     id_pengurus: pengurusId,
-    status: 1,
+    status: status,
   };
   return api('PATCH', '/penjemputan/' + penjemputanId, data);
 };

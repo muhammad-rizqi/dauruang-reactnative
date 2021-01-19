@@ -83,29 +83,32 @@ const Settings = ({navigation}) => {
       </View>
       <View style={styles.marginHM}>
         <Text style={[styles.textH3, styles.textPrimary]}>Ubah Kata Sandi</Text>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.marginVS]}>
+          <Text>Password Lama</Text>
           <InputView
-            placeholder="Password Lama"
+            placeholder="Masukkan password lama"
             secure
             onChangeText={(o) => setOldPassword(o)}
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.marginVS]}>
+          <Text>Password Baru</Text>
           <InputView
-            placeholder="Password Baru"
+            placeholder="Masukkan password baru"
             secure
             onChangeText={(n) => setNewPassword(n)}
           />
         </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
+        <View style={[styles.marginVS]}>
+          <Text>Konfirmasi Password Baru</Text>
           <InputView
-            placeholder="Konfirmasi Password"
+            placeholder="Masukkan konfirmasi password baru"
             secure
             onChangeText={(c) => setConfirmPassword(c)}
           />
         </View>
         <ButtonView
-          title="Reset Password"
+          title="Ganti Password"
           dark
           onPress={onClickChange}
           loading={loading}

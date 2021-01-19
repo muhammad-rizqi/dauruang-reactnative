@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  ScrollView,
   TouchableWithoutFeedback,
   TouchableOpacity,
   ToastAndroid,
@@ -23,7 +22,7 @@ const PermintaanJemput = ({navigation, route}) => {
   const [mapReady, setMapReady] = useState(false);
   const [loading, setLoading] = useState(false);
   const {user} = useSelector((state) => state);
-
+  const [show, setShow] = useState(true);
   const {penjemputan} = route.params;
   const mapsData = JSON.parse(penjemputan.lokasi);
 
@@ -46,16 +45,16 @@ const PermintaanJemput = ({navigation, route}) => {
       });
   };
 
-  const onClickConfirm = () => {
+  const onClickConfirm = (status) => {
     setLoading(true);
-    confirmJemput(penjemputan.id, user.id)
+    confirmJemput(penjemputan.id, user.id, status)
       .then((res) => {
         if (res.code === 200) {
           setLoading(false);
-          ToastAndroid.show('Berhasil dikonfirmasi', ToastAndroid.LONG);
+          ToastAndroid.show('Berhasil', ToastAndroid.LONG);
           navigation.goBack();
         } else {
-          ToastAndroid.show('Berhasil dikonfirmasi', ToastAndroid.LONG);
+          ToastAndroid.show('Gagal', ToastAndroid.LONG);
         }
       })
       .catch((e) => {
@@ -67,7 +66,7 @@ const PermintaanJemput = ({navigation, route}) => {
 
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
-      <StatusBar backgroundColor={colors.primary} translucent />
+      <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
       <Modal transparent={true} visible={loading} style={[styles.flex1]}>
         <View
           style={[styles.flex1, styles.centerCenter, styles.backgroundOpacity]}>
@@ -79,55 +78,70 @@ const PermintaanJemput = ({navigation, route}) => {
           </View>
         </View>
       </Modal>
-      <View style={[styles.row, styles.centerCenter, styles.container]}>
+      {mapsData.latitude !== undefined ? (
+        <>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            initialRegion={regionFrom(mapsData)}
+            onMapReady={() => setMapReady(true)}
+            showsUserLocation
+            showsMyLocationButton
+            style={styles.map}>
+            {console.log(regionFrom(mapsData))}
+            {mapReady ? <Marker draggable coordinate={mapsData} /> : null}
+          </MapView>
+        </>
+      ) : null}
+      <View style={[styles.row, styles.container]}>
         <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <Icon name="chevron-left" size={26} color={colors.primary} />
         </TouchableWithoutFeedback>
-        <Text
-          style={[
-            styles.textH3,
-            styles.textPrimary,
-            styles.flex1,
-            styles.marginHM,
-          ]}>
-          Permintaan Jemput Sampah
-        </Text>
       </View>
-      <ScrollView style={[styles.container]}>
-        <View style={styles.marginVS}>
-          <Text style={styles.textMedium}>Nama Pengirim</Text>
-          <Text style={styles.textH3}>{penjemputan.nama_pengirim}</Text>
-        </View>
-        <View style={styles.marginVS}>
-          <Text style={styles.textMedium}>No Telepon</Text>
-          <Text>{penjemputan.telepon}</Text>
-        </View>
-        <View style={styles.marginVS}>
-          <Text style={styles.textMedium}>Keterangan</Text>
-          <Text>{penjemputan.keterangan}</Text>
-        </View>
-        <View style={[styles.marginVS]}>
-          <View style={styles.mapContainer}>
-            {mapsData.latitude !== undefined ? (
-              <>
-                <MapView
-                  provider={PROVIDER_GOOGLE}
-                  initialRegion={regionFrom(mapsData)}
-                  onMapReady={() => setMapReady(true)}
-                  showsUserLocation
-                  showsMyLocationButton
-                  style={styles.map}>
-                  {console.log(regionFrom(mapsData))}
-                  {mapReady ? <Marker draggable coordinate={mapsData} /> : null}
-                </MapView>
-              </>
-            ) : null}
-            <Text
-              style={[styles.textMedium, styles.marginHS, styles.textPrimary]}>
-              Alamat Penjemputan
-            </Text>
+      <View style={styles.flex1} />
+      <TouchableOpacity
+        onPress={() => setShow(!show)}
+        style={styles.centerCenter}>
+        <Icon
+          name={show ? 'chevron-down' : 'chevron-up'}
+          size={26}
+          color={colors.primary}
+        />
+      </TouchableOpacity>
+      <View
+        style={[
+          styles.container,
+          styles.backgroundLight,
+          styles.topBorderCurve,
+          styles.elevation,
+        ]}>
+        <Text style={[styles.textH3, styles.textPrimary]}>Jemput sampah</Text>
+        <View style={[styles.marginVS, styles.row, styles.centerCenter]}>
+          <View style={styles.flex1}>
+            <Text style={styles.textMedium}>Nama Pengirim</Text>
+            <Text style={styles.textH3}>{penjemputan.nama_pengirim}</Text>
           </View>
+          <TouchableWithoutFeedback
+            onPress={() =>
+              navigation.navigate('ChatItem', {
+                to: penjemputan.relation.nasabah,
+              })
+            }>
+            <Icon name="comment" size={26} color={colors.primary} />
+          </TouchableWithoutFeedback>
         </View>
+        {show ? (
+          <>
+            <View style={styles.marginVS}>
+              <Text style={styles.textMedium}>No Telepon</Text>
+              <Text>{penjemputan.telepon}</Text>
+            </View>
+            <View style={styles.marginVS}>
+              <Text style={styles.textMedium}>Keterangan</Text>
+              <Text>{penjemputan.keterangan}</Text>
+            </View>
+          </>
+        ) : null}
+
         <TouchableOpacity
           onPress={() => {
             mapsData.place_id
@@ -138,49 +152,56 @@ const PermintaanJemput = ({navigation, route}) => {
                 )
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
-          style={[styles.row, styles.centerCenter]}>
+          style={[styles.row, styles.centerCenter, styles.marginVM]}>
+          <Icon name="map-marker-alt" size={24} color={colors.primary} />
           <Text
             style={[
+              styles.textH3,
               styles.textPrimary,
-              styles.textMedium,
-              styles.marginVM,
               styles.flex1,
-            ]}>
+              styles.marginHM,
+            ]}
+            numberOfLines={1}>
             {mapsData.name}
           </Text>
-          <Icon
-            name="map-marked-alt"
-            size={24}
-            style={styles.marginHS}
-            color={colors.primary}
-          />
         </TouchableOpacity>
 
         {penjemputan.status === 3 ? (
           <Text style={[styles.textH3, styles.textCenter]}>Dibatalkan</Text>
         ) : (
-          <>
+          <View style={[styles.row, styles.centerCenter]}>
             {penjemputan.status === 2 ? (
-              <Text>Selesai Dijemput</Text>
-            ) : (
-              <View style={[styles.marginVS]}>
+              <Text style={(styles.flex1, styles.marginHS, styles.textH3)}>
+                Selesai Dijemput
+              </Text>
+            ) : penjemputan.status === 1 ? (
+              <View style={[styles.marginVS, styles.flex1, styles.marginHM]}>
                 <ButtonView
-                  title="Konfirmasi Jemput"
+                  title="Tandai Selesai"
                   dark
-                  onPress={() => onClickConfirm()}
+                  onPress={() => onClickConfirm(2)}
                 />
               </View>
+            ) : (
+              <>
+                <View style={[styles.marginVS, styles.flex1]}>
+                  <ButtonView
+                    title="Batalkan"
+                    onPress={() => onClickBatalkan()}
+                  />
+                </View>
+                <View style={[styles.marginVS, styles.flex1]}>
+                  <ButtonView
+                    title="Jemput Sekarang"
+                    dark
+                    onPress={() => onClickConfirm(1)}
+                  />
+                </View>
+              </>
             )}
-            <View style={[styles.marginVS]}>
-              <ButtonView
-                title="Batalkan Jemput"
-                onPress={() => onClickBatalkan()}
-              />
-            </View>
-          </>
+          </View>
         )}
-        <View style={styles.marginVM} />
-      </ScrollView>
+      </View>
     </View>
   );
 };

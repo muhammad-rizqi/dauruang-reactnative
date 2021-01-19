@@ -118,8 +118,8 @@ const UpdateProfile = ({navigation}) => {
   return (
     <View style={[styles.backgroundLight, styles.flex1]}>
       <StatusBar backgroundColor={colors.lightBg} barStyle="dark-content" />
-      <ScrollView style={[styles.container]}>
-        <View style={[styles.row, styles.centerCenter]}>
+      <ScrollView>
+        <View style={[styles.row, styles.centerCenter, styles.container]}>
           <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
             <Icon name="chevron-left" size={26} color={colors.primary} />
           </TouchableWithoutFeedback>
@@ -133,7 +133,6 @@ const UpdateProfile = ({navigation}) => {
             Update Profile
           </Text>
         </View>
-        <View style={styles.marginVM} />
         <TouchableOpacity
           onPress={handleChoosePhoto}
           style={styles.widthScreenBox}>
@@ -145,107 +144,113 @@ const UpdateProfile = ({navigation}) => {
             ) : null}
           </ImageBackground>
         </TouchableOpacity>
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView
-            placeholder="Nama Lengkap"
-            value={name}
-            onChangeText={(inputName) => setName(inputName)}
-          />
-        </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView
-            placeholder="Email"
-            value={email}
-            onChangeText={(inputEmail) => setEmail(inputEmail)}
-          />
-        </View>
-        <View style={[styles.centerItem, styles.marginVS]}>
-          <InputView
-            placeholder="Nomor Telepon"
-            type="number-pad"
-            value={phone}
-            onChangeText={(inputPhone) => setPhone(inputPhone)}
-          />
-        </View>
-        <View style={[styles.marginVS]}>
-          <View style={styles.mapContainer}>
-            {mapsData.latitude !== undefined ? (
-              <>
-                <MapView
-                  provider={PROVIDER_GOOGLE}
-                  initialRegion={regionFrom(mapsData)}
-                  onMapReady={() => setMapReady(true)}
-                  showsUserLocation
-                  showsMyLocationButton
-                  onPoiClick={(e) => {
-                    setMarkCoord(e.nativeEvent.coordinate);
-                    const {coordinate, placeId} = e.nativeEvent;
-                    setMapsData({
-                      latitude: coordinate.latitude,
-                      longitude: coordinate.longitude,
-                      place_id: placeId,
-                      name: e.nativeEvent.name,
-                    });
-                  }}
-                  onPress={(e) => {
-                    setMarkCoord(e.nativeEvent.coordinate);
-                    reverseLocation(e.nativeEvent.coordinate);
-                  }}
-                  style={styles.map}>
-                  {mapReady ? (
-                    <Marker
-                      draggable
-                      coordinate={markCoord}
-                      onDragEnd={(e) => {
-                        setMarkCoord(e.nativeEvent.coordinate);
-                        reverseLocation(e.nativeEvent.coordinate);
-                      }}
-                    />
-                  ) : null}
-                </MapView>
-              </>
-            ) : null}
-            <Text
-              style={[styles.textMedium, styles.marginHS, styles.textPrimary]}>
-              Alamat
-            </Text>
+        <View style={styles.container}>
+          <View style={[styles.centerItem, styles.marginVS]}>
+            <InputView
+              placeholder="Nama Lengkap"
+              value={name}
+              onChangeText={(inputName) => setName(inputName)}
+            />
           </View>
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            mapsData.place_id
-              ? goToMaps(
-                  mapsData.longitude,
-                  mapsData.latitude,
-                  mapsData.place_id,
-                )
-              : goToMaps(mapsData.longitude, mapsData.latitude, null);
-          }}
-          style={[styles.row, styles.centerCenter]}>
-          <Text
-            style={[
-              styles.textPrimary,
-              styles.textMedium,
-              styles.marginVM,
-              styles.flex1,
-            ]}>
-            {mapsData.name}
-          </Text>
-          <Icon
-            name="map-marked-alt"
-            size={24}
-            style={styles.marginHS}
-            color={colors.primary}
-          />
-        </TouchableOpacity>
+          <View style={[styles.centerItem, styles.marginVS]}>
+            <InputView
+              placeholder="Email"
+              value={email}
+              onChangeText={(inputEmail) => setEmail(inputEmail)}
+            />
+          </View>
+          <View style={[styles.centerItem, styles.marginVS]}>
+            <InputView
+              placeholder="Nomor Telepon"
+              type="number-pad"
+              value={phone}
+              onChangeText={(inputPhone) => setPhone(inputPhone)}
+            />
+          </View>
+          <View style={[styles.marginVS]}>
+            <View style={styles.mapContainer}>
+              {mapsData.latitude !== undefined ? (
+                <>
+                  <MapView
+                    provider={PROVIDER_GOOGLE}
+                    initialRegion={regionFrom(mapsData)}
+                    onMapReady={() => setMapReady(true)}
+                    showsUserLocation
+                    showsMyLocationButton
+                    onPoiClick={(e) => {
+                      setMarkCoord(e.nativeEvent.coordinate);
+                      const {coordinate, placeId} = e.nativeEvent;
+                      setMapsData({
+                        latitude: coordinate.latitude,
+                        longitude: coordinate.longitude,
+                        place_id: placeId,
+                        name: e.nativeEvent.name,
+                      });
+                    }}
+                    onPress={(e) => {
+                      setMarkCoord(e.nativeEvent.coordinate);
+                      reverseLocation(e.nativeEvent.coordinate);
+                    }}
+                    style={styles.map}>
+                    {mapReady ? (
+                      <Marker
+                        draggable
+                        coordinate={markCoord}
+                        onDragEnd={(e) => {
+                          setMarkCoord(e.nativeEvent.coordinate);
+                          reverseLocation(e.nativeEvent.coordinate);
+                        }}
+                      />
+                    ) : null}
+                  </MapView>
+                </>
+              ) : null}
+              <Text
+                style={[
+                  styles.textMedium,
+                  styles.marginHS,
+                  styles.textPrimary,
+                ]}>
+                Alamat
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              mapsData.place_id
+                ? goToMaps(
+                    mapsData.longitude,
+                    mapsData.latitude,
+                    mapsData.place_id,
+                  )
+                : goToMaps(mapsData.longitude, mapsData.latitude, null);
+            }}
+            style={[styles.row, styles.centerCenter]}>
+            <Text
+              style={[
+                styles.textPrimary,
+                styles.textMedium,
+                styles.marginVM,
+                styles.flex1,
+              ]}>
+              {mapsData.name}
+            </Text>
+            <Icon
+              name="map-marked-alt"
+              size={24}
+              style={styles.marginHS}
+              color={colors.primary}
+            />
+          </TouchableOpacity>
 
-        <View style={[styles.marginVS]}>
-          <ButtonView
-            title="Update Profile"
-            dark
-            onPress={onClickUpdate}
-            loading={loading}
-          />
+          <View style={[styles.marginVS]}>
+            <ButtonView
+              title="Update Profile"
+              dark
+              onPress={onClickUpdate}
+              loading={loading}
+            />
+          </View>
         </View>
       </ScrollView>
     </View>

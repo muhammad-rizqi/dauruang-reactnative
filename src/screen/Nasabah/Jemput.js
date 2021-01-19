@@ -3,7 +3,6 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
-  ScrollView,
   TouchableWithoutFeedback,
   ToastAndroid,
   TouchableOpacity,
