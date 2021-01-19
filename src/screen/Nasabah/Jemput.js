@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
+  Image,
   TouchableWithoutFeedback,
   ToastAndroid,
   TouchableOpacity,
@@ -30,7 +31,9 @@ const Jemput = ({navigation, route}) => {
   const [mapsData, setMapsData] = useState(
     penjemputan ? JSON.parse(penjemputan.lokasi) : JSON.parse(user.lokasi),
   );
-
+  console.log('====================================');
+  console.log(penjemputan);
+  console.log('====================================');
   const [name, setName] = useState(
     penjemputan ? penjemputan.nama_pengirim : user.nama_lengkap,
   );
@@ -163,8 +166,31 @@ const Jemput = ({navigation, route}) => {
           styles.elevation,
         ]}>
         <Text style={[styles.textH3, styles.textPrimary]}>
-          Ajukan Penjemputan
+          {penjemputan ? 'Detail Penjemputan' : 'Ajukan Penjemputan'}
         </Text>
+        {penjemputan.id_pengurus ? (
+          <View>
+            <Text>Dijemput oleh </Text>
+            <View style={[styles.row, styles.marginVS, styles.centerCenter]}>
+              <Image
+                source={{uri: penjemputan.relation.pengurus.avatar}}
+                style={styles.avatarM}
+              />
+              <Text style={[styles.textH3, styles.marginHM, styles.flex1]}>
+                {penjemputan.relation.pengurus.nama_lengkap}
+              </Text>
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  navigation.navigate('ChatItem', {
+                    to: penjemputan.relation.pengurus,
+                  })
+                }>
+                <Icon name="comment" size={26} color={colors.primary} />
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
+        ) : null}
+        <Image />
         {show ? (
           <>
             <View style={[styles.marginVS]}>
@@ -216,10 +242,10 @@ const Jemput = ({navigation, route}) => {
               : goToMaps(mapsData.longitude, mapsData.latitude, null);
           }}
           style={[styles.row, styles.centerCenter, styles.marginVM]}>
-          <Icon name="map-marker-alt" size={24} color={colors.primary} />
+          <Icon name="map-marker-alt" size={14} color={colors.primary} />
           <Text
             style={[
-              styles.textH3,
+              styles.textMedium,
               styles.textPrimary,
               styles.flex1,
               styles.marginHM,

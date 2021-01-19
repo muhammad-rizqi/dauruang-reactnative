@@ -192,17 +192,13 @@ const DashboardNasabah = ({navigation}) => {
                         navigation.navigate('Jemput', {penjemputan: jemput})
                       }>
                       <View style={styles.flex1}>
-                        <Text style={styles.textNote}>
-                          ID Penarikan: #{jemput.id}
-                        </Text>
-                        <Text style={styles.text}>{jemput.tanggal}</Text>
-                        <Text style={styles.textH3}>
+                        <Text style={[styles.textH3, styles.text]}>
                           {jemput.nama_pengirim}
                         </Text>
-                        <Text style={styles.text}>{jemput.keterangan}</Text>
-                        <Text style={styles.textNote}>
+                        <Text numberOfLines={3} style={styles.text}>
                           {JSON.parse(jemput.lokasi).name}
                         </Text>
+                        <Text style={styles.text}>{jemput.tanggal}</Text>
                       </View>
                       <View>
                         <MaterialIcon
