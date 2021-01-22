@@ -18,6 +18,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {sendMessage, getMessage} from '../../services/endpoint/chat';
 import {toHour} from '../../services/helper/helper';
+import _ from 'lodash';
 
 const ChatItem = ({navigation, route}) => {
   const {to} = route.params;
@@ -85,31 +86,50 @@ const ChatItem = ({navigation, route}) => {
           scrollViewRef.current.scrollToEnd({animated: false})
         }>
         <View style={[styles.flex1, styles.marginHM]}>
-          {chatItem.map((chat) => (
-            <TouchableNativeFeedback key={chat.id}>
-              <View
-                style={[
-                  styles.marginVS,
-                  styles.card,
-                  chat.from !== user.id
-                    ? [styles.backgroundSecondary, styles.chatFrom]
-                    : [styles.backgroundPrimary, styles.chatTo],
-                ]}>
-                <View>
-                  <Text
-                    style={
-                      chat.to !== user.id ? styles.textWhite : styles.text
-                    }>
-                    {chat.pesan}
-                  </Text>
+          {chatItem.length > 0 && (
+            <Text style={[styles.textCenter, styles.textMedium]}>
+              {chatItem[0].created_at.slice(0, 10)}
+            </Text>
+          )}
+          {chatItem.map((chat, index) => (
+            <View key={index}>
+              {chatItem.length > 2 ? (
+                chatItem[index - 1] ? (
+                  _.isEqual(
+                    chatItem[index - 1].created_at.slice(0, 10),
+                    chatItem[index].created_at.slice(0, 10),
+                  ) ? null : (
+                    <Text style={[styles.textCenter, styles.textMedium]}>
+                      {chatItem[index].created_at.slice(0, 10)}
+                    </Text>
+                  )
+                ) : null
+              ) : null}
+              <TouchableNativeFeedback key={chat.id}>
+                <View
+                  style={[
+                    styles.marginVS,
+                    styles.card,
+                    chat.from !== user.id
+                      ? [styles.backgroundSecondary, styles.chatFrom]
+                      : [styles.backgroundPrimary, styles.chatTo],
+                  ]}>
+                  <View>
+                    <Text
+                      style={
+                        chat.to !== user.id ? styles.textWhite : styles.text
+                      }>
+                      {chat.pesan}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.textNoteWhite}>
+                      {toHour(chat.created_at)}
+                    </Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={styles.textNoteWhite}>
-                    {toHour(chat.created_at)}
-                  </Text>
-                </View>
-              </View>
-            </TouchableNativeFeedback>
+              </TouchableNativeFeedback>
+            </View>
           ))}
         </View>
       </ScrollView>
