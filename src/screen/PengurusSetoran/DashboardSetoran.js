@@ -18,6 +18,7 @@ import {
   getDataSetoran,
 } from '../../services/endpoint/penyetor';
 import ButtonView from '../../components/ButtonView';
+import {toPrice} from '../../services/helper/helper';
 
 const DashboardSetoran = ({navigation}) => {
   const [content, setContent] = useState(1);
@@ -144,7 +145,9 @@ const DashboardSetoran = ({navigation}) => {
                       <Text style={[styles.textCenter, styles.textNote]}>
                         Total Pemasukan
                       </Text>
-                      <Text style={styles.textH3}>Rp. {setoran.debit},-</Text>
+                      <Text style={styles.textH3}>
+                        Rp. {toPrice(setoran.debit)},-
+                      </Text>
                     </View>
                   </View>
                 ))

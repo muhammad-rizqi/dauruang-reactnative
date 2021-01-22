@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {getSampahCategory} from '../../services/endpoint/sampah';
 import {Picker} from '@react-native-picker/picker';
 import {addSetor} from '../../services/endpoint/penyetor';
+import {toPrice} from '../../services/helper/helper';
 
 const Setoran = ({navigation, route}) => {
   const [isEnabled, setisEnabled] = useState(false);
@@ -130,16 +131,21 @@ const Setoran = ({navigation, route}) => {
                   <View style={[styles.row, styles.space]}>
                     <Text>Total Harga Sampah</Text>
                     <Text>
-                      Rp. {Number.parseFloat(berat) * category[selected].harga}
+                      Rp.{' '}
+                      {toPrice(
+                        Number.parseFloat(berat) * category[selected].harga,
+                      )}
                     </Text>
                   </View>
                   <View style={[styles.row, styles.space]}>
                     <Text>{'Potongan Jemput (20%)'}</Text>
                     <Text>
                       Rp.{' '}
-                      {Number.parseFloat(berat) *
-                        category[selected].harga *
-                        0.2}
+                      {toPrice(
+                        Number.parseFloat(berat) *
+                          category[selected].harga *
+                          0.2,
+                      )}
                     </Text>
                   </View>
                 </>
@@ -150,11 +156,15 @@ const Setoran = ({navigation, route}) => {
                   Rp.{' '}
                   {category[selected] && berat !== ''
                     ? !isEnabled
-                      ? Number.parseFloat(berat) * category[selected].harga
-                      : Number.parseFloat(berat) * category[selected].harga -
-                        Number.parseFloat(berat) *
-                          category[selected].harga *
-                          0.2
+                      ? toPrice(
+                          Number.parseFloat(berat) * category[selected].harga,
+                        )
+                      : toPrice(
+                          Number.parseFloat(berat) * category[selected].harga -
+                            Number.parseFloat(berat) *
+                              category[selected].harga *
+                              0.2,
+                        )
                     : 0}
                 </Text>
               </View>

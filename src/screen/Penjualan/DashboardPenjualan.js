@@ -17,6 +17,7 @@ import {
   getStok,
 } from '../../services/endpoint/penjual';
 import ButtonView from '../../components/ButtonView';
+import {toPrice} from '../../services/helper/helper';
 
 const DashboardPenjualan = ({navigation}) => {
   const [content, setContent] = useState(1);
@@ -75,7 +76,7 @@ const DashboardPenjualan = ({navigation}) => {
           <View style={styles.marginVM}>
             <Text style={[styles.textWhite]}>Saldo Keuangan Kita</Text>
             <Text style={[styles.textH2, styles.textWhite]}>
-              Rp. {JSON.stringify(penjual.saldo.data)},-
+              Rp. {toPrice(penjual.saldo.data)},-
             </Text>
             <View style={styles.marginVM} />
           </View>
@@ -135,7 +136,9 @@ const DashboardPenjualan = ({navigation}) => {
                     <Text style={[styles.textCenter, styles.textNote]}>
                       Total Penjualan
                     </Text>
-                    <Text style={styles.textH3}>Rp. {jual.debit},-</Text>
+                    <Text style={styles.textH3}>
+                      Rp. {toPrice(jual.debit)},-
+                    </Text>
                   </View>
                 </View>
               ))

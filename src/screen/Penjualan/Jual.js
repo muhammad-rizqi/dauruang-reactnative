@@ -15,6 +15,7 @@ import {Picker} from '@react-native-picker/picker';
 import {getSampahCategory} from '../../services/endpoint/sampah';
 import {jualSampah} from '../../services/endpoint/penjual';
 import {useSelector} from 'react-redux';
+import {toPrice} from '../../services/helper/helper';
 
 const Jual = ({navigation}) => {
   const [category, setCategory] = useState([]);
@@ -122,7 +123,7 @@ const Jual = ({navigation}) => {
         <View style={[styles.marginVM]}>
           <View style={[styles.row, styles.space]}>
             <Text style={styles.textH3}>Total Penjualan</Text>
-            <Text style={styles.textH3}>Rp. {berat * harga},-</Text>
+            <Text style={styles.textH3}>Rp. {toPrice(berat * harga)},-</Text>
           </View>
         </View>
         <ButtonView
