@@ -17,6 +17,7 @@ import {colors, styles} from '../../style/styles';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {sendMessage, getMessage} from '../../services/endpoint/chat';
+import {toHour} from '../../services/helper/helper';
 
 const ChatItem = ({navigation, route}) => {
   const {to} = route.params;
@@ -90,17 +91,22 @@ const ChatItem = ({navigation, route}) => {
                 style={[
                   styles.marginVS,
                   styles.card,
-                  chat.from !== user.id //TODO change this to id
+                  chat.from !== user.id
                     ? [styles.backgroundSecondary, styles.chatFrom]
                     : [styles.backgroundPrimary, styles.chatTo],
                 ]}>
                 <View>
-                  <Text style={chat.to === 1 ? styles.textWhite : styles.text}>
+                  <Text
+                    style={
+                      chat.to !== user.id ? styles.textWhite : styles.text
+                    }>
                     {chat.pesan}
                   </Text>
                 </View>
                 <View>
-                  <Text style={styles.textNoteWhite}>{chat.created_at}</Text>
+                  <Text style={styles.textNoteWhite}>
+                    {toHour(chat.created_at)}
+                  </Text>
                 </View>
               </View>
             </TouchableNativeFeedback>

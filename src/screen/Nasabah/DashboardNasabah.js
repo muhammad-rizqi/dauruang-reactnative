@@ -23,7 +23,7 @@ import {
   penyetoranNasabah,
 } from '../../services/endpoint/nasabah';
 import ButtonView from '../../components/ButtonView';
-import {toPrice} from '../../services/helper/helper';
+import {toDate, toPrice} from '../../services/helper/helper';
 
 const DashboardNasabah = ({navigation}) => {
   const [content, setContent] = useState(1);
@@ -157,7 +157,7 @@ const DashboardNasabah = ({navigation}) => {
                       <Text style={[styles.textH3, styles.text]}>
                         Rp. {toPrice(tarik.kredit)},-
                       </Text>
-                      <Text style={styles.text}>{tarik.tanggal}</Text>
+                      <Text style={styles.text}>{toDate(tarik.tanggal)}</Text>
                     </View>
                   </View>
                 ))
@@ -195,7 +195,9 @@ const DashboardNasabah = ({navigation}) => {
                         <Text numberOfLines={3} style={styles.text}>
                           {JSON.parse(jemput.lokasi).name}
                         </Text>
-                        <Text style={styles.text}>{jemput.tanggal}</Text>
+                        <Text style={styles.text}>
+                          {toDate(jemput.tanggal)}
+                        </Text>
                       </View>
                       <View>
                         <MaterialIcon

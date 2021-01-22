@@ -18,7 +18,7 @@ import {
   getDataSetoran,
 } from '../../services/endpoint/penyetor';
 import ButtonView from '../../components/ButtonView';
-import {toPrice} from '../../services/helper/helper';
+import {toDate, toPrice} from '../../services/helper/helper';
 
 const DashboardSetoran = ({navigation}) => {
   const [content, setContent] = useState(1);
@@ -138,7 +138,9 @@ const DashboardSetoran = ({navigation}) => {
                           {setoran.relation.jenis_sampah.nama_kategori}{' '}
                           {setoran.berat}Kg
                         </Text>
-                        <Text style={styles.textNote}>{setoran.tanggal}</Text>
+                        <Text style={styles.textNote}>
+                          {toDate(setoran.tanggal)}
+                        </Text>
                       </View>
                     </View>
                     <View style={styles.centerCenter}>
@@ -180,7 +182,9 @@ const DashboardSetoran = ({navigation}) => {
                         <Text style={styles.text} numberOfLines={3}>
                           {JSON.parse(jemput.lokasi).name}
                         </Text>
-                        <Text style={styles.text}>{jemput.tanggal}</Text>
+                        <Text style={styles.text}>
+                          {toDate(jemput.tanggal)}
+                        </Text>
                       </View>
                     </View>
                     <View>

@@ -17,7 +17,7 @@ import {
   getStok,
 } from '../../services/endpoint/penjual';
 import ButtonView from '../../components/ButtonView';
-import {toPrice} from '../../services/helper/helper';
+import {toDate, toPrice} from '../../services/helper/helper';
 
 const DashboardPenjualan = ({navigation}) => {
   const [content, setContent] = useState(1);
@@ -129,7 +129,9 @@ const DashboardPenjualan = ({navigation}) => {
                         {jual.relation.jenis_sampah.nama_kategori} {jual.berat}
                         Kg
                       </Text>
-                      <Text style={styles.textNote}>{jual.tanggal}</Text>
+                      <Text style={styles.textNote}>
+                        {toDate(jual.tanggal)}
+                      </Text>
                     </View>
                   </View>
                   <View style={styles.centerCenter}>

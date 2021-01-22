@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {styles} from '../style/styles';
-import {toPrice} from '../services/helper/helper';
+import {toPrice, toDate} from '../services/helper/helper';
 
 const ListPenyetoran = ({dataPenyetoran}) => {
   return dataPenyetoran.data !== null && dataPenyetoran.data.length > 0 ? (
@@ -18,7 +18,7 @@ const ListPenyetoran = ({dataPenyetoran}) => {
           <Text style={[styles.textH3, styles.text]}>
             {setoran.relation.jenis_sampah.nama_kategori} {setoran.berat}Kg
           </Text>
-          <Text style={styles.textNote}>{setoran.tanggal}</Text>
+          <Text style={styles.text}>{toDate(setoran.tanggal)}</Text>
         </View>
         <View style={styles.centerCenter}>
           <Text style={[styles.textCenter, styles.textNote]}>
