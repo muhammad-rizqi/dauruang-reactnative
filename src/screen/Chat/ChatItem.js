@@ -19,6 +19,7 @@ import {useSelector} from 'react-redux';
 import {sendMessage, getMessage} from '../../services/endpoint/chat';
 import {toHour} from '../../services/helper/helper';
 import _ from 'lodash';
+import Pusher from 'pusher-js/react-native';
 
 const ChatItem = ({navigation, route}) => {
   const {to} = route.params;
@@ -26,6 +27,21 @@ const ChatItem = ({navigation, route}) => {
   const [message, setMessage] = useState('');
   const [chatItem, setChatItem] = useState([]);
   const scrollViewRef = useRef();
+  useEffect(() => {
+    var pusher = new Pusher('dd8cf49ab599dd57da5d', {
+      cluster: 'ap1',
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', (data) => {
+      if (
+        (data.from === to.id && data.to === user.id) ||
+        (data.from === user.id && data.to === to.id)
+      ) {
+        getMessages();
+      }
+    });
+  }, []);
 
   const onClickSend = async () => {
     try {
