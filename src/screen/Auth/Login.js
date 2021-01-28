@@ -20,8 +20,13 @@ const Login = (props) => {
     login(email, pasword)
       .then((res) => {
         if (res.code === 200) {
-          dispatch(setUser(res.data.user));
-          dispatch(changeToken(res.data.token));
+          const {role} = res.data.user;
+          if (role === 1 || role === 2 || role === 3) {
+            dispatch(setUser(res.data.user));
+            dispatch(changeToken(res.data.token));
+          } else {
+            ToastAndroid.show('Harap login di web', ToastAndroid.LONG);
+          }
         } else {
           ToastAndroid.show(res.message, ToastAndroid.LONG);
         }
