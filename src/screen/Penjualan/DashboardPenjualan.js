@@ -107,7 +107,7 @@ const DashboardPenjualan = ({navigation}) => {
 
         <View style={styles.container}>
           <ButtonView
-            title="Setor Sampah"
+            title="Jual Sampah"
             dark
             onPress={() => navigation.navigate('Jual')}
           />

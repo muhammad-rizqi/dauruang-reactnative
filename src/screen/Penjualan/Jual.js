@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -12,20 +12,19 @@ import InputView from '../../components/InputView';
 import {colors, styles} from '../../style/styles';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Picker} from '@react-native-picker/picker';
-import {getSampahCategory} from '../../services/endpoint/sampah';
 import {jualSampah} from '../../services/endpoint/penjual';
 import {useSelector} from 'react-redux';
 import {toPrice} from '../../services/helper/helper';
 
 const Jual = ({navigation}) => {
-  const [category, setCategory] = useState([]);
   const [harga, setHarga] = useState(0);
   const [berat, setBerat] = useState(0);
   const [selected, setSelected] = useState(0);
   const [client, setClient] = useState('');
   const [loading, setLoading] = useState(false);
-  const {user} = useSelector((state) => state);
+  const {user, penjual} = useSelector((state) => state);
 
+  const category = penjual.stok.data;
   const onClickJual = () => {
     if (
       harga !== '' ||
@@ -55,16 +54,6 @@ const Jual = ({navigation}) => {
       ToastAndroid.show('Harap isi semua', ToastAndroid.LONG);
     }
   };
-
-  const getCategory = () => {
-    getSampahCategory()
-      .then((cat) => setCategory(cat.data))
-      .catch((e) => setCategory([]));
-  };
-
-  useEffect(() => {
-    getCategory();
-  }, []);
 
   return (
     <ScrollView style={[styles.backgroundLight, styles.flex1]}>
@@ -100,7 +89,7 @@ const Jual = ({navigation}) => {
             {category.map((sampah) => (
               <Picker.Item
                 key={sampah.id}
-                label={sampah.nama_kategori}
+                label={`${sampah.nama_kategori} : ${sampah.stok_gudang} kg`}
                 value={sampah.id}
               />
             ))}

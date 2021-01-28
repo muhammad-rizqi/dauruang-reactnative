@@ -24,17 +24,29 @@ import {
 } from '../../services/endpoint/nasabah';
 import ButtonView from '../../components/ButtonView';
 import {toDate, toPrice} from '../../services/helper/helper';
+import {getSampahCategory} from '../../services/endpoint/sampah';
 
 const DashboardNasabah = ({navigation}) => {
   const [content, setContent] = useState(1);
   const {user, nasabah} = useSelector((state) => state);
   const [loading, setLoading] = useState(setLoading);
+  const [category, setCategory] = useState([]);
 
   const getData = () => {
     getSaldo(user.id);
     penjemputanNasabah(user.id);
     penyetoranNasabah(user.id);
     penarikanNasabah(user.id);
+    getCategory();
+  };
+
+  console.log('====================================');
+  console.log(category);
+  console.log('====================================');
+  const getCategory = () => {
+    getSampahCategory()
+      .then((cat) => cat.code === 200 && setCategory(cat.data))
+      .catch(() => setCategory([]));
   };
 
   useEffect(() => {
@@ -174,6 +186,29 @@ const DashboardNasabah = ({navigation}) => {
                 dark
                 onPress={() => navigation.navigate('Jemput')}
               />
+              {category.length > 0 && (
+                <View style={styles.marginVM}>
+                  <Text>Harga Sampah Terbaru :</Text>
+                  <ScrollView horizontal>
+                    {category.map((cat) => (
+                      <View
+                        style={[
+                          styles.card,
+                          styles.backgroundWhite,
+                          styles.marginHS,
+                          styles.marginVS,
+                        ]}>
+                        <Text>{cat.nama_kategori}</Text>
+                        <Text style={styles.textNote}>
+                          Rp. {toPrice(cat.harga)},-
+                        </Text>
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+
+              <Text>Riwayat Penjemputan</Text>
               {nasabah.penjemputan ? (
                 nasabah.penjemputan.data.length > 0 ? (
                   nasabah.penjemputan.data.map((jemput) => (
