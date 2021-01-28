@@ -39,10 +39,6 @@ const DashboardNasabah = ({navigation}) => {
     penarikanNasabah(user.id);
     getCategory();
   };
-
-  console.log('====================================');
-  console.log(category);
-  console.log('====================================');
   const getCategory = () => {
     getSampahCategory()
       .then((cat) => cat.code === 200 && setCategory(cat.data))

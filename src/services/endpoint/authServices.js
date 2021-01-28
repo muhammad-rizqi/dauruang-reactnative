@@ -29,3 +29,11 @@ export const login = (email, password) => {
 export const profile = () => {
   return api('GET', '/profile');
 };
+
+export const reset = (email) => {
+  const body = {
+    email,
+  };
+
+  return api('POST', '/reset', body);
+};
