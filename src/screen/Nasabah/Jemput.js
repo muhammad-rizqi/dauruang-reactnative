@@ -165,7 +165,7 @@ const Jemput = ({navigation, route}) => {
         <Text style={[styles.textH3, styles.textPrimary]}>
           {penjemputan ? 'Detail Penjemputan' : 'Ajukan Penjemputan'}
         </Text>
-        {penjemputan.id_pengurus ? (
+        {penjemputan && penjemputan.id_pengurus ? (
           <View>
             <Text>Dijemput oleh </Text>
             <View style={[styles.row, styles.marginVS, styles.centerCenter]}>
