@@ -92,6 +92,13 @@ const Login = (props) => {
           Lupa Kata Sandi?
         </Text>
       </View>
+      <View style={[styles.centerItem, styles.marginVM]}>
+        <Text
+          style={styles.textMedium}
+          onPress={() => props.navigation.navigate('Help')}>
+          Butuh bantuan?
+        </Text>
+      </View>
     </ScrollView>
   );
 };

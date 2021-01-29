@@ -45,7 +45,7 @@ const Drawer = ({navigation}) => {
             <Text style={[styles.textMedium, styles.marginHS]}>Pengaturan</Text>
           </View>
         </TouchableNativeFeedback>
-        <TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress={() => navigation.navigate('Help')}>
           <View style={[styles.row, styles.paddingS, styles.centerItem]}>
             <MaterialIcon name="help-circle" size={28} color={colors.grey} />
             <Text style={[styles.textMedium, styles.marginHS]}>Bantuan</Text>

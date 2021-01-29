@@ -23,6 +23,7 @@ import {
   QRScreen,
   ScanQR,
   Settings,
+  Help,
 } from '../screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
@@ -172,6 +173,7 @@ const AppRouter = () => {
             )}
           </Stack.Screen>
         )}
+        <Stack.Screen name="Help" component={Help} />
       </Stack.Navigator>
     </NavigationContainer>
   );

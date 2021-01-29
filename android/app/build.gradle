@@ -145,6 +145,7 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
+    
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -152,7 +153,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('daur-uang.keystore')
+            storePassword 'santrimandiri'
+            keyAlias 'daur-uang'
+            keyPassword 'santrimandiri'
+        }
     }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -160,7 +168,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

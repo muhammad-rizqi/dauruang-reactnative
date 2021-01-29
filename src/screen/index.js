@@ -17,6 +17,7 @@ import ChatItem from './Chat/ChatItem';
 import ChatList from './Chat/ChatList';
 import QRScreen from './User/QRScreen';
 import ScanQR from './PengurusSetoran/ScanQR';
+import Help from './User/Help';
 
 export {
   Intro,
@@ -38,4 +39,5 @@ export {
   ChatList,
   QRScreen,
   ScanQR,
+  Help,
 };
